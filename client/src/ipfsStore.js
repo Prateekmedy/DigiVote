@@ -5,13 +5,13 @@ export const ipfsSender = (file) => {
 
     return new Promise((resolve, reject) => {
 
-      let buffer = Buffer.from(JSON.stringify(file));
+      let buffer = Buffer.from(JSON.stringify(file))
       ipfs.add(buffer, (err, ipfsHash) => {
         if(ipfsHash){
           resolve(ipfsHash[0].hash)
           //this.setState({ ipfsHash:ipfsHash[0].hash })
         }else{
-          reject("something is not good :(");
+          reject("something is not good :(" + err);
         }   
       })
 

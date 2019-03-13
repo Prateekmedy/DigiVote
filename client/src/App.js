@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import ElectionContract from "./contracts/Election.json";
 import Web3 from 'web3';
-import ipfs from './ipfs';
-import {ipfsSender, ipfsFetcher} from './ipfsStore';
+import OrganizerLogin from './Organizer/OrganizerLogin';
 import "./App.css";
 
-const Buffer = require('buffer/').Buffer;
+
+
+//const Buffer = require('buffer/').Buffer;
 
 class App extends Component {
 
@@ -16,10 +17,15 @@ class App extends Component {
             contract: null, 
             buffer:'', 
             abi:null, 
-            ipfsHash: null,
-            ipfsData: null,
-            accAddress:null 
+            ipfsCredentialsHash: null,
+            ipfsCredentailsData: null,
+            ipfsPersonalHash: null,
+            ipfsPersonalData: null,
+            accAddress:null,
+            isLogin :false ,
+            inputValue:""
           };
+
 
   //function for creating the new account and recharging it with ether.
   accountCreator = async(password) => {
@@ -88,57 +94,6 @@ class App extends Component {
     }
   };
 
-  //function for Organizer's SignUp
-  SignUp = async(event) => {
-
-    event.preventDefault();
-
-    const {contract, accounts} = this.state;
-    // //calling function by providing the password and returns the Account Address
-    // await this.accountCreator("test");
-
-    console.log(this.state.accAddress);
-
-    let CredentialsData = {
-      Username : "Prateek",
-      Password : "test",
-      Address : accounts[0] //this.state.accAddress
-    }  
-
-    //calling the promise by providing the data to convert it to hash
-    let ipfsHash = await ipfsSender(CredentialsData);
-    this.setState({ipfsHash});
-    console.log(this.state.ipfsHash);
-
-    //function for sending hash to the blockchain
-    await contract.methods.setOrganizerCredentials(accounts[0], this.state.ipfsHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
-    .then((receipt) => {
-      console.log(receipt);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-    let result;
-    await contract.methods.getOrganizerCredentials(accounts[0]).call()
-    .then((res) => result = res)
-    .catch(console.error)
-
-    // await contract.methods.getOrganizerCredentials(accounts[0]).call()
-    // .then(console.log)
-    // .catch(console.error)
-
-    // //calling the promise by providing the hash to convert it to data
-    let ipfsData = await ipfsFetcher(result);
-    this.setState({ipfsData})
-    console.log(this.state.ipfsData);
-
-    
-
-  }
-
-
-
   //render function for JSX returns
   render() {
     if (!this.state.web3) {
@@ -157,15 +112,8 @@ class App extends Component {
           Try changing the value stored on <strong>line 40</strong> of App.js.
         </p>
         <div>The stored value is: {this.state.storageValue}</div>
-        <form onSubmit={this.SignUp}>
-          <input type="text" name="label1" className="l1" />
-          <input type="submit" value="SignUp"/>
-        </form>
         <div>
-          <button onClick={this.seek}>Seek</button>
-          <button onClick={this.Organizer}>Organizer</button>
-          <button onClick={this.countOrganizer}>Count Organizer</button>
-          <button onClick={this.createAcc}>Create Account</button>
+          <OrganizerLogin contract={this.state.contract} accounts={this.state.accounts} web3={this.state.web3}/>
         </div>
       </div>
     );
