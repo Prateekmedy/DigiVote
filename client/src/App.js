@@ -1,8 +1,9 @@
-import React, { Component } from "react";
-import ElectionContract from "./contracts/Election.json";
-import Web3 from 'web3';
-import OrganizerLogin from './Organizer/OrganizerLogin';
-import "./App.css";
+import React, { Component } from "react"
+import ElectionContract from "./contracts/Election.json"
+import Web3 from 'web3'
+//import OrganizerLogin from './Organizer/OrganizerLogin'
+import OragnizerHome from './Organizer/OrganizerHome'
+import "./App.css"
 
 
 
@@ -94,6 +95,12 @@ class App extends Component {
     }
   };
 
+  loginUpdate = (val) => {
+    this.setState({
+      isLogin : val
+    })
+  }
+
   //render function for JSX returns
   render() {
     if (!this.state.web3) {
@@ -101,20 +108,15 @@ class App extends Component {
     }
     return (
       <div className="App">
-        <h1>Good to Go!</h1>
-        <p>Your Truffle Box is installed and ready.</p>
-        <h2>Smart Contract Example</h2>
-        <p>
-          If your contracts compiled and migrated successfully, below will show
-          a stored value of 5 (by default).
-        </p>
-        <p>
-          Try changing the value stored on <strong>line 40</strong> of App.js.
-        </p>
-        <div>The stored value is: {this.state.storageValue}</div>
-        <div>
-          <OrganizerLogin contract={this.state.contract} accounts={this.state.accounts} web3={this.state.web3}/>
-        </div>
+          <OragnizerHome 
+            contract={this.state.contract} 
+            accounts={this.state.accounts} 
+            web3={this.state.web3} 
+            accountCreator={this.accountCreator} 
+            acc={this.state.accAddress}
+            isLogin = {this.state.isLogin}
+            loginUpdate = {this.loginUpdate}
+          />
       </div>
     );
   }

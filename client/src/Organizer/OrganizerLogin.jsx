@@ -10,7 +10,8 @@ class OrganizerLogin extends Component{
             ipfsCredentialsHash: null,
             ipfsCredentailsData: null,
             ipfsPersonalHash: null,
-            ipfsPersonalData: null
+            ipfsPersonalData: null,
+            isUnlock:false
         }
     }
     
@@ -22,9 +23,9 @@ class OrganizerLogin extends Component{
 
     const {contract, accounts} = this.props
     // //calling function by providing the password and returns the Account Address
-    // await this.accountCreator("test");
+    // await this.props.accountCreator("test");
 
-    //console.log(this.state.accAddress);
+    // console.log(this.props.acc);
 
     //-------------------Calling fucntion for the Organizer Credentials Data------------------
     let CredentialsData = {
@@ -114,6 +115,16 @@ class OrganizerLogin extends Component{
             await web3.eth.personal.unlockAccount(ipfsCredentailsData.Address,ipfsCredentailsData.Password,600)
             .then(console.log("Unlock"))
 
+            this.setState({isUnlock:true})
+            console.log(this.state.isUnlock)
+
+            // setTimeout(() => {
+            //   this.setState({isUnlock:false})
+            //   console.log(this.state.isUnlock)
+            // }, 60)
+
+            this.props.loginUpdate(true);
+
             console.log("You are Login :)")
       }else{
         console.log("Invalid Password")
@@ -132,6 +143,15 @@ class OrganizerLogin extends Component{
     });
   }
 
+  // accountCheck = async() => {
+  //   const {contract} = this.props;
+
+  //   await contract.methods.getOrganizerPersonal("prateekmedy").call()
+  //   .then(console.log)
+  //   .catch(console.error)
+
+  // }
+
     render(){
         console.log(this.props)
         return (
@@ -141,6 +161,7 @@ class OrganizerLogin extends Component{
                 <input type="submit" value="SignIn"/>
             </form>
             <button onClick={this.SignUp}>SignUp</button>
+            {/* <button onClick={this.accountCheck}>Check</button> */}
             </div>
         ) 
     }
