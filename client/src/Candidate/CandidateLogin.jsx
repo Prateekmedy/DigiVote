@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {ipfsFetcher, ipfsSender} from '../ipfsStore'
 
-class OrganizerLogin extends Component{   
+class CandidateLogin extends Component{   
 
     constructor(props){
         super(props)
@@ -17,7 +17,7 @@ class OrganizerLogin extends Component{
     }
     
 
-  //function for Organizer's SignUp (checking for username is not done yet)
+  //function for Candidate's SignUp (checking for username is not done yet)
   SignUp = async(event) => {
 
     event.preventDefault()
@@ -28,11 +28,11 @@ class OrganizerLogin extends Component{
 
     // console.log(this.props.userObject.acc);
 
-    //-------------------Calling fucntion for the Organizer Credentials Data------------------
+    //-------------------Calling fucntion for the Candidate Credentials Data------------------
     let CredentialsData = {
-      Username : "prateekmedy",
-      Password : "test",
-      Address : accounts[0] //this.state.accAddress
+      Username : "prolite",
+      Password : "password",
+      Address : accounts[1] //this.state.accAddress
     }  
 
     //calling the promise by providing the data to convert it to hash
@@ -41,7 +41,7 @@ class OrganizerLogin extends Component{
     console.log(this.state.ipfsCredentialsHash)
 
     //function for sending hash to the blockchain
-    await contract.methods.setOrganizerCredentials("prateekmedy", this.state.ipfsCredentialsHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+    await contract.methods.setCandidateCredentials("prolite", this.state.ipfsCredentialsHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
     .then((receipt) => {
       console.log(receipt)
     })
@@ -49,13 +49,15 @@ class OrganizerLogin extends Component{
       console.log(error)
     });
 
-    //-------------------Calling fucntion for the Organizer Personal Data------------------
+    //-------------------Calling fucntion for the Candidate Personal Data------------------
     let PersonalData = {
-      Username : "prateekmedy",
-      Address : accounts[0], //this.state.accAddress
-      Name : "Prateek Patel",
-      Organization : "Elelction Commttion",
-      Mobile : 6985471365
+      Username : "prolite",
+      Address : accounts[1], //this.state.accAddress
+      Name : "Anshu Patel",
+      ElectionParty : "BJP",
+      Mobile : 6985471365,
+      Age : 30,
+      constituency : "MP"
     }  
 
     //calling the promise by providing the data to convert it to hash
@@ -64,7 +66,7 @@ class OrganizerLogin extends Component{
     console.log(this.state.ipfsPersonalHash)
 
     //function for sending hash to the blockchain
-    await contract.methods.setOrganizerPersonal("prateekmedy",this.state.ipfsPersonalHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+    await contract.methods.setCandidatePersonal("prolite",this.state.ipfsPersonalHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
     .then((receipt) => {
       console.log(receipt)
     })
@@ -76,9 +78,11 @@ class OrganizerLogin extends Component{
     //-------------------------------------Functions for retireving the Data from the Blockchain-----------------
     //calling for fetching the hash from the blockchain.
     let result;
-    await contract.methods.getOrganizerPersonal("prateekmedy").call()
+    await contract.methods.getCandidatePersonal("prolite").call()
     .then((res) => result = res)
     .catch(console.error)
+
+    console.log(result);
 
     //calling the promise by providing the hash to convert it to data
     let ipfsPersonalData = await ipfsFetcher(result)
@@ -94,10 +98,10 @@ class OrganizerLogin extends Component{
     event.preventDefault();
 
     const {contract, web3} = this.props.userObject
-    const username = "prateekmedy"
+    const username = "prolite"
     let result
 
-    await contract.methods.findOrganizer(username).call()
+    await contract.methods.findCandidate(username).call()
     .then((res) => result = res)
     .catch(console.error)
 
@@ -105,7 +109,7 @@ class OrganizerLogin extends Component{
     if(result){
 
       let hash;
-      await contract.methods.getOrganizerCredentials("prateekmedy").call()
+      await contract.methods.getCandidateCredentials("prolite").call()
       .then((res) => hash = res)
       .catch(console.error)
 
@@ -124,7 +128,7 @@ class OrganizerLogin extends Component{
             console.log(this.state.isUnlock)
 
             this.props.loginUpdate(true)
-            this.props.updateOrganizerData(ipfsCredentailsData)
+            this.props.updateCandidateData(ipfsCredentailsData)
 
             console.log("You are Login :)")
       }else{
@@ -144,17 +148,8 @@ class OrganizerLogin extends Component{
     });
   }
 
-  // accountCheck = async() => {
-  //   const {contract} = this.props.userObject;
-
-  //   await contract.methods.getOrganizerPersonal("prateekmedy").call()
-  //   .then(console.log)
-  //   .catch(console.error)
-
-  // }
-
     render(){
-        console.log("OrganizerLogin")
+        console.log("CandidateLogin")
         return (
             <div>
             <form onSubmit={this.SignIn}>
@@ -162,11 +157,10 @@ class OrganizerLogin extends Component{
                 <input type="submit" value="SignIn"/>
             </form>
             { !this.state.isSignUp && <button onClick={this.SignUp}>SignUp</button>}
-            {/* <button onClick={this.accountCheck}>Check</button> */}
             </div>
         ) 
     }
           
 }
 
-export default OrganizerLogin;
+export default CandidateLogin;

@@ -1,39 +1,41 @@
 import React, { Component } from 'react';
 //import ReactDom from 'react-dom'
-import OrganizerLogin from './OrganizerLogin';
-import OrganizerDashboard from './OrganizerDashboard';
+import CandidateLogin from './CandidateLogin';
+import CandidateDashboard from './CandidateDashboard';
 
-export default class OrganizerHome extends Component{
+export default class CandidateHome extends Component{
 
     constructor(props){
         super(props)
         this.state = {
-            OrganizerData : null
+            CandidateData : null
         }
     }
 
-    updateOrganizerData = (data) => {
+    updateCandidateData = (data) => {
         this.setState({
-            OrganizerData : data
+            CandidateData : data
         })
+       
     }
 
     render(){
 
-        console.log("OrganizerHome")
+        console.log("CandidateHome")
         return (
             
             <div>
-            <h1>This is Organanizers Home</h1>
+            <h1>This is Candidate Home</h1>
             {this.props.isLogin 
-            ? <OrganizerDashboard 
+            ? <CandidateDashboard 
                 userObject={this.props.userObject}
-                OrganizerData = {this.state.OrganizerData}
+                CandidateData = {this.state.CandidateData}
                 loginUpdate={this.props.loginUpdate}
                 /> 
-            : <OrganizerLogin 
+            : <CandidateLogin 
                 userObject={this.props.userObject}
-                updateOrganizerData = {this.updateOrganizerData}
+                updateCandidateData = {this.updateCandidateData}
+                isLogin={this.props.isLogin}
                 loginUpdate={this.props.loginUpdate}
                 />
             }

@@ -21,7 +21,7 @@ export const ipfsSender = (file) => {
 
 //function for fetching the data from the IPFS through the hash.
 export const ipfsFetcher = (hash) => {
-
+    
     return new Promise((resolve, reject) => {
       fetch(`https://ipfs.io/ipfs/${hash}`)
       .then(res => res.json())

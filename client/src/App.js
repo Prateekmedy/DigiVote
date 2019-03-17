@@ -1,8 +1,10 @@
 import React, { Component } from "react"
 import ElectionContract from "./contracts/Election.json"
 import Web3 from 'web3'
-//import OrganizerLogin from './Organizer/OrganizerLogin'
+import CandidateHome from './Candidate/CandidateHome'
 import OragnizerHome from './Organizer/OrganizerHome'
+import Home from './HomePage'
+//import {ipfsFetcher} from './ipfsStore'
 import "./App.css"
 
 
@@ -101,14 +103,16 @@ class App extends Component {
     })
   }
 
+
   //render function for JSX returns
   render() {
+    console.log("App")
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
       <div className="App">
-          <OragnizerHome 
+          <Home 
             contract={this.state.contract} 
             accounts={this.state.accounts} 
             web3={this.state.web3} 

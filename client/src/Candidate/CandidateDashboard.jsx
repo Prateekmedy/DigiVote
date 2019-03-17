@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import OrganizeElection from './OragnizeElection';
+//import CandidateElection from './CandidateElection';
 
-class OrganizerDashboard extends Component{
+class CandidateDashboard extends Component{
 
     constructor(props){
         super(props)
@@ -15,29 +15,29 @@ class OrganizerDashboard extends Component{
         this.props.loginUpdate(false)
     }
 
-    createHandler = () => {
-        this.setState({
-            isCreate : !this.state.isCreate
-        })
-        console.log(this.state.isCreate)
-    }
+    // createHandler = () => {
+    //     this.setState({
+    //         isCreate : !this.state.isCreate
+    //     })
+    //     console.log(this.state.isCreate)
+    // }
 
  
 
     render(){
-        console.log("OrganizerDashboard")
+        console.log("CandidateDashboard")
         return (
             <div>
-                <h1>Hi this is Organizer Dashboard</h1>
+                <h1>Hi this is Candidate Dashboard</h1>
                 <button onClick={this.logoutHandler}>Logout</button>
-                <button onClick={this.createHandler}>Create Election</button>
+                {/* <button onClick={this.createHandler}>Create Election</button>
                 {this.state.isCreate 
                     && <OrganizeElection 
                             createHandler={this.createHandler} 
-                            contract= {this.props.userObject.contract}
+                            contract= {this.props.contract}
                             OrganizerData = {this.props.OrganizerData}
                         />
-                }     
+                }      */}
             </div>
         )
     }
@@ -45,4 +45,4 @@ class OrganizerDashboard extends Component{
     
 }
 
-export default OrganizerDashboard
+export default CandidateDashboard
