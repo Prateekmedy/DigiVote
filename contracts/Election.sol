@@ -13,6 +13,8 @@ contract Election{
         string hash;
     } 
     mapping (address => ElectionHash[]) OrganizerElection;
+    string[] public Elections;
+
 
     function setOrganizerCredentials(string memory _username, string memory _hash) public {
         OrganizerCredentials[_username] = _hash;
@@ -47,6 +49,7 @@ contract Election{
             if(keccak256(abi.encodePacked(_hash)) == keccak256(abi.encodePacked(OrganizerElection[_add][i].hash))) return false;
         }
         OrganizerElection[_add].push(ElectionHash(_hash));
+        Elections.push(_hash);
         return true;
     }
     
@@ -86,5 +89,9 @@ contract Election{
             if(keccak256(abi.encodePacked(CandidateUsername[i])) == keccak256(abi.encodePacked(_username)))   return true;
             else return false;
         }
+    }
+
+    function getElections(uint _index) public view returns(string memory){
+        return Elections[_index];
     }
 }

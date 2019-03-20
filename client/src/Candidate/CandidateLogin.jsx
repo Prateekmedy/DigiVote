@@ -51,13 +51,21 @@ class CandidateLogin extends Component{
 
     //-------------------Calling fucntion for the Candidate Personal Data------------------
     let PersonalData = {
-      Username : "prolite",
-      Address : accounts[1], //this.state.accAddress
-      Name : "Anshu Patel",
-      ElectionParty : "BJP",
-      Mobile : 6985471365,
-      Age : 30,
-      constituency : "MP"
+      Username                  : "prolite",
+      Account                   : accounts[1], //this.state.accAddress
+      Name                      : "Anshu Patel",
+      ElectionParty             : "BJP",
+      Mobile                    : 6985471365,
+      Age                       : 30,
+      constituency              : "MP",
+	    Father_Name               : "Drolite",
+	    Mother_Name               : "Krolite",
+	    DOB                       : "1/1/1980",
+	    Cast                      : "General",
+	    Party_type                : "Recoganised Party",
+	    Party_Symbol              : "abc.jpg",
+	    Citizenship               : "Indian",
+	    Education_Qualification   : "BE"	
     }  
 
     //calling the promise by providing the data to convert it to hash

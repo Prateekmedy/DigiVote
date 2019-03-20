@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import CandidateElection from './CandidateElection';
+import CandidateNomineeRequest from './CandidateNomineeRequest';
 
 class CandidateDashboard extends Component{
 
@@ -30,14 +30,7 @@ class CandidateDashboard extends Component{
             <div>
                 <h1>Hi this is Candidate Dashboard</h1>
                 <button onClick={this.logoutHandler}>Logout</button>
-                {/* <button onClick={this.createHandler}>Create Election</button>
-                {this.state.isCreate 
-                    && <OrganizeElection 
-                            createHandler={this.createHandler} 
-                            contract= {this.props.contract}
-                            OrganizerData = {this.props.OrganizerData}
-                        />
-                }      */}
+                <CandidateNomineeRequest userObject={this.props.userObject}/>    
             </div>
         )
     }

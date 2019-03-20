@@ -1,8 +1,8 @@
 import React, { Component } from "react"
 import ElectionContract from "./contracts/Election.json"
 import Web3 from 'web3'
-import CandidateHome from './Candidate/CandidateHome'
-import OragnizerHome from './Organizer/OrganizerHome'
+//import CandidateHome from './Candidate/CandidateHome'
+//import OragnizerHome from './Organizer/OrganizerHome'
 import Home from './HomePage'
 //import {ipfsFetcher} from './ipfsStore'
 import "./App.css"
