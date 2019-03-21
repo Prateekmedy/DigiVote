@@ -16,7 +16,7 @@ export default class OrganizeElection extends Component {
 
         const {contract, OrganizerData, createHandler} = this.props;
         const ElectionData = {
-            typeOfElection : "Lok Sabha2",
+            typeOfElection : "Lok Sabha1",
             constituency : "MP",
             organizer : "Election Committion",
             electionDate : "20/3/19",

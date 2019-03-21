@@ -8,13 +8,15 @@ export default class CandidateHome extends Component{
     constructor(props){
         super(props)
         this.state = {
-            CandidateData : null
+            candidateHash : null,
+            username : null
         }
     }
 
-    updateCandidateData = (data) => {
+    updateCandidateData = (hash, username) => {
         this.setState({
-            CandidateData : data
+            candidateHash : hash,
+            username
         })
        
     }
@@ -29,8 +31,9 @@ export default class CandidateHome extends Component{
             {this.props.isLogin 
             ? <CandidateDashboard 
                 userObject={this.props.userObject}
-                CandidateData = {this.state.CandidateData}
+                candidateHash = {this.state.candidateHash}
                 loginUpdate={this.props.loginUpdate}
+                username={this.state.username}
                 /> 
             : <CandidateLogin 
                 userObject={this.props.userObject}
