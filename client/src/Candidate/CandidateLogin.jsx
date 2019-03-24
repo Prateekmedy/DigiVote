@@ -58,8 +58,8 @@ class CandidateLogin extends Component{
       Mobile                    : 6985471365,
       Age                       : 30,
       constituency              : "MP",
-	    // Father_Name               : "Drolite",
-	    // Mother_Name               : "Krolite",
+	    Father_Name               : "Drolite",
+	    Mother_Name               : "Krolite",
 	    DOB                       : "1/1/1980",
 	    Cast                      : "General",
 	    Party_type                : "Recoganised Party",
@@ -131,7 +131,7 @@ class CandidateLogin extends Component{
       if(ipfsCredentailsData.Password === this.state.inputValue){
             await web3.eth.personal.unlockAccount(ipfsCredentailsData.Address,ipfsCredentailsData.Password,600)
             .then(console.log("Unlock"))
-            console.log(this.state.isUnlock)
+            
 
             let ipfsPersonalHash;
             await contract.methods.getCandidatePersonal(username).call()
@@ -139,10 +139,12 @@ class CandidateLogin extends Component{
             .catch(console.error)
 
             this.setState({isUnlock:true, ipfsPersonalHash})
-            
+            console.log(this.state.isUnlock)
 
-            this.props.loginUpdate(true)
+            
             this.props.updateCandidateData(this.state.ipfsPersonalHash, username)
+            this.props.loginUpdate(true)
+            console.log(username)
 
             console.log("You are Login :)")
       }else{

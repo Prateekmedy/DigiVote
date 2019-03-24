@@ -2,6 +2,8 @@ pragma solidity ^0.5.0;
 
 contract Election{
 
+    //-------------------------Credentails Area--------------------------------------
+
     //Organizer mapping of Credentials and Personal Information
     mapping (string => string) OrganizerCredentials;
     mapping (string => string) OrganizerPersonal;
@@ -12,6 +14,8 @@ contract Election{
     mapping (string => string) CandidatePersonal;
     string[] CandidateUsername;
 
+    //------------------------Organizer's  Elections Area------------------------------
+
     //struct for contain number of Elections in place
     struct ElectionHash{
         string hash;
@@ -21,14 +25,34 @@ contract Election{
     mapping (address => ElectionHash[]) OrganizerElections;
     string[] public Elections;
 
+    //------------------------ Candidate's Nomination Requests -----------------------------
+
     //mapping for candidate request for particular election
     struct RequestHash{
-        string hash;
+        string username;
+        string electionHash;
+        string time;
+        string place;
+        string status;
     }
-    mapping (string => RequestHash[]) CandidateRequests;
-    string[] public ElectionRequests;
 
-    //function for Organizers
+    //mapping (Candidateusername => RequestHash)
+    mapping (string => RequestHash[]) CandidateRequests;
+    
+    //Array of Request struct
+    RequestHash[] public ElectionRequests;
+
+    //------------------------ Election's Candidate Area -------------------------------
+
+    struct CandidateOfElection{
+        string username;
+    }
+
+    mapping (string => CandidateOfElection[]) SelectedCandidates;
+
+    //-------------------- Functions Area ------------------------------------------
+
+    //********************************** function for Organizers *******************
 
     function setOrganizerCredentials(string memory _username, string memory _hash) public {
         OrganizerCredentials[_username] = _hash;
@@ -58,7 +82,8 @@ contract Election{
         }
     }
 
-    //fucntion for Elections
+    //*********************************** function for Elections ***************************************
+    
     function addElection(address _add, string memory _hash) public returns(bool){
         for(uint i = 0; i < OrganizerElections[_add].length ; i++){
             if(keccak256(abi.encodePacked(_hash)) == keccak256(abi.encodePacked(OrganizerElections[_add][i].hash))) return false;
@@ -84,7 +109,8 @@ contract Election{
         return Elections.length;
     } 
 
-    //functions for Candidates  
+    //******************************* functions for Candidates **************************
+
     function setCandidateCredentials(string memory _username, string memory _hash) public {
         CandidateCredentials[_username] = _hash;
         CandidateUsername.push(_username);
@@ -113,25 +139,57 @@ contract Election{
         }
     }
 
-    //function for Election Requests
-    function setRequest(string memory _username, string memory _hash) public {
-        CandidateRequests[_username].push(RequestHash(_hash));
-        ElectionRequests.push(_hash);
+    //********************************************* function for Election Requests *************************
+
+    function setRequest(string memory _username, string memory _electionHash, string memory _time, string memory _place, string memory _status) public {
+        CandidateRequests[_username].push(RequestHash(_username, _electionHash, _time, _place, _status));
+        ElectionRequests.push(RequestHash(_username, _electionHash, _time, _place, _status));
     }
 
-    function getRequest(string memory _username, uint _index) public view returns(string memory){
-        return CandidateRequests[_username][_index].hash;
+    function getRequest(string memory _username, uint _index) public view returns(string memory, string memory, string memory, string memory, string memory){
+        return (
+                    CandidateRequests[_username][_index].username, 
+                    CandidateRequests[_username][_index].electionHash, 
+                    CandidateRequests[_username][_index].time, 
+                    CandidateRequests[_username][_index].place, 
+                    CandidateRequests[_username][_index].status
+                );
     }
 
     function candidateRequestsCount(string memory _username) public view returns(uint){
         return CandidateRequests[_username].length;
     }
 
-    function getAllRequest(uint _index) public view returns(string memory){
-        return ElectionRequests[_index];
+    function getAllRequest(uint _index) public view returns(string memory, string memory, string memory, string memory, string memory){
+        return (
+                    ElectionRequests[_index].username, 
+                    ElectionRequests[_index].electionHash, 
+                    ElectionRequests[_index].time, 
+                    ElectionRequests[_index].place, 
+                    ElectionRequests[_index].status
+                );
     }
 
     function requestsCount() public view returns(uint){
         return ElectionRequests.length;
     } 
+
+    function updateRequestStatus(uint _allRequestIndex, uint _candidateRequestIndex, string memory _username, string memory _status) public {
+        ElectionRequests[_allRequestIndex].status = _status;
+        CandidateRequests[_username][_candidateRequestIndex].status = _status;
+    }
+
+    //**************************** function for selected Candidate of Election ***********************
+
+    function addCandidate(string memory _electionHash, string memory _username) public {
+        SelectedCandidates[_electionHash].push(CandidateOfElection(_username));
+    }
+
+    function countElectionCandidates(string memory _electionHash) public view returns(uint){
+       return SelectedCandidates[_electionHash].length;
+    }
+
+    function getSelectedCandidates(string memory _electionHash, uint _index) public view returns(string memory){
+       return SelectedCandidates[_electionHash][_index].username;
+    }
 }

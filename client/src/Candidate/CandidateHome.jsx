@@ -16,7 +16,7 @@ export default class CandidateHome extends Component{
     updateCandidateData = (hash, username) => {
         this.setState({
             candidateHash : hash,
-            username
+            username : username
         })
        
     }

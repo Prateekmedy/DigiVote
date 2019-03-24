@@ -27,6 +27,7 @@ class CandidateDashboard extends Component{
             case 1 : Option = <CandidateNomineeRequest 
                                     userObject={this.props.userObject} 
                                     candidateHash={this.props.candidateHash}
+                                    username={this.props.username}
                                 />   
             break;
             case 2 : Option = <ElectionRequests  

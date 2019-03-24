@@ -14,9 +14,9 @@ export default class OrganizeElection extends Component {
     createElelction = async() => {
         console.log("Create it");
 
-        const {contract, OrganizerData, createHandler} = this.props;
+        const {contract, OrganizerData, back} = this.props;
         const ElectionData = {
-            typeOfElection : "Lok Sabha1",
+            typeOfElection : "Lok Sabha",
             constituency : "MP",
             organizer : "Election Committion",
             electionDate : "20/3/19",
@@ -45,7 +45,8 @@ export default class OrganizeElection extends Component {
         .then(console.log)
         .catch(console.error)
 
-        createHandler();
+        alert("Thank you for Organize Election")
+        back();
     }   
 
     render(){

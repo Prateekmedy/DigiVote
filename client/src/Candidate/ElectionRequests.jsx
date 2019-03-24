@@ -13,24 +13,24 @@ export default class ElectionRequests extends Component{
     componentDidMount = async() => {
         
         let requests = [];
-        let length = 1;
+        let length = 0;
 
         const {contract} = this.props.userObject;
         
-        // await contract.methods.candidateRequestsCount().call()
-        // .then(res => length = res)
-        // .catch(console.error)
+        await contract.methods.candidateRequestsCount(this.props.username).call()
+        .then(res => length = res)
+        .catch(console.error)
 
         for(let i=0;i<length;i++){
 
             let result
              await contract.methods.getRequest(this.props.username, i).call()
             .then(res => result = res)
-            .catch(console.error)
+            .catch(console.error)       
 
             requests.push(result)
         }
-       
+
         this.setState({
             requests
         })
@@ -45,7 +45,13 @@ export default class ElectionRequests extends Component{
                     this.state.requests &&
                     <ul>
                         {this.state.requests.map((item, index) => 
-                            <div key={index}>{item}</div>
+                            <div key={index}>
+                                <div>{item[0]}</div>
+                                <div>{item[1]}</div>
+                                <div>{item[2]}</div>
+                                <div>{item[3]}</div>
+                                <div>{item[4]}</div>
+                            </div>
                         )}
                     </ul> 
                 }

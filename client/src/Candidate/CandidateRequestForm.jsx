@@ -34,18 +34,21 @@ export default class CandidateRequestForm extends Component{
 
         const {contract} = this.props.userObject;
 
-        const RequestData = {
-            electionHash : this.props.electionHash,
-            candidateHash : this.props.candidateHash,
-            time : new Date(),
-            status:'Open',
-            place : this.state.inputPlace
-        }
+        // const RequestData = {
+        //     electionHash : this.props.electionHash,
+        //     candidateHash : this.props.candidateHash,
+        //     time : new Date(),
+        //     status:'Requested',
+        //     place : this.state.inputPlace
+        // }
 
-        let RequestHash = await ipfsSender(RequestData)
-        this.setState({RequestHash})
+        // let RequestHash = await ipfsSender(RequestData)
+        // this.setState({RequestHash})
+        
+        let date= new Date() + "";
+        console.log(date)
 
-        await contract.methods.setRequest(this.props.username, this.state.RequestHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+        await contract.methods.setRequest(this.props.username, this.props.electionHash, date, this.state.inputPlace, "Requested").send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
         .then((receipt) => {
           console.log(receipt)
           alert("Thank You for Sending Request")

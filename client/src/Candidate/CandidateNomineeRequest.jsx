@@ -66,7 +66,7 @@ export default class CandidateNomineeRequest extends Component{
         let show = {
             display : 'block'
         }
-      
+        
         return(
             <div>
                 <div style={this.state.isElectionSelected ? hide : show}>

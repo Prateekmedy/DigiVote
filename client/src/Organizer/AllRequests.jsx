@@ -1,25 +1,24 @@
 import React, { Component } from 'react';
+import CandidateRequest from './CandidateRequest';
 
 export default class AllRequests extends Component{
     constructor(props){
         super(props)
         this.state = {
             requests:null
-            // isAllSelected : false,
-            // selectedAll : null
         }
     }
 
     componentDidMount = async() => {
         
         let requests = [];
-        let length = 1;
+        let length = 0;
 
         const {contract} = this.props.userObject;
         
-        // await contract.methods.requestsCount().call()
-        // .then(res => length = res)
-        // .catch(console.error)
+        await contract.methods.requestsCount().call()
+        .then(res => length = res)
+        .catch(console.error)
 
         for(let i=0;i<length;i++){
 
@@ -27,7 +26,7 @@ export default class AllRequests extends Component{
              await contract.methods.getAllRequest(i).call()
             .then(res => result = res)
             .catch(console.error)
-
+            console.log(result)
             requests.push(result)
         }
        
@@ -43,11 +42,20 @@ export default class AllRequests extends Component{
             <div>
                 {
                     this.state.requests &&
-                    <ul>
-                        {this.state.requests.map((item, index) => 
-                            <div key={index}>{item}</div>
+                    <div>
+                        {this.state.requests.map((item, index) =>    
+                                <CandidateRequest 
+                                    userObject={this.props.userObject}
+                                    key={index}
+                                    index={index}
+                                    RequesterUsername={item[0]} 
+                                    electionHash={item[1]}
+                                    time={item[2]}
+                                    place={item[3]}
+                                    status={item[4]}    
+                                />          
                         )}
-                    </ul> 
+                    </div> 
                 }
             </div>
         )
