@@ -54,7 +54,7 @@ export default class SingleElection extends Component{
         const {item} = this.props;
 
         return(
-            <div className="electionCardDiv">
+            <div className="electionCardDiv" style={{ border: '2px solid #000'}}>
                 <h2>{item.typeOfElection}</h2>
                 <h3>{item.organizer}</h3>
                 <h4>{item.constituency}</h4>
