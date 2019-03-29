@@ -31,7 +31,6 @@ export default class ElectionList extends Component{
 
 
             let electionData = await ipfsFetcher(result)
-            console.log(electionData)
 
             electionHash.push(result)
             elections.push(electionData)

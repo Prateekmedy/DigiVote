@@ -1,0 +1,83 @@
+{
+    "AadhaarCards" : [
+        {
+            "User_Id": "OUR SYSTEM USER ID",
+            "Aadhaar_Id": "561994037182",
+            "e_Kyc": {
+                "status": "y",
+                "Description": "Authenticated Successfully",
+                "Code": "124be446983XXXXXXXXXXXXXXX",
+                "RRN": "6345XXXXXXXX",
+                "Poi": {
+                    "Name": "Prateek Patel",
+                    "Dob": "DD-MM-YYYY",
+                    "Gender": "M",
+                    "mobile" : "8871697651"
+                },
+                "Poa": {
+                    "co": "S/O: TEST NAME",
+                    "house": "ward no. 007",
+                    "street": "street name",
+                    "landmark": "landmark provided to Aadhaar",
+                    "lc": "locality",
+                    "vtc": "Panna",
+                    "subdist": "sub-district",
+                    "dist": "district",
+                    "state": "state name",
+                    "pc": "pin code",
+                    "po": "postal code",
+                    "uidtag": "AAPKA AADHAAR"
+                },
+                "Seeds" : {
+                    "VoterID" : "UTF698587",
+                    "PAN" : "DBYPP647P",
+                    "DL" : "ABCDEFG"
+                },
+                "Photo": "base-64-image-data-here"
+            },
+            "payload": "complete response in base64 encoded format",
+            "qTid": "",
+            "resident_authentication": "",
+            "transactionId": "QT-6559XXXXXXX-OXXXXXXXX",
+            "time": "DD/MM/YYYY, HH:MM:SS PM",
+            "ver": "2.1"
+        },
+        {
+            "User_Id": "OUR SYSTEM USER ID",
+            "Aadhar_Id": "655XXXXXXXXX",
+            "e_Kyc": {
+                "status": "y",
+                "Description": "Authenticated Successfully",
+                "Code": "124be446983XXXXXXXXXXXXXXX",
+                "RRN": "6345XXXXXXXX",
+                "Poi": {
+                    "Name": "Madhur Likhar",
+                    "Dob": "DD-MM-YYYY",
+                    "Gender": "M",
+                    "mobile" : "8871114115"
+                },
+                "Poa": {
+                    "co": "S/O: TEST NAME",
+                    "house": "ward no. 007",
+                    "street": "street name",
+                    "landmark": "landmark provided to Aadhaar",
+                    "lc": "locality",
+                    "vtc": "Panna",
+                    "subdist": "sub-district",
+                    "dist": "district",
+                    "state": "state name",
+                    "pc": "pin code",
+                    "po": "postal code",
+                    "uidtag": "AAPKA AADHAAR"
+                },
+                "Photo": "base-64-image-data-here"
+            },
+            "payload": "complete response in base64 encoded format",
+            "qTid": "",
+            "resident_authentication": "",
+            "transactionId": "QT-6559XXXXXXX-OXXXXXXXX",
+            "time": "DD/MM/YYYY, HH:MM:SS PM",
+            "ver": "2.1"
+        }
+    ]
+}

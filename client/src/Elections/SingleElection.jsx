@@ -5,7 +5,8 @@ export default class SingleElection extends Component{
         super(props)
         this.state = {    
             showCandidates : null,
-            isShow : false
+            isShow : false,
+            candidateCount : 0
         }
     }
 
@@ -41,7 +42,8 @@ export default class SingleElection extends Component{
         
             this.setState({
                 showCandidates,
-                isShow : true
+                isShow : true,
+                candidateCount : length
             })
 
         }
@@ -52,7 +54,7 @@ export default class SingleElection extends Component{
     render(){
 
         const {item} = this.props;
-
+        console.log(this.state.candidateCount)
         return(
             <div className="electionCardDiv" style={{ border: '2px solid #000'}}>
                 <h2>{item.typeOfElection}</h2>
@@ -67,6 +69,7 @@ export default class SingleElection extends Component{
                     {(this.state.showCandidates && this.state.isShow) 
                         && this.state.showCandidates
                     }
+                    <button className={(parseInt(this.state.candidateCount) && this.state.isShow) ? "show" : "hide"} onClick={this.goToVote}>Vote</button>                    
                 </div>
             </div>
         )
