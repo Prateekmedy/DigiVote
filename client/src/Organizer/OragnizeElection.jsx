@@ -22,7 +22,8 @@ export default class OrganizeElection extends Component {
             electionDate : "20/3/19",
             resultDate : "28/3/19",
             ICRD : "17/3/19",
-            FCRD : "19/3/19"
+            FCRD : "19/3/19",
+            TotalVoters : 100
         }
 
         let ElectionHash = await ipfsSender(ElectionData);

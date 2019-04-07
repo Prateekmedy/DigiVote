@@ -4,7 +4,7 @@ export default class SingleCandidate extends Component{
     constructor(props){
         super(props)
         this.state = {
-            selectedCandidate : ""
+
         }
     }
 
@@ -15,6 +15,7 @@ export default class SingleCandidate extends Component{
     
 
     render(){
+        console.log(this.props.candidate)
         return(
             <div>
                 <input type="radio" name="candidate" 

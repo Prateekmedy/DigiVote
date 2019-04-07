@@ -4,12 +4,12 @@ contract Election{
 
     //-------------------------Credentails Area--------------------------------------
 
-    //Organizer mapping of Credentials and Personal Information
+    //Organizer mapping of Credentials and Personal Information, mapping of (Username => hash)
     mapping (string => string) OrganizerCredentials;
     mapping (string => string) OrganizerPersonal;
     string[] OrganizerUsername;
 
-    //Candidate mapping of Credentials and Personal Information
+    //Candidate mapping of Credentials and Personal Information, mapping of (Username => hash)
     mapping (string => string) CandidateCredentials;
     mapping (string => string) CandidatePersonal;
     string[] CandidateUsername;
@@ -221,8 +221,8 @@ contract Election{
        return SelectedCandidates[_electionHash].length;
     }
 
-    function getSelectedCandidates(string memory _electionHash, uint _index) public view returns(string memory){
-       return SelectedCandidates[_electionHash][_index].username;
+    function getSelectedCandidates(string memory _electionHash, uint _index) public view returns(string memory, uint){
+       return (SelectedCandidates[_electionHash][_index].username, SelectedCandidates[_electionHash][_index].votes);
     }
 
     //*************************** function for voting for the candidate of election ************************

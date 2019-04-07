@@ -3,6 +3,7 @@ import OrganizerHome from './Organizer/OrganizerHome'
 import CandidateHome from './Candidate/CandidateHome'
 import VoterHome from './Voter/VoterHome'
 import ElectionList from './Elections/ElectionList';
+import ResultCard from './Elections/ResultCard';
 
 export default class Home extends Component{
 
@@ -32,7 +33,6 @@ export default class Home extends Component{
     updateResetAll = () => {
         this.setState({
             val : 0,
-            userObject : null,
             selectedElection : null 
         })
     }
@@ -66,6 +66,11 @@ export default class Home extends Component{
                                     acc={this.props.acc}
                                     accountCreator={this.props.accountCreator}
                                     updateResetAll={this.updateResetAll}
+                                />
+            break;
+            case 4 : Option = <ResultCard 
+                                    userObject={this.state.userObject}
+                                    selectedElection={this.state.selectedElection}
                                 />
             break;
             default : Option = <ElectionList 

@@ -121,7 +121,7 @@ export default class VoterArena extends Component{
                         <SingleCandidate 
                             key={index} 
                             index={index} 
-                            candidate={candidate} 
+                            candidate={candidate[0]} 
                             selectedCandidate={this.state.selectedCandidate}
                             updateSelectedCandidate={this.updateSelectedCandidate}
                         />
@@ -135,9 +135,11 @@ export default class VoterArena extends Component{
                         </form>
                         : <button onClick={this.voteIt} >VOTE</button>
                 } */}
-                <button onClick={this.voteDone}>VoteDo</button>
+                <button onClick={this.voteDone}>VoteDo</button> 
                 
             </div>
         )
     }
 }
+
+//delete the VoteDo button and uncomment the above code , this thing is only done for debugging

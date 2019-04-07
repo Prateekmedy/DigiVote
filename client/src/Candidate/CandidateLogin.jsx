@@ -31,8 +31,8 @@ class CandidateLogin extends Component{
 
     //-------------------Calling fucntion for the Candidate Credentials Data------------------
     let CredentialsData = {
-      Username : "prateekmedy",
-      Password : "password1",
+      Username : "prolite",
+      Password : "password",
       Address : accounts[1] //this.state.accAddress
     }  
 
@@ -52,7 +52,7 @@ class CandidateLogin extends Component{
 
     //-------------------Calling fucntion for the Candidate Personal Data------------------
     let PersonalData = {
-      Username                  : "prateekmedy",
+      Username                  : "prolite",
       Account                   : accounts[1], //this.state.accAddress
       Name                      : "Anshu Patel",
       ElectionParty             : "BJP",
