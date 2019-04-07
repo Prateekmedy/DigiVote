@@ -31,8 +31,8 @@ class CandidateLogin extends Component{
 
     //-------------------Calling fucntion for the Candidate Credentials Data------------------
     let CredentialsData = {
-      Username : "prolite",
-      Password : "password",
+      Username : "prople",
+      Password : "password1",
       Address : accounts[1] //this.state.accAddress
     }  
 
@@ -52,10 +52,10 @@ class CandidateLogin extends Component{
 
     //-------------------Calling fucntion for the Candidate Personal Data------------------
     let PersonalData = {
-      Username                  : "prolite",
+      Username                  : "prople",
       Account                   : accounts[1], //this.state.accAddress
-      Name                      : "Anshu Patel",
-      ElectionParty             : "BJP",
+      Name                      : "Vipul Sharma",
+      ElectionParty             : "Congress",
       Mobile                    : 6985471365,
       Age                       : 30,
       constituency              : "MP",

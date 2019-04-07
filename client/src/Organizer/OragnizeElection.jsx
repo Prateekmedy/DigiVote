@@ -23,7 +23,7 @@ export default class OrganizeElection extends Component {
             resultDate : "28/3/19",
             ICRD : "17/3/19",
             FCRD : "19/3/19",
-            TotalVoters : 100
+            TotalVoters : 55
         }
 
         let ElectionHash = await ipfsSender(ElectionData);
@@ -35,6 +35,15 @@ export default class OrganizeElection extends Component {
           console.log(result)
         })
         .then(console.log)
+        .catch((error) => {
+          console.log(error)
+        });
+
+        //add an NOTA CAndidate into the new election
+        await contract.methods.addCandidate(ElectionHash, "NOTA").send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+        .then((receipt) => {
+          console.log(receipt)
+        })
         .catch((error) => {
           console.log(error)
         });

@@ -48,6 +48,7 @@ export default class ElectionList extends Component{
    
 
     render(){
+        console.log("Election List")
         return(
             <div>
                 {

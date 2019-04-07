@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { resolve } from 'multiaddr';
 
 export default class SingleElection extends Component{
     constructor(props){
@@ -26,25 +27,29 @@ export default class SingleElection extends Component{
             .then(res => length = res)
             .catch(console.error)
             
-            if(length != 0){
+            if((length - 1)  != 0){
+                //console.log("yaha aaraha hai kya")
                 for(let i=0; i< length; i++){
 
                     let result = "";
                     await contract.methods.getSelectedCandidates(this.props.electionHash[this.props.index], i).call()
                     .then(res => result = res)
                     .catch(console.error)
-                    //console.log(result)
+                   
                     showCandidates.push(result)
                 }
-                console.log(showCandidates[0])
+                //console.log(showCandidates[0])
+
             }else{
-                showCandidates = "Candidates are not Nominated yet"
+                showCandidates = [["Candidates are not Nominated yet", 0]]
+                //console.log("ye aana chahiye")
+                
             }
         
             this.setState({
                 showCandidates,
                 isShow : true,
-                candidateCount : length
+                candidateCount : length - 1 
             })
             
 
@@ -118,9 +123,45 @@ export default class SingleElection extends Component{
         this.props.updateHomeState(4, selectedElection)
     }
 
+    openPreReport = async() => {
+
+        const {contract} = this.props.userObject
+        let length = 0
+        let showCandidates=[];
+
+        await contract.methods.countElectionCandidates(this.props.electionHash[this.props.index]).call()
+        .then(res => length = res)
+        .catch(console.error)
+        
+        if(length != 0){
+            for(let i=0; i< length; i++){
+
+                let result = "";
+                await contract.methods.getSelectedCandidates(this.props.electionHash[this.props.index], i).call()
+                .then(res => result = res)
+                .catch(console.error)
+
+                showCandidates.push(result)
+            }
+
+        }else{
+            showCandidates = "Candidates are not Nominated yet"
+        }
+
+
+        let selectedElection = {
+            electionHash : this.props.electionHash[this.props.index],
+            election     : this.props.item,
+            candidates   : showCandidates
+        }
+
+        //console.log(selectedElection.candidates[0])
+        this.props.updateHomeState(5, selectedElection)
+    }
+
     render(){
         const {item} = this.props;
-        console.log(this.state.candidateCount)
+        console.log(this.state.showCandidates)
         return(
                 <div className="electionCardDiv" style={{ border: '2px solid #000'}}>
                     <h2>{item.typeOfElection}</h2>
@@ -130,6 +171,7 @@ export default class SingleElection extends Component{
                     <h4>{item.resultDate}</h4>
                     <h4>{item.ICRD}</h4>
                     <h4>{item.FCRD}</h4>
+                    <button onClick={this.openPreReport}>Pre Report</button>
                     <button onClick={this.openResult}>Result</button>
                     <button onClick={this.checkCandidates}>{this.state.isShow ? "Hide Candidate" : "Show Candidate"}</button>
                     <div>
