@@ -4,6 +4,7 @@ import Web3 from 'web3'
 //import CandidateHome from './Candidate/CandidateHome'
 //import OragnizerHome from './Organizer/OrganizerHome'
 import Home from './HomePage'
+//import {accountCreator} from './utils/AccountCreater'
 //import {ipfsFetcher} from './ipfsStore'
 import "./App.css"
 
@@ -30,6 +31,14 @@ class App extends Component {
           };
 
 
+
+  //function for updating account
+  updateAccount = (acc) => {
+    this.setState({
+      accAddress : acc
+    })
+  }
+
   //function for creating the new account and recharging it with ether.
   accountCreator = async(password) => {
     
@@ -42,6 +51,8 @@ class App extends Component {
 
     //store the account address in the state
     this.setState({accAddress});
+
+    //console.log(accAddress)
 
     // trasaction for recharging the new account
     await web3.eth.sendTransaction({

@@ -6,7 +6,8 @@ class CandidateLogin extends Component{
     constructor(props){
         super(props)
         this.state = {
-            inputValue:"",
+            inputUsername:"",
+            inputPassword:"",
             ipfsCredentialsHash: null,
             ipfsCredentailsData: null,
             ipfsPersonalHash: null,
@@ -30,8 +31,8 @@ class CandidateLogin extends Component{
 
     //-------------------Calling fucntion for the Candidate Credentials Data------------------
     let CredentialsData = {
-      Username : "prolite",
-      Password : "password",
+      Username : "prateekmedy",
+      Password : "password1",
       Address : accounts[1] //this.state.accAddress
     }  
 
@@ -41,7 +42,7 @@ class CandidateLogin extends Component{
     console.log(this.state.ipfsCredentialsHash)
 
     //function for sending hash to the blockchain
-    await contract.methods.setCandidateCredentials("prolite", this.state.ipfsCredentialsHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+    await contract.methods.setCandidateCredentials(CredentialsData.Username, this.state.ipfsCredentialsHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
     .then((receipt) => {
       console.log(receipt)
     })
@@ -51,7 +52,7 @@ class CandidateLogin extends Component{
 
     //-------------------Calling fucntion for the Candidate Personal Data------------------
     let PersonalData = {
-      Username                  : "prolite",
+      Username                  : "prateekmedy",
       Account                   : accounts[1], //this.state.accAddress
       Name                      : "Anshu Patel",
       ElectionParty             : "BJP",
@@ -74,7 +75,7 @@ class CandidateLogin extends Component{
     console.log(this.state.ipfsPersonalHash)
 
     //function for sending hash to the blockchain
-    await contract.methods.setCandidatePersonal("prolite",this.state.ipfsPersonalHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+    await contract.methods.setCandidatePersonal(PersonalData.Username,this.state.ipfsPersonalHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
     .then((receipt) => {
       console.log(receipt)
     })
@@ -86,7 +87,7 @@ class CandidateLogin extends Component{
     //-------------------------------------Functions for retireving the Data from the Blockchain-----------------
     //calling for fetching the hash from the blockchain.
     let result;
-    await contract.methods.getCandidatePersonal("prolite").call()
+    await contract.methods.getCandidatePersonal(PersonalData.Username).call()
     .then((res) => result = res)
     .catch(console.error)
 
@@ -106,18 +107,17 @@ class CandidateLogin extends Component{
     event.preventDefault();
 
     const {contract, web3} = this.props.userObject
-    const username = "prolite"
     let result
 
-    await contract.methods.findCandidate(username).call()
+    await contract.methods.findCandidate(this.state.inputUsername).call()
     .then((res) => result = res)
     .catch(console.error)
-
+    console.log(result)
 
     if(result){
 
       let hash;
-      await contract.methods.getCandidateCredentials("prolite").call()
+      await contract.methods.getCandidateCredentials(this.state.inputUsername).call()
       .then((res) => hash = res)
       .catch(console.error)
 
@@ -128,13 +128,13 @@ class CandidateLogin extends Component{
       this.setState({ipfsCredentailsData})
       console.log(ipfsCredentailsData)
 
-      if(ipfsCredentailsData.Password === this.state.inputValue){
+      if(ipfsCredentailsData.Password === this.state.inputPassword){
             await web3.eth.personal.unlockAccount(ipfsCredentailsData.Address,ipfsCredentailsData.Password,600)
             .then(console.log("Unlock"))
             
 
             let ipfsPersonalHash;
-            await contract.methods.getCandidatePersonal(username).call()
+            await contract.methods.getCandidatePersonal(this.state.inputUsername).call()
             .then(res => ipfsPersonalHash = res)
             .catch(console.error)
 
@@ -142,9 +142,9 @@ class CandidateLogin extends Component{
             console.log(this.state.isUnlock)
 
             
-            this.props.updateCandidateData(this.state.ipfsPersonalHash, username)
+            this.props.updateCandidateData(this.state.ipfsPersonalHash, this.state.inputUsername)
             this.props.loginUpdate(true)
-            console.log(username)
+            console.log(this.state.inputUsername)
 
             console.log("You are Login :)")
       }else{
@@ -158,9 +158,15 @@ class CandidateLogin extends Component{
     
   }
 
-  updateInputValue(evt) {
+  updateInputUsername(evt) {
     this.setState({
-      inputValue: evt.target.value
+      inputUsername: evt.target.value
+    });
+  }
+
+  updateInputPassword(evt) {
+    this.setState({
+      inputPassword: evt.target.value
     });
   }
 
@@ -169,7 +175,8 @@ class CandidateLogin extends Component{
         return (
             <div>
             <form onSubmit={this.SignIn}>
-                <input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)}/>
+                <input name="username" value={this.state.inputUsername} onChange={evt => this.updateInputUsername(evt)}/>
+                <input name="password" value={this.state.inputPassword} onChange={evt => this.updateInputPassword(evt)}/>
                 <input type="submit" value="SignIn"/>
             </form>
             { !this.state.isSignUp && <button onClick={this.SignUp}>SignUp</button>}

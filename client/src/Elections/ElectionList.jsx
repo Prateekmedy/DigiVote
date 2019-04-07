@@ -22,6 +22,7 @@ export default class ElectionList extends Component{
         .then(res => length = res)
         .catch(console.error)
 
+        
         for(let i=0;i<length;i++){
 
             let result
@@ -41,7 +42,7 @@ export default class ElectionList extends Component{
             electionHash
         })
 
-       
+        console.log(elections)
     }
 
    
@@ -59,6 +60,7 @@ export default class ElectionList extends Component{
                                 item={item} 
                                 electionHash={this.state.electionHash}
                                 userObject={this.props.userObject} 
+                                updateHomeState={this.props.updateHomeState}
                             />   
                         )}
                     </div> 

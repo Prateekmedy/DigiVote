@@ -1,7 +1,7 @@
 {
     "AadhaarCards" : [
         {
-            "User_Id": "OUR SYSTEM USER ID",
+            "User_Id": "prateek.patel",
             "Aadhaar_Id": "561994037182",
             "e_Kyc": {
                 "status": "y",
@@ -9,29 +9,29 @@
                 "Code": "124be446983XXXXXXXXXXXXXXX",
                 "RRN": "6345XXXXXXXX",
                 "Poi": {
-                    "Name": "Prateek Patel",
-                    "Dob": "DD-MM-YYYY",
-                    "Gender": "M",
+                    "name": "Prateek Patel",
+                    "dob": "DD-MM-YYYY",
+                    "gender": "M",
                     "mobile" : "8871697651"
                 },
                 "Poa": {
                     "co": "S/O: TEST NAME",
-                    "house": "ward no. 007",
-                    "street": "street name",
-                    "landmark": "landmark provided to Aadhaar",
+                    "house": "173/6",
+                    "street": "Samajwad Nagar,",
+                    "landmark": "M.O.G. Line",
                     "lc": "locality",
                     "vtc": "Panna",
-                    "subdist": "sub-district",
-                    "dist": "district",
-                    "state": "state name",
-                    "pc": "pin code",
-                    "po": "postal code",
+                    "subdist": "Indore",
+                    "dist": "Indore",
+                    "state": "Madhya Pradesh",
+                    "pc": "452002",
+                    "po": "452002",
                     "uidtag": "AAPKA AADHAAR"
                 },
                 "Seeds" : {
-                    "VoterID" : "UTF698587",
-                    "PAN" : "DBYPP647P",
-                    "DL" : "ABCDEFG"
+                    "voterID" : "UTF3243454",
+                    "pan" : "DBYPP647P",
+                    "dl" : "ABCDEFG"
                 },
                 "Photo": "base-64-image-data-here"
             },
@@ -43,32 +43,37 @@
             "ver": "2.1"
         },
         {
-            "User_Id": "OUR SYSTEM USER ID",
-            "Aadhar_Id": "655XXXXXXXXX",
+            "User_Id": "Rubal.Shukla",
+            "Aadhaar_Id": "965159908708",
             "e_Kyc": {
                 "status": "y",
                 "Description": "Authenticated Successfully",
                 "Code": "124be446983XXXXXXXXXXXXXXX",
                 "RRN": "6345XXXXXXXX",
                 "Poi": {
-                    "Name": "Madhur Likhar",
-                    "Dob": "DD-MM-YYYY",
-                    "Gender": "M",
-                    "mobile" : "8871114115"
+                    "name": "Rubal Shukla",
+                    "dob": "DD-MM-YYYY",
+                    "gender": "M",
+                    "mobile" : "8871697651"
                 },
                 "Poa": {
                     "co": "S/O: TEST NAME",
-                    "house": "ward no. 007",
-                    "street": "street name",
-                    "landmark": "landmark provided to Aadhaar",
+                    "house": "173/6",
+                    "street": "Samajwad Nagar,",
+                    "landmark": "M.O.G. Line",
                     "lc": "locality",
                     "vtc": "Panna",
-                    "subdist": "sub-district",
-                    "dist": "district",
-                    "state": "state name",
-                    "pc": "pin code",
-                    "po": "postal code",
+                    "subdist": "Indore",
+                    "dist": "Indore",
+                    "state": "Madhya Pradesh",
+                    "pc": "452002",
+                    "po": "452002",
                     "uidtag": "AAPKA AADHAAR"
+                },
+                "Seeds" : {
+                    "voterID" : "UTF3243454",
+                    "pan" : "DBYPP647P",
+                    "dl" : "ABCDEFG"
                 },
                 "Photo": "base-64-image-data-here"
             },

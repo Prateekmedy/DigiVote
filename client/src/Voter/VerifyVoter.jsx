@@ -3,26 +3,20 @@ import AadhaarVerify from '../Verification/AdhaarVerify'
 import OtpVerifier from '../Verification/OtpVerifier';
 
 export default class VerifyVoter extends Component{
+
     constructor(props){
         super(props)
         this.state = {
-            Aadhaar : "",
-            mobile : "",
-            voterId : "",
             OtpWidgetUnlock : false
         }
     }
 
+
+    //update function for unlock the OTP widget
     updateOtpWidgetUnlock = () => {
         this.setState({
             OtpWidgetUnlock : true
-        })
-    }
-
-    updateAadhaarData = (Aadhaar, mobile, voterId) => {
-        this.setState({
-            Aadhaar, mobile, voterId
-        })
+        }) 
     }
 
     render(){
@@ -31,11 +25,15 @@ export default class VerifyVoter extends Component{
                 {
                     this.state.OtpWidgetUnlock
                         ? <OtpVerifier 
-                            mobile={this.state.mobile}
+                            AadhaarObject={this.props.AadhaarObject}
+                            updateVoterVerification={this.props.updateVoterVerification}
                             />
                         : <AadhaarVerify 
-                            updateOtpWidgetUnlock={this.updateOtpWidgetUnlock}
-                            updateAadhaarData={this.updateAadhaarData}
+                            userObject={this.props.userObject}
+                            selectedElection={this.props.selectedElection}
+                            updateAadhaarData={this.props.updateAadhaarData}
+                            updateOtpWidgetUnlock={this.updateOtpWidgetUnlock} 
+                            updateHomeState={this.props.updateHomeState} 
                             />
                 }
                 

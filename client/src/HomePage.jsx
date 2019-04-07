@@ -10,7 +10,8 @@ export default class Home extends Component{
         super(props)
         this.state = {
             val : 0,
-            userObject : null
+            userObject : null,
+            selectedElection : null
         }
     }
 
@@ -28,16 +29,24 @@ export default class Home extends Component{
         })
     }
 
-    updateHomeState = () => {
+    updateResetAll = () => {
         this.setState({
-            val : 0
+            val : 0,
+            userObject : null,
+            selectedElection : null 
+        })
+    }
+
+    updateHomeState = (val, selectedElection) => {
+        this.setState({
+            val, selectedElection
         })
     }
 
     
 
     render(){
-
+        console.log("HomePage")
        
         let Option = "";
 
@@ -50,9 +59,19 @@ export default class Home extends Component{
             break;
             case 2 : Option = <CandidateHome isLogin={this.props.isLogin} loginUpdate={this.props.loginUpdate} userObject={this.state.userObject}/>
             break;
-            case 3 : Option = <VoterHome isLogin={this.props.isLogin} loginUpdate={this.props.loginUpdate} userObject={this.state.userObject}/>
+            case 3 : Option = <VoterHome  
+                                    userObject={this.state.userObject}
+                                    selectedElection={this.state.selectedElection}
+                                    updateHomeState={this.updateHomeState}
+                                    acc={this.props.acc}
+                                    accountCreator={this.props.accountCreator}
+                                    updateResetAll={this.updateResetAll}
+                                />
             break;
-            default : Option = <ElectionList userObject={this.state.userObject} /> 
+            default : Option = <ElectionList 
+                                    userObject={this.state.userObject} 
+                                    updateHomeState={this.updateHomeState}
+                                /> 
         }
 
         return(

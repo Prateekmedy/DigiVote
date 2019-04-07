@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 export default class SingleElection extends Component{
     constructor(props){
@@ -51,27 +51,36 @@ export default class SingleElection extends Component{
         
     }
 
-    render(){
+    goToVote = () => {
+        console.log("move to Voting Home")
+        let selectedElection = {
+            electionHash : this.props.electionHash[this.props.index],
+            election     : this.props.item,
+            candidates   : this.state.showCandidates
+        }
+        this.props.updateHomeState(3, selectedElection)
+    }
 
+    render(){
         const {item} = this.props;
         console.log(this.state.candidateCount)
         return(
-            <div className="electionCardDiv" style={{ border: '2px solid #000'}}>
-                <h2>{item.typeOfElection}</h2>
-                <h3>{item.organizer}</h3>
-                <h4>{item.constituency}</h4>
-                <h4>{item.electionDate}</h4>
-                <h4>{item.resultDate}</h4>
-                <h4>{item.ICRD}</h4>
-                <h4>{item.FCRD}</h4>
-                <button onClick={this.checkCandidates}>{this.state.isShow ? "Hide Candidate" : "Show Candidate"}</button>
-                <div>
-                    {(this.state.showCandidates && this.state.isShow) 
-                        && this.state.showCandidates
-                    }
-                    <button className={(parseInt(this.state.candidateCount) && this.state.isShow) ? "show" : "hide"} onClick={this.goToVote}>Vote</button>                    
-                </div>
-            </div>
+                <div className="electionCardDiv" style={{ border: '2px solid #000'}}>
+                    <h2>{item.typeOfElection}</h2>
+                    <h3>{item.organizer}</h3>
+                    <h4>{item.constituency}</h4>
+                    <h4>{item.electionDate}</h4>
+                    <h4>{item.resultDate}</h4>
+                    <h4>{item.ICRD}</h4>
+                    <h4>{item.FCRD}</h4>
+                    <button onClick={this.checkCandidates}>{this.state.isShow ? "Hide Candidate" : "Show Candidate"}</button>
+                    <div>
+                        {(this.state.showCandidates && this.state.isShow) 
+                            && this.state.showCandidates
+                        }
+                        <button className={(parseInt(this.state.candidateCount) && this.state.isShow) ? "show" : "hide"} onClick={this.goToVote}>Vote</button>                    
+                    </div>
+                </div>     
         )
     }
 }

@@ -21,7 +21,7 @@ contract Election{
         string hash;
     } 
 
-    //mapping for map the Oragnizer's mutliple Election to thier address
+    //mapping (OrganizerAddress => allElectionsOfOrganizer)
     mapping (address => ElectionHash[]) OrganizerElections;
     string[] public Elections;
 
@@ -46,11 +46,43 @@ contract Election{
 
     struct CandidateOfElection{
         string username;
+        uint votes;
     }
 
+    //mapping of (electionHash => allCandidatesOfElection)
     mapping (string => CandidateOfElection[]) SelectedCandidates;
 
+    //--------------------------- Voter's Area --------------------------------------
+
+    struct Voter{
+        string voter;
+    }
+
+    struct VoterCredentails{
+        address accAddress;
+        string password;
+    }
+
+    //mapping of (electionHash => VoterHash)
+    mapping (string => Voter[]) ElectionVoterPool;
+
+    //mapping for (VoterHash => VoterCredentials)
+    mapping (string => VoterCredentails) VotersAccount;
+
+    //--------------------------- Aadhaar Area -------------------------------------
+
+    struct AadhaarCard{
+        uint aadhaar;
+    }
+
+    //mapping for (electionHash => aadhaarCard[]) for verifying the adhaar is voted only once for 
+    mapping (string => AadhaarCard[]) AadhaarCheck;
+
     //-------------------- Functions Area ------------------------------------------
+
+
+
+
 
     //********************************** function for Organizers *******************
 
@@ -133,10 +165,10 @@ contract Election{
     }
 
     function findCandidate(string memory _username) public view returns(bool){
-        for(uint i = 0; i <= CandidateUsername.length - 1; i++){
-            if(keccak256(abi.encodePacked(CandidateUsername[i])) == keccak256(abi.encodePacked(_username)))   return true;
-            else return false;
+        for(uint i = 0; i <= CandidateUsername.length; i++){
+            if(keccak256(abi.encodePacked(CandidateUsername[i])) == keccak256(abi.encodePacked(_username))) return true;
         }
+        return false;
     }
 
     //********************************************* function for Election Requests *************************
@@ -182,7 +214,7 @@ contract Election{
     //**************************** function for selected Candidate of Election ***********************
 
     function addCandidate(string memory _electionHash, string memory _username) public {
-        SelectedCandidates[_electionHash].push(CandidateOfElection(_username));
+        SelectedCandidates[_electionHash].push(CandidateOfElection(_username, 0));
     }
 
     function countElectionCandidates(string memory _electionHash) public view returns(uint){
@@ -191,5 +223,57 @@ contract Election{
 
     function getSelectedCandidates(string memory _electionHash, uint _index) public view returns(string memory){
        return SelectedCandidates[_electionHash][_index].username;
+    }
+
+    //*************************** function for voting for the candidate of election ************************
+    
+
+    function vote(string memory _electionHash, uint _index) internal {
+        SelectedCandidates[_electionHash][_index].votes += 1;
+    }
+
+    function voteSelectedCandidates(string memory _electionHash, string memory _username, uint _index) public {
+        
+        require(keccak256(abi.encodePacked(SelectedCandidates[_electionHash][_index].username)) == keccak256(abi.encodePacked(_username)));
+        vote(_electionHash, _index);
+    } 
+
+    //*************************** functions for checking the Aadhaar Card voted or not **********************
+
+    //fucntion for finding the total number of voted aadhaar card
+    function aadhaarCount(string memory _electionHash) public view returns(uint){
+        return AadhaarCheck[_electionHash].length;
+    }
+
+    //function for find the aadhaar card for chechking that wheather it is voted or not
+    function checkAadhaar(string memory _electionHash, uint _index) public view returns(uint){
+        return AadhaarCheck[_electionHash][_index].aadhaar;
+    }
+
+    //function for adding the Aadhaar card to the Election Poll
+    function addAadhaar(string memory _electionHash, uint _aadhaar)public {
+        AadhaarCheck[_electionHash].push(AadhaarCard(_aadhaar));
+    }
+
+    //***************************** Functions for Voter ***********************************************
+
+    //function for adding the voter credentails with its Object Hash
+    function addVoterAccount(string memory _voterHash, address _add, string memory _password)public {
+        VotersAccount[_voterHash] = VoterCredentails(_add, _password);
+    }
+
+    //function for get the Account details of the voter
+    function getVoterAccount(string memory _voterHash)public view returns(address, string memory){
+        return (VotersAccount[_voterHash].accAddress, VotersAccount[_voterHash].password);
+    }
+
+    //function for inserting the Voter credentials into thier respective elections
+    function addVoterToElection(string memory _electionHash, string memory _voterHash)public {
+        ElectionVoterPool[_electionHash].push(Voter(_voterHash));
+    }
+
+    //function for get the voters associated with election
+    function getVoterToElection(string memory _electionHash, uint _index)public view returns(string memory){
+        return ElectionVoterPool[_electionHash][_index].voter;
     }
 }
