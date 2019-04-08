@@ -33,6 +33,7 @@ class OrganizerDashboard extends Component{
         switch(this.state.val){
             case 1 : Option = <OrganizeElection 
                                     back={this.initialState} 
+                                    accounts= {this.props.userObject.accounts}
                                     contract= {this.props.userObject.contract}
                                     OrganizerData = {this.props.OrganizerData}
                                 />  

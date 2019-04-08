@@ -41,7 +41,7 @@ class OrganizerLogin extends Component{
     console.log(this.state.ipfsCredentialsHash)
 
     //function for sending hash to the blockchain
-    await contract.methods.setOrganizerCredentials("prateekmedy", this.state.ipfsCredentialsHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+    await contract.methods.setOrganizerCredentials("prateekmedy", this.state.ipfsCredentialsHash).send({from: accounts[2],gas:6721975})
     .then((receipt) => {
       console.log(receipt)
     })
@@ -64,7 +64,7 @@ class OrganizerLogin extends Component{
     console.log(this.state.ipfsPersonalHash)
 
     //function for sending hash to the blockchain
-    await contract.methods.setOrganizerPersonal("prateekmedy",this.state.ipfsPersonalHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+    await contract.methods.setOrganizerPersonal("prateekmedy",this.state.ipfsPersonalHash).send({from: accounts[2],gas:6721975})
     .then((receipt) => {
       console.log(receipt)
     })

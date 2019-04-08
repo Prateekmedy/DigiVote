@@ -47,6 +47,7 @@ contract Election{
     struct CandidateOfElection{
         string username;
         uint votes;
+        string place;
     }
 
     //mapping of (electionHash => allCandidatesOfElection)
@@ -213,16 +214,16 @@ contract Election{
 
     //**************************** function for selected Candidate of Election ***********************
 
-    function addCandidate(string memory _electionHash, string memory _username) public {
-        SelectedCandidates[_electionHash].push(CandidateOfElection(_username, 0));
+    function addCandidate(string memory _electionHash, string memory _username, string memory _place) public {
+        SelectedCandidates[_electionHash].push(CandidateOfElection(_username, 0, _place));
     }
 
     function countElectionCandidates(string memory _electionHash) public view returns(uint){
        return SelectedCandidates[_electionHash].length;
     }
 
-    function getSelectedCandidates(string memory _electionHash, uint _index) public view returns(string memory, uint){
-       return (SelectedCandidates[_electionHash][_index].username, SelectedCandidates[_electionHash][_index].votes);
+    function getSelectedCandidates(string memory _electionHash, uint _index) public view returns(string memory, uint, string memory){
+       return (SelectedCandidates[_electionHash][_index].username, SelectedCandidates[_electionHash][_index].votes, SelectedCandidates[_electionHash][_index].place);
     }
 
     //*************************** function for voting for the candidate of election ************************

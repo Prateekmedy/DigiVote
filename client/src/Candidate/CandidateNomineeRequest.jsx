@@ -75,7 +75,13 @@ export default class CandidateNomineeRequest extends Component{
                     this.state.elections &&
                     <ul>
                         {this.state.elections.map((item, index) => 
-                            <ElectionCard item={item} key={index} updateElectionState={this.updateElectionState}/>
+                            <ElectionCard 
+                                item={item} 
+                                key={index} 
+                                updateElectionState={this.updateElectionState}
+                                username={this.props.username} 
+                                userObject={this.props.userObject}   
+                            />
                         )}
                     </ul> 
                 }

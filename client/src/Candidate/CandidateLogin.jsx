@@ -31,7 +31,7 @@ class CandidateLogin extends Component{
 
     //-------------------Calling fucntion for the Candidate Credentials Data------------------
     let CredentialsData = {
-      Username : "prople",
+      Username : "prolite",
       Password : "password1",
       Address : accounts[1] //this.state.accAddress
     }  
@@ -42,7 +42,7 @@ class CandidateLogin extends Component{
     console.log(this.state.ipfsCredentialsHash)
 
     //function for sending hash to the blockchain
-    await contract.methods.setCandidateCredentials(CredentialsData.Username, this.state.ipfsCredentialsHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+    await contract.methods.setCandidateCredentials(CredentialsData.Username, this.state.ipfsCredentialsHash).send({from: accounts[2],gas:6721975})
     .then((receipt) => {
       console.log(receipt)
     })
@@ -52,9 +52,9 @@ class CandidateLogin extends Component{
 
     //-------------------Calling fucntion for the Candidate Personal Data------------------
     let PersonalData = {
-      Username                  : "prople",
+      Username                  : "prolite",
       Account                   : accounts[1], //this.state.accAddress
-      Name                      : "Vipul Sharma",
+      Name                      : "Vipul Patel  ",
       ElectionParty             : "Congress",
       Mobile                    : 6985471365,
       Age                       : 30,
@@ -75,7 +75,7 @@ class CandidateLogin extends Component{
     console.log(this.state.ipfsPersonalHash)
 
     //function for sending hash to the blockchain
-    await contract.methods.setCandidatePersonal(PersonalData.Username,this.state.ipfsPersonalHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+    await contract.methods.setCandidatePersonal(PersonalData.Username,this.state.ipfsPersonalHash).send({from: accounts[2],gas:6721975})
     .then((receipt) => {
       console.log(receipt)
     })

@@ -32,7 +32,7 @@ export default class CandidateRequestForm extends Component{
         event.preventDefault();
         console.log("request sended")
 
-        const {contract} = this.props.userObject;
+        const {contract, accounts} = this.props.userObject;
 
         // const RequestData = {
         //     electionHash : this.props.electionHash,
@@ -48,7 +48,7 @@ export default class CandidateRequestForm extends Component{
         let date= new Date() + "";
         console.log(date)
 
-        await contract.methods.setRequest(this.props.username, this.props.electionHash, date, this.state.inputPlace, "Requested").send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+        await contract.methods.setRequest(this.props.username, this.props.electionHash, date, this.state.inputPlace, "Requested").send({from: accounts[2],gas:6721975})
         .then((receipt) => {
           console.log(receipt)
           alert("Thank You for Sending Request")

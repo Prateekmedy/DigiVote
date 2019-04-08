@@ -63,8 +63,8 @@
                     "landmark": "M.O.G. Line",
                     "lc": "locality",
                     "vtc": "Panna",
-                    "subdist": "Indore",
-                    "dist": "Indore",
+                    "subdist": "Bhopal",
+                    "dist": "Bhopal",
                     "state": "Madhya Pradesh",
                     "pc": "452002",
                     "po": "452002",
@@ -105,8 +105,8 @@
                     "landmark": "M.O.G. Line",
                     "lc": "locality",
                     "vtc": "Panna",
-                    "subdist": "Indore",
-                    "dist": "Indore",
+                    "subdist": "Dewas",
+                    "dist": "Dewas",
                     "state": "Madhya Pradesh",
                     "pc": "452002",
                     "po": "452002",
@@ -127,7 +127,7 @@
             "ver": "2.1"
         },
         {
-            "User_Id": "prateek.patel",
+            "User_Id": "payal.patel",
             "Aadhaar_Id": "561994037181",
             "e_Kyc": {
                 "status": "y",
@@ -137,7 +137,7 @@
                 "Poi": {
                     "name": "Payal Patel",
                     "dob": "01-02-1970",
-                    "gender": "M",
+                    "gender": "F",
                     "mobile" : "8871697651"
                 },
                 "Poa": {

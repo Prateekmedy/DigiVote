@@ -21,7 +21,7 @@ export default class CandidateRequest extends Component{
 
     doApprove = async(name) => {
         
-        const {contract} = this.props.userObject
+        const {contract, accounts} = this.props.userObject
         let {RequesterUsername, index, electionHash } = this.props
         let length = 0;
         
@@ -40,7 +40,7 @@ export default class CandidateRequest extends Component{
 
                 if(name === 'Approve'){
 
-                    await contract.methods.updateRequestStatus(index, i, RequesterUsername, "Approved").send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+                    await contract.methods.updateRequestStatus(index, i, RequesterUsername, "Approved").send({from: accounts[2],gas:6721975})
                     .then((receipt) => {
                       console.log(receipt)
                     })
@@ -53,7 +53,7 @@ export default class CandidateRequest extends Component{
 
                 if(name === 'Reject'){
 
-                    await contract.methods.updateRequestStatus(index, i, RequesterUsername, "Rejected").send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+                    await contract.methods.updateRequestStatus(index, i, RequesterUsername, "Rejected").send({from: accounts[2],gas:6721975})
                     .then((receipt) => {
                       console.log(receipt)
                     })
@@ -66,7 +66,7 @@ export default class CandidateRequest extends Component{
 
                 if(name === 'Nominate'){
 
-                    await contract.methods.updateRequestStatus(index, i, RequesterUsername, "Nomianted").send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+                    await contract.methods.updateRequestStatus(index, i, RequesterUsername, "Nomianted").send({from: accounts[2],gas:6721975})
                     .then((receipt) => {
                       console.log(receipt)
                     })
@@ -84,10 +84,10 @@ export default class CandidateRequest extends Component{
 
     doNominate = async() => {
 
-        const {contract} = this.props.userObject
-        let {RequesterUsername, electionHash } = this.props
+        const {contract, accounts} = this.props.userObject
+        let {RequesterUsername, electionHash, place } = this.props
 
-        await contract.methods.addCandidate(electionHash, RequesterUsername).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+        await contract.methods.addCandidate(electionHash, RequesterUsername, place).send({from: accounts[2],gas:6721975})
         .then((receipt) => {
           console.log(receipt)
         })

@@ -14,7 +14,7 @@ export default class OrganizeElection extends Component {
     createElelction = async() => {
         console.log("Create it");
 
-        const {contract, OrganizerData, back} = this.props;
+        const {contract, OrganizerData, back, accounts} = this.props;
         const ElectionData = {
             typeOfElection : "Lok Sabha",
             constituency : "Madhya Pradesh",
@@ -30,7 +30,7 @@ export default class OrganizeElection extends Component {
         console.log(ElectionHash);
         console.log(contract)
 
-        await contract.methods.addElection(OrganizerData.Address, ElectionHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+        await contract.methods.addElection(OrganizerData.Address, ElectionHash).send({from: accounts[2],gas:6721975})
         .then((result) => {
           console.log(result)
         })
@@ -40,7 +40,7 @@ export default class OrganizeElection extends Component {
         });
 
         //add an NOTA CAndidate into the new election
-        await contract.methods.addCandidate(ElectionHash, "NOTA").send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+        await contract.methods.addCandidate(ElectionHash, "NOTA", "anywhere").send({from: accounts[2],gas:6721975})
         .then((receipt) => {
           console.log(receipt)
         })

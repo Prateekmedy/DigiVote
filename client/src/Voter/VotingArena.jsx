@@ -6,11 +6,26 @@ export default class VoterArena extends Component{
     constructor(props){
         super(props)
         this.state = {
+            candidates : null,
             selectedCandidate : "",
             OTPUnlock : true, //this true value is for debugging, assign true after debugging
             OTP : "",
             otpVerify : true //this true value is for debugging, assign true after debugging
         }
+    }
+
+    componentWillMount = () => {
+
+       let candidates =  this.props.selectedElection.candidates.filter((candidate) => {
+                            return (candidate[2] === this.props.AadhaarObject.Constituency)
+                        })
+
+            candidates.push(this.props.selectedElection.candidates[0])
+
+        this.setState({
+            candidates
+        })
+        console.log(candidates)
     }
 
     updateSelectedCandidate = (selectedCandidate) => {
@@ -61,7 +76,7 @@ export default class VoterArena extends Component{
 
         if(this.state.otpVerify){
 
-            await this.props.userObject.contract.methods.addVoterToElection(this.props.selectedElection.electionHash, this.props.AadhaarHash).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+            await this.props.userObject.contract.methods.addVoterToElection(this.props.selectedElection.electionHash, this.props.AadhaarHash).send({from: this.props.userObject.accounts[2],gas:6721975})
             .then((result) => {
               console.log(result)
               console.log("Voter Added to Election")
@@ -70,7 +85,7 @@ export default class VoterArena extends Component{
               console.log(error)
             })
 
-            await this.props.userObject.contract.methods.addAadhaar(this.props.selectedElection.electionHash, this.props.AadhaarObject.Aadhaar).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+            await this.props.userObject.contract.methods.addAadhaar(this.props.selectedElection.electionHash, this.props.AadhaarObject.Aadhaar).send({from: this.props.userObject.accounts[2],gas:6721975})
             .then((result) => {
               console.log(result)
               console.log("VOter Aadhaar added to Election")
@@ -87,7 +102,7 @@ export default class VoterArena extends Component{
 
             for(let i=0; i<length; i++){
                 
-                await this.props.userObject.contract.methods.voteSelectedCandidates(this.props.selectedElection.electionHash, this.state.selectedCandidate, i).send({from: '0xB18DFE177bd96c229D5e0E6D06446Ff0eF825B13',gas:6721975})
+                await this.props.userObject.contract.methods.voteSelectedCandidates(this.props.selectedElection.electionHash, this.state.selectedCandidate, i).send({from: this.props.userObject.accounts[2],gas:6721975})
                 .then((result) => {
                 console.log(result)
                 console.log("VOter voted to the selected Candidate in election")
@@ -117,16 +132,17 @@ export default class VoterArena extends Component{
                 <h1>{this.props.selectedElection.election.typeOfElection}</h1>
                 <h3>Select the Candidate</h3>
                 {
-                    this.props.selectedElection.candidates.map((candidate, index) => 
-                        <SingleCandidate 
-                            key={index} 
-                            index={index} 
-                            candidate={candidate[0]} 
-                            selectedCandidate={this.state.selectedCandidate}
-                            updateSelectedCandidate={this.updateSelectedCandidate}
-                        />
+                    this.state.candidates.map((candidate, index) =>
+                                 <SingleCandidate 
+                                    key={index} 
+                                    index={index} 
+                                    candidate={candidate[0]} 
+                                    selectedCandidate={this.state.selectedCandidate}
+                                    updateSelectedCandidate={this.updateSelectedCandidate}
+                                />    
                     )
                 }
+                
                 {/* {
                     this.state.OTPUnlock
                         ? <form onSubmit={this.voteDone}>
