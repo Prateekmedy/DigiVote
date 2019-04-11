@@ -111,8 +111,8 @@ contract Election{
     function findOrganizer(string memory _username) public view returns(bool){
         for(uint i = 0; i <= OrganizerUsername.length - 1; i++){
             if(keccak256(abi.encodePacked(OrganizerUsername[i])) == keccak256(abi.encodePacked(_username)))   return true;
-            else return false;
         }
+        return false;
     }
 
     //*********************************** function for Elections ***************************************

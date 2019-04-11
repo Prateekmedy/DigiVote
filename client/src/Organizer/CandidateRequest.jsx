@@ -4,19 +4,26 @@ export default class CandidateRequest extends Component{
     constructor(props){
         super(props)
 
-        let approve = false, reject = false, nominate = false
+        let approve = false, reject = false, nominate = false, request = false
 
-        if(this.props.status === 'Approved') approve = true
+        if(this.props.status === "Requested") request = true        
+        
+        if(this.props.status === "Approved") approve = true
 
-        if(this.props.status === 'Rejected') reject = true
+        if(this.props.status === "Rejected") reject = true
 
-        if(this.props.status === 'Nominated') nominate = true
+        if(this.props.status === "Nomianted") nominate = true
 
         this.state = {
+            isRequested : request,
             isApproved : approve,
             isRejected : reject,
             isNominated : nominate
         }
+    }
+
+    componentWillMount = () => {
+      console.log(this.state)
     }
 
     doApprove = async(name) => {
@@ -48,7 +55,12 @@ export default class CandidateRequest extends Component{
                       console.log(error)
                     });
 
-                    this.setState({ isApproved : true })
+                    this.setState({
+                      isRequested : false,
+                      isApproved : true,
+                      isRejected : false,
+                      isNominated : false
+                    })
                 }
 
                 if(name === 'Reject'){
@@ -61,7 +73,12 @@ export default class CandidateRequest extends Component{
                       console.log(error)
                     });
 
-                    this.setState({ isReject : true })
+                    this.setState({
+                      isRequested : false,
+                      isApproved : false,
+                      isRejected : true,
+                      isNominated : false
+                    })
                 }
 
                 if(name === 'Nominate'){
@@ -72,9 +89,14 @@ export default class CandidateRequest extends Component{
                     })
                     .catch((error) => {
                       console.log(error)
-                    });
+                    }); 
 
-                    this.setState({ isNominated : true })
+                    this.setState({
+                      isRequested : false,
+                      isApproved : false,
+                      isRejected : false,
+                      isNominated : true
+                    })
                 }
                 
             }
@@ -111,10 +133,10 @@ export default class CandidateRequest extends Component{
 
         return(
             <div>
-                <h4>{this.props.RequesterUsername}</h4>
+                <h4>{this.props.RequesterUsername} ({this.state.isNominated ? "Nominated" : "Unnominated"})</h4>
                 <button style={(this.state.isApproved || this.state.isNominated) ? hide : show} onClick={() => this.doApprove("Approve")}>Approve</button>
-                <button style={(this.state.isApproved || this.state.isNominated) ? hide : show} onClick={() => this.doApprove("Reject")}>Reject</button>
-                <button style={(this.state.isApproved || this.state.isNominated) ? show : hide} onClick={this.doNominate}>Add to Election</button>
+                <button style={(this.state.isApproved || this.state.isNominated || this.state.isRejected) ? hide : show} onClick={() => this.doApprove("Reject")}>Reject</button>
+                <button style={(this.state.isApproved) ? show : hide} onClick={this.doNominate}>Add to Election</button>
             </div>
         )
     }

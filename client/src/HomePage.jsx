@@ -5,6 +5,7 @@ import VoterHome from './Voter/VoterHome'
 import ElectionList from './Elections/ElectionList';
 import ResultCard from './Elections/ResultCard';
 import Pre_Analysis from './Anaylsis Report/Pre-Anaylsis';
+import Post_Anaylsis from './Anaylsis Report/Post-Analysis';
 
 export default class Home extends Component{
 
@@ -79,6 +80,11 @@ export default class Home extends Component{
                                     selectedElection={this.state.selectedElection}
                                 />
             break;
+            case 6 : Option = <Post_Anaylsis
+                                    userObject={this.state.userObject}
+                                    selectedElection={this.state.selectedElection}
+                                />
+            break;
             default : Option = <ElectionList 
                                     userObject={this.state.userObject} 
                                     updateHomeState={this.updateHomeState}
@@ -87,7 +93,7 @@ export default class Home extends Component{
 
         return(
             <div>
-                <h1>This is Home Page</h1>
+                {/* <h1>This is Home Page</h1> */}
                 <button onClick={() => { this.setState({val:0})}}>Home</button>
                 <button onClick={() => { this.setState({val:1})}}>Organize</button>
                 <button onClick={() => { this.setState({val:2})}}>Candidate</button>

@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import OrganizeElection from './OragnizeElection';
 import AllRequests from './AllRequests'
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import Fab from '@material-ui/core/Fab';
 
 class OrganizerDashboard extends Component{
 
@@ -47,11 +57,71 @@ class OrganizerDashboard extends Component{
 
         return (
             <div>
-                <h1>Hi this is Organizer Dashboard</h1>
-                <button onClick={() => { this.setState({val:1})}}>Create Election</button>
-                <button onClick={() => { this.setState({val:2})}}>All Request</button>
-                <button onClick={this.logoutHandler}>Logout</button>
-                {Option}     
+                <Grid container >
+                    <AppBar position="static" style={{ background : "#4527a0", color : "#fff"}} >
+                        <Toolbar>
+                            <Typography variant="h6" color="inherit" >
+                            Organizer Dashboard
+                            </Typography>
+                            
+                            <Grid container 
+                                direction="row"
+                                justify="flex-end"
+                                alignItems="center"
+                                style={{ width: "80%"}}
+                            >
+                                <Typography variant="h6" style={{ color : "#fff" }} gutterBottom>{this.props.username ? this.props.username : "Unknown"}</Typography>
+                                <Button variant="outlined" style={{ color : "#fff", borderColor : "#fff", marginLeft : "10px"}} onClick={this.logoutHandler}>
+                                    Logout
+                                </Button>
+                            </Grid>
+                            
+                        </Toolbar>
+                    </AppBar>    
+                </Grid>
+                <Grid 
+                    container 
+                    direction="row"
+                    justify="flex-end"
+                    alignItems="center"
+                    style={{ border: "0.1px solid #000", height : "90vh", width: "100%" , background: "#fff"}}
+                >
+                    <Grid item xs={3}>
+                        <Grid item xs={12}>
+                            <Button 
+                                variant="contained" 
+                                color="primary"
+                                style={{
+                                
+                                    margin:"5px"
+                                }}
+                                onClick={() => { this.setState({val:1})}}
+                            >Create Election</Button>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button 
+                                variant="contained" 
+                                color="primary"
+                                style={{
+                                
+                                    margin:"5px"
+                                }}
+                                onClick={() => { this.setState({val:2})}}
+                            >All Request</Button>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={9}>
+                        <Paper 
+                            elevation={2}
+                            className="DashboardCard"
+                            style={{ background : "#4527a0" , margin : "20px"}}
+                        >
+                            <Grid item xs={12}>
+                                {Option}
+                            </Grid> 
+                        </Paper>
+                    </Grid>
+                </Grid>  
             </div>
         )
     }

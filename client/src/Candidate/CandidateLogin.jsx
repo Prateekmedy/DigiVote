@@ -8,12 +8,14 @@ class CandidateLogin extends Component{
         this.state = {
             inputUsername:"",
             inputPassword:"",
+            username : "",
             ipfsCredentialsHash: null,
             ipfsCredentailsData: null,
             ipfsPersonalHash: null,
             ipfsPersonalData: null,
             isUnlock:false,
-            isSignUp : false
+            isSignUp : false,
+            goToSignUp :  false
         }
     }
     
@@ -30,74 +32,89 @@ class CandidateLogin extends Component{
     // console.log(this.props.userObject.acc);
 
     //-------------------Calling fucntion for the Candidate Credentials Data------------------
-    let CredentialsData = {
-      Username : "prolite",
-      Password : "password1",
-      Address : accounts[1] //this.state.accAddress
-    }  
 
-    //calling the promise by providing the data to convert it to hash
-    let ipfsCredentialsHash = await ipfsSender(CredentialsData)
-    this.setState({ipfsCredentialsHash})
-    console.log(this.state.ipfsCredentialsHash)
+    //checking of username is alerady present or not
+    let isUsernamePresent = false
 
-    //function for sending hash to the blockchain
-    await contract.methods.setCandidateCredentials(CredentialsData.Username, this.state.ipfsCredentialsHash).send({from: accounts[2],gas:6721975})
-    .then((receipt) => {
-      console.log(receipt)
-    })
-    .catch((error) => {
-      console.log(error)
-    });
-
-    //-------------------Calling fucntion for the Candidate Personal Data------------------
-    let PersonalData = {
-      Username                  : "prolite",
-      Account                   : accounts[1], //this.state.accAddress
-      Name                      : "Vipul Patel  ",
-      ElectionParty             : "Congress",
-      Mobile                    : 6985471365,
-      Age                       : 30,
-      constituency              : "MP",
-	    Father_Name               : "Drolite",
-	    Mother_Name               : "Krolite",
-	    DOB                       : "1/1/1980",
-	    Cast                      : "General",
-	    Party_type                : "Recoganised Party",
-	    Party_Symbol              : "abc.jpg",
-	    Citizenship               : "Indian",
-	    Education_Qualification   : "BE"	
-    }  
-
-    //calling the promise by providing the data to convert it to hash
-    let ipfsPersonalHash = await ipfsSender(PersonalData)
-    this.setState({ipfsPersonalHash})
-    console.log(this.state.ipfsPersonalHash)
-
-    //function for sending hash to the blockchain
-    await contract.methods.setCandidatePersonal(PersonalData.Username,this.state.ipfsPersonalHash).send({from: accounts[2],gas:6721975})
-    .then((receipt) => {
-      console.log(receipt)
-    })
-    .catch((error) => {
-      console.log(error)
-    });
-
-
-    //-------------------------------------Functions for retireving the Data from the Blockchain-----------------
-    //calling for fetching the hash from the blockchain.
-    let result;
-    await contract.methods.getCandidatePersonal(PersonalData.Username).call()
-    .then((res) => result = res)
+    await  contract.methods.findCandidate(this.state.username).call()
+    .then(res => isUsernamePresent = res)
     .catch(console.error)
 
-    console.log(result);
+    if(!isUsernamePresent){
 
-    //calling the promise by providing the hash to convert it to data
-    let ipfsPersonalData = await ipfsFetcher(result)
-    this.setState({ipfsPersonalData,isSignUp : true})
-    console.log(this.state.ipfsPersonalData)
-
+      let CredentialsData = {
+        Username : this.state.username,
+        Password : "password1",
+        Address : accounts[1] //this.state.accAddress
+      }  
+  
+      //calling the promise by providing the data to convert it to hash
+      let ipfsCredentialsHash = await ipfsSender(CredentialsData)
+      this.setState({ipfsCredentialsHash})
+      console.log(this.state.ipfsCredentialsHash)
+  
+      //function for sending hash to the blockchain
+      await contract.methods.setCandidateCredentials(CredentialsData.Username, this.state.ipfsCredentialsHash).send({from: accounts[2],gas:6721975})
+      .then((receipt) => {
+        console.log(receipt)
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  
+      //-------------------Calling fucntion for the Candidate Personal Data------------------
+      let PersonalData = {
+        Username                  : this.state.username,
+        Account                   : accounts[1], //this.state.accAddress
+        Name                      : "Narendra Modi",
+        ElectionParty             : "BJP",
+        Mobile                    : 6985471365,
+        Age                       : 30,
+        constituency              : "MP",
+        Father_Name               : "Drolite",
+        Mother_Name               : "Krolite",
+        DOB                       : "1/1/1980",
+        Cast                      : "General",
+        Party_type                : "Recoganised Party",
+        Party_Symbol              : "abc.jpg",
+        Citizenship               : "Indian",
+        Education_Qualification   : "BE"	
+      }  
+  
+      //calling the promise by providing the data to convert it to hash
+      let ipfsPersonalHash = await ipfsSender(PersonalData)
+      this.setState({ipfsPersonalHash})
+      console.log(this.state.ipfsPersonalHash)
+  
+      //function for sending hash to the blockchain
+      await contract.methods.setCandidatePersonal(PersonalData.Username,this.state.ipfsPersonalHash).send({from: accounts[2],gas:6721975})
+      .then((receipt) => {
+        console.log(receipt)
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  
+  
+      //-------------------------------------Functions for retireving the Data from the Blockchain-----------------
+      //calling for fetching the hash from the blockchain.
+      let result;
+      await contract.methods.getCandidatePersonal(PersonalData.Username).call()
+      .then((res) => result = res)
+      .catch(console.error)
+  
+      console.log(result);
+  
+      //calling the promise by providing the hash to convert it to data
+      let ipfsPersonalData = await ipfsFetcher(result)
+      this.setState({ipfsPersonalData,isSignUp : true, goToSignUp : false})
+      console.log(this.state.ipfsPersonalData)
+  
+    }else{
+      console.log("Username is Already Excist")
+      alert("Username is already excist")
+    }
+    
 
 
   }
@@ -170,16 +187,33 @@ class CandidateLogin extends Component{
     });
   }
 
+  updateUsername(evt) {
+    this.setState({
+      username: evt.target.value
+    });
+  }
+
     render(){
         console.log("CandidateLogin")
         return (
             <div>
-            <form onSubmit={this.SignIn}>
-                <input name="username" value={this.state.inputUsername} onChange={evt => this.updateInputUsername(evt)}/>
-                <input name="password" value={this.state.inputPassword} onChange={evt => this.updateInputPassword(evt)}/>
-                <input type="submit" value="SignIn"/>
-            </form>
-            { !this.state.isSignUp && <button onClick={this.SignUp}>SignUp</button>}
+              {
+                this.state.goToSignUp
+                  ? <div>
+                      <h3>This is SignUp Area</h3>
+                      <input name="username" value={this.state.username} onChange={evt => this.updateUsername(evt)}/>
+                      <button onClick={this.SignUp}>SignUp</button>
+                      <button onClick={() => this.setState({ goToSignUp : false })}>Back</button>
+                    </div>
+                  : <div>
+                      <form onSubmit={this.SignIn}>
+                        <input name="username" value={this.state.inputUsername} onChange={evt => this.updateInputUsername(evt)}/>
+                        <input name="password" value={this.state.inputPassword} onChange={evt => this.updateInputPassword(evt)}/>
+                        <input type="submit" value="SignIn"/>
+                      </form>
+                      <button onClick={() => this.setState({ goToSignUp : true })}>Register</button>
+                    </div>
+              }
             </div>
         ) 
     }

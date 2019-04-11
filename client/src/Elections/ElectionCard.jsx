@@ -5,7 +5,8 @@ export default class ElectionCard extends Component{
     constructor(props){
         super(props)
         this.state = {
-            item : this.props.item
+            electionData : this.props.electionData,
+            electionHash : this.props.electionHash
         }
     }
 
@@ -15,7 +16,7 @@ export default class ElectionCard extends Component{
 
         //check whether the CAndidate is already nominated for this election or not
         let length = 0
-        await contract.methods.countElectionCandidates(this.props.item).call()
+        await contract.methods.countElectionCandidates(this.props.electionHash).call()
         .then(res => length = res)
         .catch(console.error)
 
@@ -26,7 +27,7 @@ export default class ElectionCard extends Component{
             for(let i=0; i<length; i++){
 
                 let result
-                await contract.methods.getSelectedCandidates(this.props.item, i).call()
+                await contract.methods.getSelectedCandidates(this.props.electionHash, i).call()
                 .then(res => result = res)
                 .catch(console.error)
 
@@ -40,17 +41,17 @@ export default class ElectionCard extends Component{
                 console.log("this candidate is Already Nominated at this Election")
                 alert("Sorry You are Already Nominated for this Election")
             }else{
-                this.props.updateElectionState(true, this.state.item)
+                this.props.updateElectionState(true, this.state.electionHash)
             }
 
         }else{
-            this.props.updateElectionState(true, this.state.item)
+            this.props.updateElectionState(true, this.state.electionHash)
         }
    
     }
 
     render(){
-
+        console.log("Election Card")
         let divStyle = {
             cursor: 'pointer',
             color : 'red',
@@ -60,7 +61,7 @@ export default class ElectionCard extends Component{
        
 
         return (
-            <div style={divStyle} onClick={this.openRequest}>{this.props.item}</div>
+            <div style={divStyle} onClick={this.openRequest}>{this.props.electionData.typeOfElection}</div>
         )
     }
         

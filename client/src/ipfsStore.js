@@ -9,6 +9,7 @@ export const ipfsSender = (file) => {
       ipfs.add(buffer, (err, ipfsHash) => {
         if(ipfsHash){
           resolve(ipfsHash[0].hash)
+
           //this.setState({ ipfsHash:ipfsHash[0].hash })
         }else{
           reject("something is not good :(" + err);

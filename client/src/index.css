@@ -1,9 +1,11 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  background:#4527a0;
+  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+    sans-serif; */
+    font-family: 'Roboto';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -11,4 +13,37 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.fullDiv {
+  height: 100%;
+  width: 100%;
+}
+
+.testClass {
+  border : 0.1px solid red ;
+  height : 95vh; 
+  width : 100%;
+}
+
+.loginCard {
+  height:300px;
+  width:300px;
+  padding-top: 15px;
+}
+
+.RegisterCard{
+  height:500px;
+  width:475px;
+  padding-top: 15px;
+}
+
+.DashboardCard{
+  height: 500px;
+  width: 750px;
+  background-color : #4527a0;
+}
+
+.formButton {
+  margin: 10px;
 }
