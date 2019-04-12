@@ -56,7 +56,7 @@ class OrganizerLogin extends Component{
       let CredentialsData = {
         Username : this.state.username,
         Password : this.state.password,
-        Address : accounts[0] //this.state.accAddress
+        Address  : accounts[0] //this.state.accAddress
       }  
   
       //calling the promise by providing the data to convert it to hash
@@ -75,12 +75,12 @@ class OrganizerLogin extends Component{
   
       //-------------------Calling fucntion for the Organizer Personal Data------------------
       let PersonalData = {
-        Username : this.state.username,
-        Address : accounts[0], //this.state.accAddress
-        Name : this.state.name,
-        Organization : this.state.Organization,
-        Mobile : this.state.mobile,
-        DP : this.state.DP
+        Username      : this.state.username,
+        Address       : accounts[0], //this.state.accAddress
+        Name          : this.state.name,
+        Organization  : this.state.Organization,
+        Mobile        : this.state.mobile,
+        DP            : this.state.DP
       }  
   
       //calling the promise by providing the data to convert it to hash
@@ -153,8 +153,9 @@ class OrganizerLogin extends Component{
             this.setState({isUnlock:true})
             console.log(this.state.isUnlock)
 
-            this.props.loginUpdate(true)
             this.props.updateOrganizerData(ipfsCredentailsData)
+            this.props.loginUpdate(true)
+            
 
             console.log("You are Login :)")
       }else{
@@ -211,7 +212,6 @@ class OrganizerLogin extends Component{
   }
 
   updateDP(evt) {
-    console.log(evt.target.files[0])
     this.setState({
       DP: evt.target.files[0]
     });

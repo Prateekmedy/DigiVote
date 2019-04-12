@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CandidateRequest from './CandidateRequest';
+import Grid from '@material-ui/core/Grid';
 
 export default class AllRequests extends Component{
     constructor(props){
@@ -39,10 +40,10 @@ export default class AllRequests extends Component{
 
     render(){
         return(
-            <div>
+            <Grid className="RegisterCard" container>
                 {
                     this.state.requests &&
-                    <div>
+                    <Grid container >
                         {this.state.requests.map((item, index) =>    
                                 <CandidateRequest 
                                     userObject={this.props.userObject}
@@ -55,9 +56,9 @@ export default class AllRequests extends Component{
                                     status={item[4]}    
                                 />          
                         )}
-                    </div> 
+                    </Grid> 
                 }
-            </div>
+            </Grid>
         )
     }
 }

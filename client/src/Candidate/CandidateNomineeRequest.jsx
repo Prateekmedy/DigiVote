@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ElectionCard from '../Elections/ElectionCard'
-import CandidateRequestForm from './CandidateRequestForm'
-import {ipfsFetcher} from '../ipfsStore'
+import Grid from '@material-ui/core/Grid';
+import { ipfsFetcher } from '../ipfsStore';
 
 export default class CandidateNomineeRequest extends Component{
 
@@ -123,36 +123,32 @@ export default class CandidateNomineeRequest extends Component{
    
         return(
             <div>
-                <div style={this.state.isElectionSelected ? hide : show}>
-                <h2>This is List of Elections</h2>
-                {
-                    this.state.newElections &&
-                    <ul>
-                        { this.state.newElections.map((item, index) =>
-                            <ElectionCard 
-                                electionData={item[0]} 
-                                key={index} 
-                                updateElectionState={this.updateElectionState}
-                                username={this.props.username} 
-                                userObject={this.props.userObject}  
-                                electionHash={item[1]} 
-                            />
-                        )}
-                    </ul> 
-                }
-                </div>
-                <div style={this.state.isElectionSelected ? show : hide}>
-                    {/* <h2>Here is your Elections</h2> 
-                    <h2>{this.state.selectedElection}</h2> */}
-                    <CandidateRequestForm 
-                        electionHash={this.state.selectedElection} 
-                        candidateHash={this.props.candidateHash}
-                        username={this.props.username}
-                        userObject={this.props.userObject}
-                        back={this.initialState}
-                    />
-                    <button onClick={this.initialState}>Back</button>   
-                </div>   
+                <Grid 
+                container 
+                style={{
+                  height : "500px",
+                  width : "100%"
+                }}
+                >
+                    <div style={this.state.isElectionSelected ? hide : show}>
+                    {
+                        this.state.newElections &&
+                        <Grid container >
+                            { this.state.newElections.map((item, index) =>
+                                <ElectionCard 
+                                    electionData={item[0]} 
+                                    key={index} 
+                                    updateElectionState={this.updateElectionState}
+                                    username={this.props.username} 
+                                    userObject={this.props.userObject}  
+                                    electionHash={item[1]} 
+                                    candidateHash={this.props.candidateHash}
+                                />
+                            )}
+                        </Grid> 
+                    }
+                    </div>
+                </Grid>
             </div>
         )
     }

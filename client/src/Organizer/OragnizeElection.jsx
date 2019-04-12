@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
-import {ipfsSender, ipfsFetcher} from '../ipfsStore'
-import DateTimePicker from 'react-datetime-picker'
-import {$} from 'jquery'
+import {ipfsSender} from '../ipfsStore'
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+import "../App.css"
 
 export default class OrganizeElection extends Component {
 
@@ -14,7 +20,11 @@ export default class OrganizeElection extends Component {
             FCRD : null,
             RD : null,
             ESD : null,
-            EED : null
+            EED : null,
+            ToE : "",
+            constituency : "",
+            organizer : "",
+            totalVotes : 0
         }
     }
 
@@ -28,15 +38,15 @@ export default class OrganizeElection extends Component {
         const {contract, OrganizerData, back, accounts} = this.props;
        // console.log(OrganizerData)
         const ElectionData = {
-            typeOfElection : "Lok Sabha",
-            constituency   : "Madhya Pradesh",
-            organizer      : "Election Committion",
+            typeOfElection : this.state.ToE,
+            constituency   : this.state.constituency,
+            organizer      : this.state.organizer,
             electionStartDateNTime   : this.state.ESD.toString(), //"mm-dd-yyyy hh:ii"
             electionEndDateNTime   : this.state.EED.toString(),
             resultDate     : this.state.RD.toString(),
             ICRD           : this.state.ICRD.toString(),
             FCRD           : this.state.FCRD.toString(),
-            TotalVoters    : 55
+            TotalVoters    : this.state.totalVotes
         }
         
         let ElectionHash = await ipfsSender(ElectionData);
@@ -69,6 +79,14 @@ export default class OrganizeElection extends Component {
         back();
     }   
 
+    updateToE = (evt) => this.setState({ ToE : evt.target.value })
+
+    updateConstituency = (evt) => this.setState({ constituency : evt.target.value })
+
+    updateOrganizer = (evt) => this.setState({ organizer : evt.target.value })
+
+    updateTotalVotes = (evt) => this.setState({ totalVotes : evt.target.value })
+
     updateESD = (val) => this.setState({ ESD : val })
 
     updateEED = (val) => this.setState({ EED : val })
@@ -83,41 +101,199 @@ export default class OrganizeElection extends Component {
         console.log(this.props.OrganizerData)
         console.log(this.state)
 
-        //calling function for activating the time and date picker
-        //$(".form_datetime").datetimepicker({format: 'mm-dd-yyyy hh:ii'});
-
         return (
-            <div>
-              <form onSubmit={this.createElection}>
-                <label>Election Start Date</label>
-                <DateTimePicker
-                  onChange={this.updateESD}
-                  value={this.state.ESD}
-                /><br />
-                <label>Election End Date</label>
-                <DateTimePicker
-                  onChange={this.updateEED}
-                  value={this.state.EED}
-                /><br />
-                <label>Result Date</label>
-                <DateTimePicker
-                  onChange={this.updateRD}
-                  value={this.state.RD}
-                /><br />
-                <label>Registration Starts Date</label>
-                <DateTimePicker
-                  onChange={this.updateICRD}
-                  value={this.state.ICRD}
-                /><br />
-                <label>Registration Ends Date</label>
-                <DateTimePicker
-                  onChange={this.updateFCRD}
-                  value={this.state.FCRD}
-                /><br />
-                <input type="submit" value="Create Election"/>
-              </form>
-                {/* <button onClick={this.createElelction}>Sumit</button> */}
-            </div>
+              <Grid 
+                container 
+                direction="row"
+                justify="center"
+                alignItems="center"
+                style={{
+                  height : "500px",
+                  width : "100%"
+                }}
+                >
+                  <Paper 
+                    elevation={5}
+                    className="ElectionRegister"
+                  >
+                    <Typography variant="h4" gutterBottom>Election Register</Typography>
+                      <Grid container>
+                        <Grid item xs={12} container>
+                          <Grid item xs={4}>
+                            <TextField
+                              required
+                              name="typeOfElection"
+                              id="typeOfElection"
+                              label="Election Type"
+                              value={this.state.ToE}
+                              onChange={evt => this.updateToE(evt)}
+                              margin="normal"
+                            />
+                          </Grid>
+                          <Grid item xs={4}>
+                            <TextField
+                              required
+                              name="Organizer"
+                              id="Organizer"
+                              label="Organizer"
+                              value={this.state.organizer}
+                              onChange={evt => this.updateOrganizer(evt)}
+                              margin="normal"
+                            />
+                          </Grid>
+                          <Grid item xs={4}>
+                            <TextField
+                              required
+                              name="Constituency"
+                              id="Constituency"
+                              label="Constituency"
+                              value={this.state.constituency}
+                              onChange={evt => this.updateConstituency(evt)}
+                              margin="normal"
+                            />
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={12} container >
+                          <Grid item xs={6}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                              <Grid container className="DateNTimeCenter">
+                                <DatePicker
+                                  required
+                                  margin="normal"
+                                  label="Election Starts Date"
+                                  value={this.state.ESD}
+                                  onChange={this.updateESD}
+                                  className="DateNTime"
+                                />
+                                <TimePicker
+                                  required
+                                  margin="normal"
+                                  label="Election Starts Time"
+                                  value={this.state.ESD}
+                                  onChange={this.updateESD}
+                                  className="DateNTime"
+                                />
+                              </Grid>
+                            </MuiPickersUtilsProvider>
+                          </Grid>
+                          <Grid item xs={6}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                              <Grid container className="DateNTimeCenter">
+                                <DatePicker
+                                  required
+                                  margin="normal"
+                                  label="Election Ends Date"
+                                  value={this.state.EED}
+                                  onChange={this.updateEED}
+                                  className="DateNTime"
+                                />
+                                <TimePicker
+                                  required
+                                  margin="normal"
+                                  label="Election Ends Time"
+                                  value={this.state.EED}
+                                  onChange={this.updateEED}
+                                  className="DateNTime"
+                                />
+                              </Grid>
+                            </MuiPickersUtilsProvider>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={12} container >
+                          <Grid item xs={6}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                              <Grid container className="DateNTimeCenter">
+                                <DatePicker
+                                  required
+                                  margin="normal"
+                                  label="Cand Reg. StartDate"
+                                  value={this.state.ICRD}
+                                  onChange={this.updateICRD}
+                                  className="DateNTime"
+                                />
+                                <TimePicker
+                                  required
+                                  margin="normal"
+                                  label="Cand Reg. StartTime"
+                                  value={this.state.ICRD}
+                                  onChange={this.updateICRD}
+                                  className="DateNTime"
+                                />
+                              </Grid>
+                            </MuiPickersUtilsProvider>
+                          </Grid>
+                          <Grid item xs={6}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                              <Grid container className="DateNTimeCenter">
+                                <DatePicker
+                                  required
+                                  margin="normal"
+                                  label="Cand Reg. EndsDate"
+                                  value={this.state.FCRD}
+                                  onChange={this.updateFCRD}
+                                  className="DateNTime"
+                                />
+                                <TimePicker
+                                  required
+                                  margin="normal"
+                                  label="Cand Reg. EndsTime"
+                                  value={this.state.FCRD}
+                                  onChange={this.updateFCRD}
+                                  className="DateNTime"
+                                />
+                              </Grid>
+                            </MuiPickersUtilsProvider>
+                          </Grid>
+                        </Grid>
+                        <Grid item xs={12} container>
+                          <Grid item xs={6}>
+                          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                              <Grid container className="DateNTimeCenter">
+                                <DatePicker
+                                  required
+                                  margin="normal"
+                                  label="Result Date"
+                                  value={this.state.RD}
+                                  onChange={this.updateRD}
+                                  className="DateNTime"
+                                />
+                                <TimePicker
+                                  required
+                                  margin="normal"
+                                  label="Result Time"
+                                  value={this.state.RD}
+                                  onChange={this.updateRD}
+                                  className="DateNTime"
+                                />
+                              </Grid>
+                            </MuiPickersUtilsProvider>
+                            </Grid>
+                            <Grid item xs={6}>
+                              <TextField
+                                required
+                                name="TotalVotes"
+                                id="TotalVotes"
+                                label="Total Votes"
+                                value={this.state.totalVotes}
+                                onChange={evt => this.updateTotalVotes(evt)}
+                                margin="normal"
+                                type="number"
+                              />
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Button 
+                            variant="contained" 
+                            color="primary"
+                            style={{
+                              margin:"5px"
+                            }}
+                            onClick={this.createElection}
+                          >Create</Button>
+                        </Grid>  
+                      </Grid>
+                  </Paper>
+              </Grid>
         )
     }
 }

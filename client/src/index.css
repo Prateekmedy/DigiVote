@@ -21,7 +21,6 @@ code {
 }
 
 .testClass {
-  border : 0.1px solid red ;
   height : 95vh; 
   width : 100%;
 }
@@ -35,7 +34,7 @@ code {
 .RegisterCard{
   height:500px;
   width:475px;
-  padding-top: 15px;
+  padding: 15px;
 }
 
 .DashboardCard{
@@ -44,6 +43,97 @@ code {
   background-color : #4527a0;
 }
 
+.ElectionRegister{
+  height: 450px;
+  width: 700px;
+  background-color : #fff;
+  padding-left: 8px;
+  padding-top: 10px;
+}
+
 .formButton {
   margin: 10px;
+}
+
+.DateNTime{
+  width : 150px;
+}
+
+.DateNTimeCenter{
+  padding-left : 25px;
+}
+
+.RequestCard{
+  height: 200px;
+  width: 165px;
+  margin: 5px;
+  padding: 2px;
+  box-shadow: 0px 0px 15px  rgba(0,0,0,0.5) !important;
+}
+
+.RequestCardText2{
+  font-size: 0.7em !important;
+}
+
+.personIcon{
+  font-size: 50px !important;
+}
+
+.personIcon2{
+  font-size: 60px !important;
+}
+
+.ABIcon{
+  font-size: 60px !important;
+}
+
+.RequestCardText3{
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.RequestCardText4{
+  font-size: 0.7em !important;
+}
+
+.RegisterCard2{
+  height:410px;
+  width:700px;
+  padding: 15px;
+}
+
+.ElectionRequestForm{
+  height: 450px;
+  width: 550px;
+  position: absolute; 
+  top: 30%;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+
+}
+
+.ElectionSection{
+ width: 230px;
+ height: 280px;
+ background: #bdbdbd !important;
+ margin-left:16px;
+ margin-top: 10px;
+ padding: 5px; 
+ 
+}
+
+.CandidateSection{
+width: 230px;
+height: 280px;
+background: #bdbdbd !important;
+margin-left: 16px;
+margin-top: 10px;
+padding: 5px;
+}
+
+.ElectionFormHeader{
+  font-size: 1.4em !important;
+  margin: 3px !important;
 }

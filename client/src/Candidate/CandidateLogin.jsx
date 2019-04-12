@@ -1,21 +1,40 @@
 import React, { Component } from 'react'
 import {ipfsFetcher, ipfsSender} from '../ipfsStore'
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
 
 class CandidateLogin extends Component{   
 
     constructor(props){
         super(props)
         this.state = {
-            inputUsername:"",
-            inputPassword:"",
-            username : "",
-            ipfsCredentialsHash: null,
-            ipfsCredentailsData: null,
-            ipfsPersonalHash: null,
-            ipfsPersonalData: null,
-            isUnlock:false,
-            isSignUp : false,
-            goToSignUp :  false
+            inputUsername         :"",
+            inputPassword         :"",
+            username              : "",
+            password              : "",
+            name                  : "",
+            electionParty         : "",
+            age                   : 0,
+            mobile                : "",
+            constituency          : "",
+            fatherName            : "",
+            motherName            : "",
+            DOB                   : new Date(),
+            partySymbol           : null,
+            citizenship           : "",
+            education             : "",
+            ipfsCredentialsHash   : null,
+            ipfsCredentailsData   : null,
+            ipfsPersonalHash      : null,
+            ipfsPersonalData      : null,
+            isUnlock              :false,
+            isSignUp              : false,
+            goToSignUp            :  false
         }
     }
     
@@ -44,7 +63,7 @@ class CandidateLogin extends Component{
 
       let CredentialsData = {
         Username : this.state.username,
-        Password : "password1",
+        Password : this.state.password,
         Address : accounts[1] //this.state.accAddress
       }  
   
@@ -66,19 +85,17 @@ class CandidateLogin extends Component{
       let PersonalData = {
         Username                  : this.state.username,
         Account                   : accounts[1], //this.state.accAddress
-        Name                      : "Narendra Modi",
-        ElectionParty             : "BJP",
-        Mobile                    : 6985471365,
-        Age                       : 30,
-        constituency              : "MP",
-        Father_Name               : "Drolite",
-        Mother_Name               : "Krolite",
-        DOB                       : "1/1/1980",
-        Cast                      : "General",
-        Party_type                : "Recoganised Party",
-        Party_Symbol              : "abc.jpg",
-        Citizenship               : "Indian",
-        Education_Qualification   : "BE"	
+        Name                      : this.state.name,
+        ElectionParty             : this.state.electionParty,
+        Mobile                    : this.state.mobile,
+        Age                       : this.state.age,
+        constituency              : this.state.constituency,
+        Father_Name               : this.state.fatherName,
+        Mother_Name               : this.state.motherName,
+        DOB                       : this.state.DOB.toString(),
+        Party_Symbol              : this.state.partySymbol,
+        Citizenship               : this.state.citizenship,
+        Education_Qualification   : this.state.education	
       }  
   
       //calling the promise by providing the data to convert it to hash
@@ -175,45 +192,386 @@ class CandidateLogin extends Component{
     
   }
 
-  updateInputUsername(evt) {
-    this.setState({
-      inputUsername: evt.target.value
-    });
-  }
+  updateInputUsername = (evt) => this.setState({   inputUsername: evt.target.value  }); 
 
-  updateInputPassword(evt) {
-    this.setState({
-      inputPassword: evt.target.value
-    });
-  }
+  updateInputPassword = (evt) => this.setState({  inputPassword: evt.target.value  });
 
-  updateUsername(evt) {
-    this.setState({
-      username: evt.target.value
-    });
-  }
+  updateUsername = (evt) => this.setState({  username: evt.target.value  });
+
+  updatePassword = (evt) => this.setState({  password: evt.target.value  });
+
+  updateName = (evt) => this.setState({  name: evt.target.value  });
+
+  updateAge = (evt) => this.setState({  age : evt.target.value  });
+  
+  updateFatherName = (evt) => this.setState({  fatherName: evt.target.value  });
+
+  updateMotherName = (evt) => this.setState({  motherName: evt.target.value  });
+
+  updateMobile = (evt) => this.setState({  mobile: evt.target.value  });
+
+  updateCitizenship = (evt) => this.setState({  citizenship: evt.target.value  });
+
+  updateEducation = (evt) => this.setState({  education: evt.target.value  });
+
+  updateConsitituency = (evt) => this.setState({  constituency: evt.target.value  });
+
+  updateDOB = (val) => this.setState({  DOB: val  });
+  
+  updateElectionParty = (evt) => this.setState({  electionParty: evt.target.value  });
+
+  updatePartySymbol = (evt) => this.setState({  partySymbol: evt.target.files[0]  });
+
+
+
 
     render(){
         console.log("CandidateLogin")
         return (
-            <div>
-              {
-                this.state.goToSignUp
-                  ? <div>
-                      <h3>This is SignUp Area</h3>
-                      <input name="username" value={this.state.username} onChange={evt => this.updateUsername(evt)}/>
-                      <button onClick={this.SignUp}>SignUp</button>
-                      <button onClick={() => this.setState({ goToSignUp : false })}>Back</button>
-                    </div>
-                  : <div>
-                      <form onSubmit={this.SignIn}>
-                        <input name="username" value={this.state.inputUsername} onChange={evt => this.updateInputUsername(evt)}/>
-                        <input name="password" value={this.state.inputPassword} onChange={evt => this.updateInputPassword(evt)}/>
-                        <input type="submit" value="SignIn"/>
-                      </form>
-                      <button onClick={() => this.setState({ goToSignUp : true })}>Register</button>
-                    </div>
-              }
+
+              <div  className="testClass">
+              <Grid 
+                container 
+                direction="row"
+                justify="center"
+                alignItems="center"
+                className="testClass"
+                >
+                  {
+                    this.state.goToSignUp
+                      ? <Paper 
+                          elevation={2}
+                          className="RegisterCard2"
+                        >
+                          <Typography variant="h4" gutterBottom>Candidate Register</Typography>
+                          <Grid container>
+                            <Grid container item xs={12}>
+                              <Grid item xs={4} >
+                                <TextField
+                                  required
+                                  name="username"
+                                  id="username"
+                                  label="Username"
+                                  value={this.state.username}
+                                  onChange={evt => this.updateUsername(evt)}
+                                  margin="normal"
+                                />
+                              </Grid>
+                              <Grid item xs={4} >
+                                <TextField
+                                  required
+                                  name="name"
+                                  id="name"
+                                  label="Name"
+                                  value={this.state.name}
+                                  onChange={evt => this.updateName(evt)}
+                                  margin="normal"
+                                />
+                              </Grid>
+                              <Grid item xs={4} >
+                                <TextField
+                                  required
+                                  name="ElelctionParty"
+                                  id="ElelctionParty"
+                                  label="Elelction Party"
+                                  value={this.state.electionParty}
+                                  onChange={evt => this.updateElectionParty(evt)}
+                                  margin="normal"
+                                />
+                              </Grid>
+                            </Grid>
+                            <Grid container item xs={12}>
+                              <Grid item xs={4} >
+                                <TextField
+                                  required
+                                  name="FatherName"
+                                  id="FatherName"
+                                  label="Father Name"
+                                  value={this.state.fatherName}
+                                  onChange={evt => this.updateFatherName(evt)}
+                                  margin="normal"
+                                />
+                              </Grid>
+                              <Grid item xs={4} >
+                                <TextField
+                                  required
+                                  name="MotherName"
+                                  id="MotherName"
+                                  label="Mother Name"
+                                  value={this.state.motherName}
+                                  onChange={evt => this.updateMotherName(evt)}
+                                  margin="normal"
+                                />
+                              </Grid>
+                              <Grid item xs={4} >
+                                <TextField
+                                  required
+                                  name="Citizenship"
+                                  id="Citizenship"
+                                  label="Citizenship"
+                                  value={this.state.citizenship}
+                                  onChange={evt => this.updateCitizenship(evt)}
+                                  margin="normal"
+                                />
+                              </Grid>
+                            </Grid>
+                            <Grid container item xs={12}>
+                              <Grid item xs={4} >
+                                <TextField
+                                  required
+                                  name="Age"
+                                  id="Age"
+                                  label="Age"
+                                  value={this.state.age}
+                                  onChange={evt => this.updateAge(evt)}
+                                  margin="normal"
+                                  type="number"
+                                />
+                              </Grid>
+                              <Grid item xs={4} >
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                  <Grid container className="DateNTimeCenter">
+                                    <DatePicker
+                                      required
+                                      margin="normal"
+                                      label="Date of Birth"
+                                      value={this.state.DOB}
+                                      onChange={this.updateDOB}
+                                    />
+                                  </Grid>
+                                </MuiPickersUtilsProvider>
+                              </Grid>
+                              <Grid item xs={4} >
+                                <TextField
+                                  required
+                                  name="Mobile"
+                                  id="Mobile"
+                                  label="Mobile"
+                                  value={this.state.mobile}
+                                  onChange={evt => this.updateMobile(evt)}
+                                  margin="normal"
+                                  type="number"
+                                />
+                              </Grid>
+                            </Grid>
+                            <Grid container item xs={12}>
+                              <Grid item xs={4} >
+                                <input
+                                  accept="image/*"
+                                  id="DP"
+                                  name="DP"
+                                  type="file"
+                                  onChange={evt => this.updatePartySymbol(evt)}
+                                  style={{
+                                    display:"none"
+                                  }}
+                                />
+                                <Grid item xs={12}>
+                                  <label htmlFor="DP">
+                                    Upload the ElectionParty Symbol
+                                    <Button variant="contained" component="span" style={{ marginLeft : "10px"}}>
+                                      Upload
+                                    </Button>
+                                  </label>
+                                </Grid>
+                              </Grid>
+                              <Grid item xs={4} >
+                                <TextField
+                                  required
+                                  name="Education"
+                                  id="Education"
+                                  label="Education Qualification"
+                                  value={this.state.education}
+                                  onChange={evt => this.updateEducation(evt)}
+                                  margin="normal"
+                                />
+                              </Grid>
+                              <Grid item xs={4} >
+                                <TextField
+                                  required
+                                  name="Constituency"
+                                  id="Constituency"
+                                  label="Constituency"
+                                  value={this.state.constituency}
+                                  onChange={evt => this.updateConsitituency(evt)}
+                                  margin="normal"
+                                />
+                              </Grid>
+                            </Grid>
+                            <Grid 
+                              container 
+                              item 
+                              xs={12}
+                              direction="row"
+                              justify="center"
+                              alignItems="center" 
+                              style={{ marginTop : "20px"}}
+                            >
+                              <Button 
+                                variant="contained" 
+                                color="primary"
+                                style={{
+                                  marginTop : "60px",
+                                  margin:"5px"
+                                }}
+                                onClick={this.SignUp}
+                              >SignUp</Button>
+                              <Button 
+                                variant="contained"
+                                style={{
+                                  marginTop : "60px",
+                                  margin:"5px"
+                                }}
+                                onClick={() => this.setState({ goToSignUp : false })}
+                              >Back</Button>
+                            </Grid>
+                          </Grid>
+                          {/* <Grid container>
+                            <Grid item xs={6}>
+                              <TextField
+                                  required
+                                  name="username"
+                                  id="username"
+                                  label="Username"
+                                  value={this.state.username}
+                                  onChange={evt => this.updateUsername(evt)}
+                                  margin="normal"
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                              <TextField
+                                required
+                                name="name"
+                                id="name"
+                                label="Name"
+                                value={this.state.name}
+                                onChange={evt => this.updateName(evt)}
+                                margin="normal"
+                              />
+                            </Grid>
+                            <Grid item xs={6}>
+                              <TextField
+                                required
+                                name="Organization"
+                                id="Organization"
+                                label="Organization"
+                                value={this.state.Organization}
+                                onChange={evt => this.updateOrganization(evt)}
+                                margin="normal"
+                              />
+                            </Grid>
+                            <Grid item xs={6}>
+                              <TextField
+                                required
+                                name="Mobile"
+                                id="Mobile"
+                                label="Mobile"
+                                value={this.state.mobile}
+                                onChange={evt => this.updateMobile(evt)}
+                                type="number"
+                                margin="normal"
+                              />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <TextField
+                                required
+                                name="Password"
+                                id="Password"
+                                label="Password"
+                                value={this.state.password}
+                                onChange={evt => this.updatePassword(evt)}
+                                type="password"
+                                margin="normal"
+                              />
+                            </Grid>
+                            <input
+                              accept="image/*"
+                              id="DP"
+                              name="DP"
+                              type="file"
+                              onChange={evt => this.updateDP(evt)}
+                              style={{
+                                display:"none"
+                              }}
+                            />
+                            <Grid item xs={12}>
+                              <label htmlFor="DP">
+                                Upload the Profile Image
+                                <Button variant="contained" component="span" style={{ marginLeft : "10px"}}>
+                                  Upload
+                                </Button>
+                              </label>
+                            </Grid>
+                            <Grid item xs={12}>
+                              <Button 
+                                variant="contained" 
+                                color="primary"
+                                style={{
+                                  marginTop : "60px",
+                                  margin:"5px"
+                                }}
+                                onClick={this.SignUp}
+                              >SignUp</Button>
+                              <Button 
+                                variant="contained"
+                                style={{
+                                  marginTop : "60px",
+                                  margin:"5px"
+                                }}
+                                onClick={() => this.setState({ goToSignUp : false })}
+                              >Back</Button>
+                            </Grid>
+                          </Grid> */}
+                        </Paper>
+                      : <Paper 
+                          elevation={2}
+                          className="loginCard"
+                        >
+                          <Typography variant="h4" gutterBottom>Candidate Login</Typography>
+                          <form onSubmit={this.SignIn} autoComplete="off">
+                            <TextField
+                              required
+                              name="username"
+                              id="username"
+                              label="Username"
+                              value={this.state.inputUsername}
+                              onChange={evt => this.updateInputUsername(evt)}
+                              margin="normal"
+                            />
+                            <br />
+                            <TextField
+                              required
+                              name="password"
+                              id="password"
+                              label="Password"
+                              type="password"
+                              value={this.state.inputPassword}
+                              onChange={evt => this.updateInputPassword(evt)}
+                              margin="normal"
+                            />
+                            <br />
+                            <Button 
+                              variant="contained" 
+                              color="primary"
+                              style={{
+                                marginTop : "30px",
+                                margin:"5px"
+                              }} 
+                              onClick={this.SignIn}  
+                            >Login</Button>
+                            <Button 
+                              variant="contained" 
+                              color="secondary"
+                              style={{
+                                marginTop : "30px",
+                                margin:"5px"
+                              }}
+                              onClick={() => this.setState({ goToSignUp : true })}
+                            >Register</Button>
+                          </form>
+                        </Paper>
+                  }  
+              </Grid>
             </div>
         ) 
     }

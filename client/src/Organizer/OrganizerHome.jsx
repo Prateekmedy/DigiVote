@@ -9,21 +9,12 @@ export default class OrganizerHome extends Component{
     constructor(props){
         super(props)
         this.state = {
-            OrganizerData : null,
-            username : ""
+            OrganizerData : null
         }
     }
 
-    findUsername = async(Hash) => {
-        let username = await ipfsFetcher(Hash)
-        this.setState({
-            username
-        })
-    }
     updateOrganizerData = (data) => {
-
-        this.findUsername(data)
-
+        console.log(data)
         this.setState({
             OrganizerData : data
         })
@@ -33,14 +24,14 @@ export default class OrganizerHome extends Component{
 
 
         console.log("OrganizerHome")
+        console.log(this.state.OrganizerData)
         return (
             <div >
-                {   true //this.props.isLogin 
+                {   this.props.isLogin 
                         ? <OrganizerDashboard 
                             userObject={this.props.userObject}
                             OrganizerData = {this.state.OrganizerData}
                             loginUpdate={this.props.loginUpdate}
-                            username = {this.state.username}
                             /> 
                         : <OrganizerLogin 
                             userObject={this.props.userObject}

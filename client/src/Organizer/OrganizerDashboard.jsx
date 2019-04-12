@@ -70,7 +70,7 @@ class OrganizerDashboard extends Component{
                                 alignItems="center"
                                 style={{ width: "80%"}}
                             >
-                                <Typography variant="h6" style={{ color : "#fff" }} gutterBottom>{this.props.username ? this.props.username : "Unknown"}</Typography>
+                                <Typography variant="button" style={{ color : "#fff" }} gutterBottom>{this.props.OrganizerData ? this.props.OrganizerData.Username : "Unknown"}</Typography>
                                 <Button variant="outlined" style={{ color : "#fff", borderColor : "#fff", marginLeft : "10px"}} onClick={this.logoutHandler}>
                                     Logout
                                 </Button>
@@ -84,7 +84,7 @@ class OrganizerDashboard extends Component{
                     direction="row"
                     justify="flex-end"
                     alignItems="center"
-                    style={{ border: "0.1px solid #000", height : "90vh", width: "100%" , background: "#fff"}}
+                    style={{ height : "90vh", width: "100%" , background: "#fff"}}
                 >
                     <Grid item xs={3}>
                         <Grid item xs={12}>

@@ -1,4 +1,13 @@
 import React, { Component } from 'react';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import { ipfsFetcher } from '../ipfsStore';
+import Person from '@material-ui/icons/Person'
+import "../App.css"
+
 
 export default class CandidateRequest extends Component{
     constructor(props){
@@ -18,12 +27,17 @@ export default class CandidateRequest extends Component{
             isRequested : request,
             isApproved : approve,
             isRejected : reject,
-            isNominated : nominate
+            isNominated : nominate,
+            electionData : null
         }
     }
 
-    componentWillMount = () => {
-      console.log(this.state)
+    componentWillMount = async() => {
+
+      let electionData = await ipfsFetcher(this.props.electionHash)
+      this.setState({
+        electionData
+      })
     }
 
     doApprove = async(name) => {
@@ -118,11 +132,13 @@ export default class CandidateRequest extends Component{
         });
 
         this.doApprove("Nominate")
+        alert("Candidate Added to Election")
 
     }
 
     render(){
-
+      console.log(this.props)
+      console.log(this.state)
         let hide = {
             display : 'none'
         } 
@@ -133,10 +149,55 @@ export default class CandidateRequest extends Component{
 
         return(
             <div>
-                <h4>{this.props.RequesterUsername} ({this.state.isNominated ? "Nominated" : "Unnominated"})</h4>
-                <button style={(this.state.isApproved || this.state.isNominated) ? hide : show} onClick={() => this.doApprove("Approve")}>Approve</button>
-                <button style={(this.state.isApproved || this.state.isNominated || this.state.isRejected) ? hide : show} onClick={() => this.doApprove("Reject")}>Reject</button>
-                <button style={(this.state.isApproved) ? show : hide} onClick={this.doNominate}>Add to Election</button>
+              {
+                this.state.electionData &&
+                  <Card className="RequestCard" elevation={5}>
+                    <CardContent>
+                      <Typography varient="h4">
+                        {this.state.electionData.typeOfElection}
+                      </Typography>
+                      <Typography className="RequestCardText2">
+                        {this.state.electionData.constituency}
+                      </Typography>
+                      <Person className="personIcon" />
+                      <Typography varient="h4" className="RequestCardText3">
+                        {this.props.RequesterUsername}
+                      </Typography>
+                      <Typography varient="h6" className="RequestCardText4" color="textSecondary">
+                        {this.props.status}
+                      </Typography>
+                    </CardContent>
+                    <CardActions style={{ marginTop : "-5px"}}>
+                    <Button 
+                      color="primary" 
+                      variant="outlined" 
+                      size="small" 
+                      style={(this.state.isApproved || this.state.isNominated) ? hide : show} 
+                      onClick={() => this.doApprove("Approve")}
+                    >
+                      Approve
+                    </Button>
+                    <Button 
+                      color="secondary" 
+                      variant="outlined" 
+                      size="small" 
+                      style={(this.state.isApproved || this.state.isNominated || this.state.isRejected) ? hide : show} 
+                      onClick={() => this.doApprove("Reject")}
+                    >
+                      Reject
+                    </Button>
+                    <Button 
+                      color="secondary" 
+                      variant="outlined" 
+                      size="small" 
+                      style={(this.state.isApproved) ? show : hide} 
+                      onClick={this.doNominate} 
+                    >
+                      Add To Election
+                    </Button>
+                  </CardActions>
+                  </Card>
+              }
             </div>
         )
     }
