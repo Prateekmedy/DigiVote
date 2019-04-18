@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Fade from '@material-ui/core/Fade';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 export default class CandidateRequestForm extends Component{
@@ -24,11 +26,13 @@ export default class CandidateRequestForm extends Component{
 
     componentWillMount = async() => {
 
+        this.setState({ loaderStart : true })
+
         let electionData = await ipfsFetcher(this.props.electionHash)
         let candidateData = await ipfsFetcher(this.props.candidateHash)
 
         this.setState({
-            electionData, candidateData
+            electionData, candidateData, loaderStart : false
         })
 
     }
@@ -38,6 +42,9 @@ export default class CandidateRequestForm extends Component{
     updateIsAgree = (evt) => this.setState({ isAgree : evt.target.checked})
 
     sendRequest = async(event) => {
+
+        this.setState({ loaderStart : true })
+
         event.preventDefault();
         console.log("request sended")
 
@@ -51,6 +58,7 @@ export default class CandidateRequestForm extends Component{
           console.log(receipt)
           alert("Thank You for Sending Request")
 
+          this.setState({ loaderStart : false })
           this.props.updateForm();
           
         })
@@ -65,6 +73,20 @@ export default class CandidateRequestForm extends Component{
     render(){
         return (
             <div>
+                <Fade
+                    in={this.state.loaderStart === true}
+                    unmountOnExit
+                >
+                    <Grid 
+                        container 
+                        direction="row"
+                        justify="center"
+                        alignItems="center"
+                        className="loaderDiv1"
+                    >
+                        <CircularProgress className="loader"/>
+                    </Grid>
+                </Fade>
                 <Paper 
                     elevation={5}
                     className="ElectionRequestForm"

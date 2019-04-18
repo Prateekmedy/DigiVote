@@ -37,6 +37,7 @@ export default class OrganizerHome extends Component{
                             userObject={this.props.userObject}
                             updateOrganizerData = {this.updateOrganizerData}
                             loginUpdate={this.props.loginUpdate}
+                            updateHomeState={this.props.updateHomeState}
                             />
                 }
             </div>

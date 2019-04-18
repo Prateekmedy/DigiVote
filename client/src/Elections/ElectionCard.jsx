@@ -17,8 +17,22 @@ export default class ElectionCard extends Component{
         this.state = {
             electionData : this.props.electionData,
             electionHash : this.props.electionHash,
-            isFormOpen : false //flase it after debugging
+            isFormOpen : false, //flase it after debugging
+            isPresent : false
         }
+    }
+
+    componentDidMount = () => {
+
+        let isPresent
+        
+        this.props.candidateRequestElection.forEach((election) => {
+            if(election === this.props.electionHash){
+                isPresent = true
+            }
+        })
+
+        this.setState({ isPresent })
     }
 
     openRequest = async() => {
@@ -100,6 +114,7 @@ export default class ElectionCard extends Component{
                       color="primary" 
                       variant="outlined" 
                       size="small" 
+                      className={this.state.isPresent ? "hide" : "show"}
                       onClick={this.openRequest} 
                     >
                       Request It
@@ -113,22 +128,22 @@ export default class ElectionCard extends Component{
                         alignItems="center" >
                     <Grid item xs={12}>
                         <Modal
-                    aria-labelledby="Election-Request-Form"
-                    aria-describedby="Election-Request-Form"
-                    open={this.state.isFormOpen}
-                    onClose={() => this.setState({ isFormOpen : false })}
-                    className="ElectionRequestForm"
-                    >
-                    <CandidateRequestForm 
-                        electionHash={this.props.electionHash} 
-                        candidateHash={this.props.candidateHash}
-                        username={this.props.username}
-                        userObject={this.props.userObject}
-                        updateForm={this.updateForm}
-                    />
-                    </Modal>
+                            aria-labelledby="Election-Request-Form"
+                            aria-describedby="Election-Request-Form"
+                            open={this.state.isFormOpen}
+                            onClose={() => this.setState({ isFormOpen : false })}
+                            className="ElectionRequestForm"
+                        >
+                            <CandidateRequestForm 
+                                electionHash={this.props.electionHash} 
+                                candidateHash={this.props.candidateHash}
+                                username={this.props.username}
+                                userObject={this.props.userObject}
+                                updateForm={this.updateForm}
+                            />
+                        </Modal>
                     </Grid>
-                    </Grid>
+                </Grid>
             </div>
             )
     }

@@ -17,7 +17,9 @@
     "react-datetime-picker": "^2.3.0",
     "react-dom": "^16.6.3",
     "react-scripts": "^2.1.5",
+    "react-slick": "^0.23.2",
     "sendotp": "^1.2.9",
+    "slick-carousel": "^1.8.1",
     "web3": "^1.0.0-beta.37"
   },
   "scripts": {

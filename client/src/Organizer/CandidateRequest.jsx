@@ -6,6 +6,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { ipfsFetcher } from '../ipfsStore';
 import Person from '@material-ui/icons/Person'
+import Fade from '@material-ui/core/Fade';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import "../App.css"
 
 
@@ -28,19 +30,24 @@ export default class CandidateRequest extends Component{
             isApproved : approve,
             isRejected : reject,
             isNominated : nominate,
-            electionData : null
+            electionData : null,
+            loaderStart : false
         }
     }
 
     componentWillMount = async() => {
 
+      this.setState({ loaderStart : true })
+
       let electionData = await ipfsFetcher(this.props.electionHash)
       this.setState({
-        electionData
+        electionData, loaderStart : false
       })
     }
 
     doApprove = async(name) => {
+
+      this.setState({ loaderStart : true })
         
         const {contract, accounts} = this.props.userObject
         let {RequesterUsername, index, electionHash } = this.props
@@ -109,7 +116,8 @@ export default class CandidateRequest extends Component{
                       isRequested : false,
                       isApproved : false,
                       isRejected : false,
-                      isNominated : true
+                      isNominated : true,
+                      loaderStart : false
                     })
                 }
                 
@@ -119,6 +127,8 @@ export default class CandidateRequest extends Component{
     }
 
     doNominate = async() => {
+
+      this.setState({ loaderStart : true })
 
         const {contract, accounts} = this.props.userObject
         let {RequesterUsername, electionHash, place } = this.props
@@ -131,6 +141,7 @@ export default class CandidateRequest extends Component{
           console.log(error)
         });
 
+        this.setState({ loaderStart : false })
         this.doApprove("Nominate")
         alert("Candidate Added to Election")
 

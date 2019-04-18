@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import VerifyVoter from './VerifyVoter'
 import VotingArena from './VotingArena'
 import { ipfsSender } from '../ipfsStore';
+import Fade from '@material-ui/core/Fade';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
 //import {ipfsSender} from '../ipfsStore'
 //import {accountCreator} from '../utils/AccountCreater'
 
@@ -12,7 +15,8 @@ export default class Voter extends Component{
         this.state = {
             voterVerified : false,
             AadhaarObject : null,
-            AadhaarHash : null
+            AadhaarHash : null,
+            loaderStart : false
         }
     }
 
@@ -23,6 +27,7 @@ export default class Voter extends Component{
 
     //update funciton for status of verification of Voter
     updateVoterVerification = async() => {
+        this.setState({ loaderStart : true })
 
         //genrating the random password
         let password = this.passwordGenrator()
@@ -52,7 +57,8 @@ export default class Voter extends Component{
 
         this.setState({
             voterVerified : true,
-            AadhaarHash
+            AadhaarHash,
+            loaderStart : false
         })
         
     }
@@ -70,7 +76,20 @@ export default class Voter extends Component{
         console.log("Voter Home")
         return(
             <div>
-                <h1>This is Voter's Home</h1>
+                <Fade
+                    in={this.state.loaderStart === true}
+                    unmountOnExit
+                >
+                    <Grid 
+                        container 
+                        direction="row"
+                        justify="center"
+                        alignItems="center"
+                        className="loaderDiv1"
+                    >
+                        <CircularProgress className="loader"/>
+                    </Grid>
+                </Fade>
                 {this.state.voterVerified 
                     ? <VotingArena 
                         userObject={this.props.userObject}

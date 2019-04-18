@@ -6,18 +6,23 @@ import Typography from '@material-ui/core/Typography';
 import Person from '@material-ui/icons/Person'
 import { ipfsFetcher } from '../ipfsStore';
 import Button from '@material-ui/core/Button';
+import Fade from '@material-ui/core/Fade';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export default class ElectionRequests extends Component{
     constructor(props){
         super(props)
         this.state = {
-            requests:null
+            requests:null,
+            loaderStart : false
             // isElectionSelected : false,
             // selectedElection : null
         }
     }
 
     componentDidMount = async() => {
+
+      this.setState({ loaderStart : true })
         
         let requests = [];
         let length = 0;
@@ -43,7 +48,7 @@ export default class ElectionRequests extends Component{
         
 
         this.setState({
-            requests
+            requests, loaderStart : false
         })
 
        
@@ -52,7 +57,22 @@ export default class ElectionRequests extends Component{
     render(){
         console.log(this.state.requests)
         return(
-            <Grid className="RegisterCard" container>
+          <div>
+              <Fade
+                    in={this.state.loaderStart === true}
+                    unmountOnExit
+                >
+                    <Grid 
+                        container 
+                        direction="row"
+                        justify="center"
+                        alignItems="center"
+                        className="loaderDiv1"
+                    >
+                        <CircularProgress className="loader"/>
+                    </Grid>
+                </Fade>
+                <Grid className="RegisterCard" container>
                 {
                     this.state.requests &&
                     <Grid container >
@@ -86,6 +106,8 @@ export default class ElectionRequests extends Component{
                     </Grid> 
                 }
             </Grid>
+          </div>
+            
         )
     }
 }

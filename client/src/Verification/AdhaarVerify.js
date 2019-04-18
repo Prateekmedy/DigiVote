@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
 import AadhaarData from './AdhaarData'
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Fade from '@material-ui/core/Fade';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Home from '@material-ui/icons/Home';
 
 export default class AadhaarVerify extends Component {
 
     constructor(props){
         super(props)
         this.state = {
-            Aadhaar : ""
+            Aadhaar : "",
+            loaderStart : false
         }
     }
 
     verifyIt = async(event) => {
+
+        this.setState({ loaderStart : true })
 
         event.preventDefault()
 
@@ -48,6 +59,7 @@ export default class AadhaarVerify extends Component {
 
             if(isAadhaarVoted !== undefined){
 
+                this.setState({ loaderStart : false })
                 alert("You are already did the Voting for this Election")
                 console.log("Already Voted with this Aadhaar Card")
                 this.props.updateHomeState(0, null)
@@ -83,10 +95,13 @@ export default class AadhaarVerify extends Component {
                             }
                             
                             //console.log(AadhaarObject)
+                            this.setState({ loaderStart : false })
                             this.props.updateAadhaarData(AadhaarObject)  
                             this.props.updateOtpWidgetUnlock()
     
+
                         }else{
+                            this.setState({ loaderStart : false })
                             alert("This Election is not Oragnize in your Constituency")
                             console.log("This Election is not Oragnize in your Constituency")
                             this.props.updateHomeState(0, null)
@@ -102,12 +117,14 @@ export default class AadhaarVerify extends Component {
             
 
         }else{
+            this.setState({ loaderStart : false })
             console.log("Enter the correct 12 digit Aadhar Card")
         }
         
         
         
         if(!found){
+            this.setState({ loaderStart : false })
             console.log("Aadhaar Card not found")
             return false
         }
@@ -124,10 +141,66 @@ export default class AadhaarVerify extends Component {
     render(){
         return(
             <div>
-                <form onSubmit={this.verifyIt}>
-                <input type="text"  value={this.state.Aadhaar} onChange={evt => this.updateAadhaar(evt)}/>
-                    <input type="submit" value="Verify" />
-                </form>
+                <Fade
+                    in={this.state.loaderStart === true}
+                    unmountOnExit
+                >
+                    <Grid 
+                        container 
+                        direction="row"
+                        justify="center"
+                        alignItems="center"
+                        className="loaderDiv1"
+                    >
+                        <CircularProgress className="loader"/>
+                    </Grid>
+                </Fade>
+                <Grid 
+                    container 
+                    direction="row-reverse"
+                    justify="center"
+                    alignItems="center"
+                    className="testClass"
+                >
+                    <Paper 
+                        elevation={2}
+                        className="AadhaarCard"
+                    >
+                    <Grid 
+                        container 
+                        direction="row"
+                        justify="center"
+                        alignItems="center"
+                    >
+                        <Grid item xs={12}>
+                        <Typography variant="h4" gutterBottom>Verify Aadhaar</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                        <TextField
+                            required
+                            name="Aadhaar"
+                            id="Aadhaar"
+                            label="Aadhaar"
+                            value={this.state.Aadhaar}
+                            onChange={evt => this.updateAadhaar(evt)}
+                            margin="normal"
+                        />
+                        </Grid>
+                        <Grid item xs={12}>
+                        <Button 
+                            variant="contained" 
+                            color="primary"
+                            style={{
+                            marginTop : "30px",
+                            margin:"5px"
+                            }} 
+                            onClick={this.verifyIt}  
+                        >Verify</Button>
+                        </Grid> 
+                        <Home className="HomeIcon" onClick={() => this.props.updateHomeState(0, null)} />
+                        </Grid>
+                    </Paper>
+                </Grid>
             </div>
         )
     }

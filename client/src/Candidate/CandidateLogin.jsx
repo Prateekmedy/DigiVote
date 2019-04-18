@@ -6,7 +6,10 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import DateFnsUtils from '@date-io/date-fns';
+import Home from '@material-ui/icons/Home';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+import Fade from '@material-ui/core/Fade';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class CandidateLogin extends Component{   
 
@@ -32,15 +35,18 @@ class CandidateLogin extends Component{
             ipfsCredentailsData   : null,
             ipfsPersonalHash      : null,
             ipfsPersonalData      : null,
-            isUnlock              :false,
+            isUnlock              : false,
             isSignUp              : false,
-            goToSignUp            :  false
+            goToSignUp            : false,
+            loaderStart           : false
         }
     }
     
 
   //function for Candidate's SignUp (checking for username is not done yet)
   SignUp = async(event) => {
+
+    this.setState({ loaderStart : true })
 
     event.preventDefault()
 
@@ -122,12 +128,17 @@ class CandidateLogin extends Component{
   
       console.log(result);
   
-      //calling the promise by providing the hash to convert it to data
-      let ipfsPersonalData = await ipfsFetcher(result)
-      this.setState({ipfsPersonalData,isSignUp : true, goToSignUp : false})
-      console.log(this.state.ipfsPersonalData)
+      ////calling the promise by providing the hash to convert it to data
+      //let ipfsPersonalData = await ipfsFetcher(result)
+      this.setState({ //ipfsPersonalData,
+                        isSignUp : true, 
+                        goToSignUp : false, 
+                        loaderStart : false
+                    })
+      //console.log(this.state.ipfsPersonalData)
   
     }else{
+      this.setState({ loaderStart : false })
       console.log("Username is Already Excist")
       alert("Username is already excist")
     }
@@ -137,6 +148,8 @@ class CandidateLogin extends Component{
   }
  
   SignIn = async(event) => {
+
+    this.setState({ loaderStart : true })
 
     event.preventDefault();
 
@@ -180,13 +193,16 @@ class CandidateLogin extends Component{
             this.props.loginUpdate(true)
             console.log(this.state.inputUsername)
 
+            this.setState({ loaderStart : false })
             console.log("You are Login :)")
       }else{
+        this.setState({ loaderStart : false })
         console.log("Invalid Password")
       }
 
   
     }else{
+      this.setState({ loaderStart : false })
       console.log("Try Again , Invalid Username")
     } 
     
@@ -230,6 +246,20 @@ class CandidateLogin extends Component{
         return (
 
               <div  className="testClass">
+              <Fade
+                    in={this.state.loaderStart === true}
+                    unmountOnExit
+                >
+                    <Grid 
+                        container 
+                        direction="row"
+                        justify="center"
+                        alignItems="center"
+                        className="loaderDiv1"
+                    >
+                        <CircularProgress className="loader"/>
+                    </Grid>
+                </Fade>
               <Grid 
                 container 
                 direction="row"
@@ -356,24 +386,16 @@ class CandidateLogin extends Component{
                             </Grid>
                             <Grid container item xs={12}>
                               <Grid item xs={4} >
-                                <input
-                                  accept="image/*"
-                                  id="DP"
-                                  name="DP"
-                                  type="file"
-                                  onChange={evt => this.updatePartySymbol(evt)}
-                                  style={{
-                                    display:"none"
-                                  }}
+                                <TextField
+                                  required
+                                  name="Password"
+                                  id="Password"
+                                  label="Password"
+                                  value={this.state.password}
+                                  onChange={evt => this.updatePassword(evt)}
+                                  margin="normal"
+                                  type="password"
                                 />
-                                <Grid item xs={12}>
-                                  <label htmlFor="DP">
-                                    Upload the ElectionParty Symbol
-                                    <Button variant="contained" component="span" style={{ marginLeft : "10px"}}>
-                                      Upload
-                                    </Button>
-                                  </label>
-                                </Grid>
                               </Grid>
                               <Grid item xs={4} >
                                 <TextField
@@ -407,6 +429,34 @@ class CandidateLogin extends Component{
                               alignItems="center" 
                               style={{ marginTop : "20px"}}
                             >
+                              <input
+                                accept="image/*"
+                                id="DP"
+                                name="DP"
+                                type="file"
+                                onChange={evt => this.updatePartySymbol(evt)}
+                                style={{
+                                  display:"none"
+                                }}
+                              />
+                              <Grid item xs={12}>
+                                <label htmlFor="DP">
+                                  Upload the ElectionParty Symbol
+                                  <Button variant="contained" component="span" style={{ marginLeft : "10px"}}>
+                                    Upload
+                                  </Button>
+                                </label>
+                              </Grid>
+                            </Grid>
+                            <Grid 
+                              container 
+                              item 
+                              xs={12}
+                              direction="row"
+                              justify="center"
+                              alignItems="center" 
+                              style={{ marginTop : "20px"}}
+                            >
                               <Button 
                                 variant="contained" 
                                 color="primary"
@@ -426,103 +476,7 @@ class CandidateLogin extends Component{
                               >Back</Button>
                             </Grid>
                           </Grid>
-                          {/* <Grid container>
-                            <Grid item xs={6}>
-                              <TextField
-                                  required
-                                  name="username"
-                                  id="username"
-                                  label="Username"
-                                  value={this.state.username}
-                                  onChange={evt => this.updateUsername(evt)}
-                                  margin="normal"
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                              <TextField
-                                required
-                                name="name"
-                                id="name"
-                                label="Name"
-                                value={this.state.name}
-                                onChange={evt => this.updateName(evt)}
-                                margin="normal"
-                              />
-                            </Grid>
-                            <Grid item xs={6}>
-                              <TextField
-                                required
-                                name="Organization"
-                                id="Organization"
-                                label="Organization"
-                                value={this.state.Organization}
-                                onChange={evt => this.updateOrganization(evt)}
-                                margin="normal"
-                              />
-                            </Grid>
-                            <Grid item xs={6}>
-                              <TextField
-                                required
-                                name="Mobile"
-                                id="Mobile"
-                                label="Mobile"
-                                value={this.state.mobile}
-                                onChange={evt => this.updateMobile(evt)}
-                                type="number"
-                                margin="normal"
-                              />
-                            </Grid>
-                            <Grid item xs={12}>
-                              <TextField
-                                required
-                                name="Password"
-                                id="Password"
-                                label="Password"
-                                value={this.state.password}
-                                onChange={evt => this.updatePassword(evt)}
-                                type="password"
-                                margin="normal"
-                              />
-                            </Grid>
-                            <input
-                              accept="image/*"
-                              id="DP"
-                              name="DP"
-                              type="file"
-                              onChange={evt => this.updateDP(evt)}
-                              style={{
-                                display:"none"
-                              }}
-                            />
-                            <Grid item xs={12}>
-                              <label htmlFor="DP">
-                                Upload the Profile Image
-                                <Button variant="contained" component="span" style={{ marginLeft : "10px"}}>
-                                  Upload
-                                </Button>
-                              </label>
-                            </Grid>
-                            <Grid item xs={12}>
-                              <Button 
-                                variant="contained" 
-                                color="primary"
-                                style={{
-                                  marginTop : "60px",
-                                  margin:"5px"
-                                }}
-                                onClick={this.SignUp}
-                              >SignUp</Button>
-                              <Button 
-                                variant="contained"
-                                style={{
-                                  marginTop : "60px",
-                                  margin:"5px"
-                                }}
-                                onClick={() => this.setState({ goToSignUp : false })}
-                              >Back</Button>
-                            </Grid>
-                          </Grid> */}
-                        </Paper>
+                         </Paper>
                       : <Paper 
                           elevation={2}
                           className="loginCard"
@@ -569,6 +523,7 @@ class CandidateLogin extends Component{
                               onClick={() => this.setState({ goToSignUp : true })}
                             >Register</Button>
                           </form>
+                          <Home className="HomeIcon" onClick={() => this.props.updateHomeState(0, null)} />
                         </Paper>
                   }  
               </Grid>

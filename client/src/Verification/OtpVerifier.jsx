@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import VoterIDVerify from '../Verification/VoterIDVerify'
 import {otpSender, otpVerifier} from '../utils/OtpGenrator'
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
 
 export default class OtpVerifier extends Component {
@@ -98,17 +103,106 @@ export default class OtpVerifier extends Component {
                 voterIdVerified={this.voterIdVerified}
                 voterId={this.props.AadhaarObject.VoterId}
                 />
-            : <div>
-                <form onSubmit={this.sendIt} className={this.state.isOtpSended ? hide : show}>
-                  <p>Enter the last 4 Digit of your mobile number ********{this.props.AadhaarObject.Mobile.substring(8,10)}</p>
-                  <input type="text"  value={this.state.lastFourDigit} onChange={evt => this.updatelastFourDigit(evt)}/>
-                  <input type="submit" value="Send OTP"/>
-                </form>
-                <form onSubmit={this.verifyOtp} className={this.state.isOtpSended ? show : hide}>
-                  <input type="text" value={this.state.OTP} onChange={evt => this.updateOTP(evt)}/>
-                  <input type="submit" value="Verify OTP" />
-                </form>
-              </div>
+            : <Grid 
+                  container 
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                  className="testClass"
+              >
+                  <Paper 
+                      elevation={2}
+                      className="OTPCard"
+                  >
+                  <Grid 
+                      container 
+                      direction="row"
+                      justify="center"
+                      alignItems="center"
+                  >
+                      <Grid item xs={12}>
+                      <Typography variant="h4" gutterBottom>Verify Authentication</Typography>
+                      </Grid>
+                      <Grid container
+                            direction="row"
+                            justify="center"
+                            alignItems="center"
+                        >
+                        {
+                          !this.state.isOtpSended
+                            ? <Grid container
+                                  direction="row"
+                                  justify="center"
+                                  alignItems="center"
+                              >
+                                <Grid item xs={12}>
+                                  <Typography variant="subtitle2" gutterBottom>
+                                    Enter the last 4 Digit of your mobile number ********{this.props.AadhaarObject.Mobile.substring(8,10)}
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                  <TextField
+                                      required
+                                      name="LastFourDigit"
+                                      id="LastFourDigit"
+                                      label="LastFourDigit"
+                                      value={this.state.lastFourDigit}
+                                      onChange={evt => this.updatelastFourDigit(evt)}
+                                      margin="normal"
+                                      type="number"
+                                  />
+                                  </Grid>
+                                  <Grid item xs={12}>
+                                  <Button 
+                                      variant="contained" 
+                                      color="primary"
+                                      style={{
+                                      marginTop : "30px",
+                                      margin:"5px"
+                                      }} 
+                                      onClick={this.sendIt}  
+                                  >Send OTP</Button>
+                                </Grid>
+                              </Grid>
+                            : <Grid container
+                                  direction="row"
+                                  justify="center"
+                                  alignItems="center"
+                              >
+                                <Grid item xs={12}>
+                                  <Typography variant="subtitle" gutterBottom>
+                                    Enter the OTP
+                                  </Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                  <TextField
+                                      required
+                                      name="OTP"
+                                      id="OTP"
+                                      label="OTP"
+                                      value={this.state.OTP}
+                                      onChange={evt => this.updateOTP(evt)}
+                                      margin="normal"
+                                      type="number"
+                                  />
+                                  </Grid>
+                                  <Grid item xs={12}>
+                                  <Button 
+                                      variant="contained" 
+                                      color="primary"
+                                      style={{
+                                      marginTop : "30px",
+                                      margin:"5px"
+                                      }} 
+                                      onClick={this.verifyOtp}  
+                                  >Verify OTP</Button>
+                                </Grid>
+                              </Grid>
+                        }
+                      </Grid>
+                      </Grid>
+                  </Paper>
+              </Grid>
         }     
       </div>
     );

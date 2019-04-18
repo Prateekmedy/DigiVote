@@ -5,6 +5,9 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Home from '@material-ui/icons/Home';
+import Fade from '@material-ui/core/Fade';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 class OrganizerLogin extends Component{   
@@ -26,12 +29,15 @@ class OrganizerLogin extends Component{
             ipfsPersonalData: null,
             isUnlock:false,
             isSignUp : false,
-            goToSignUp : false
+            goToSignUp : false,
+            loaderStart : false
         }
     }
     
   //function for Organizer's SignUp (checking for username is not done yet)
   SignUp = async(event) => {
+
+    this.setState({ loaderStart : true })
 
     event.preventDefault()
 
@@ -107,11 +113,12 @@ class OrganizerLogin extends Component{
   
       //calling the promise by providing the hash to convert it to data
       let ipfsPersonalData = await ipfsFetcher(result)
-      this.setState({ipfsPersonalData,isSignUp : true, goToSignUp : false})
+      this.setState({ipfsPersonalData,isSignUp : true, goToSignUp : false, loaderStart : false})
       console.log(this.state.ipfsPersonalData)
   
       
     }else{
+      this.setState({ loaderStart : false })
       console.log("Username is Already Excist")
       alert("Username is already excist")
     }
@@ -120,6 +127,8 @@ class OrganizerLogin extends Component{
   }
  
   SignIn = async(event) => {
+
+    this.setState({ loaderStart : true })
 
     event.preventDefault();
 
@@ -156,14 +165,16 @@ class OrganizerLogin extends Component{
             this.props.updateOrganizerData(ipfsCredentailsData)
             this.props.loginUpdate(true)
             
-
+            this.setState({ loaderStart : false })
             console.log("You are Login :)")
       }else{
+        this.setState({ loaderStart : false })
         console.log("Invalid Password")
       }
 
   
     }else{
+      this.setState({ loaderStart : false })
       console.log("Try Again , Invalid Username")
     } 
     
@@ -233,9 +244,23 @@ class OrganizerLogin extends Component{
         
         return (
             <div  className="testClass">
+              <Fade
+                    in={this.state.loaderStart === true}
+                    unmountOnExit
+                >
+                    <Grid 
+                        container 
+                        direction="row"
+                        justify="center"
+                        alignItems="center"
+                        className="loaderDiv1"
+                    >
+                        <CircularProgress className="loader"/>
+                    </Grid>
+                </Fade>
               <Grid 
                 container 
-                direction="row-reverse"
+                direction="row"
                 justify="center"
                 alignItems="center"
                 className="testClass"
@@ -390,6 +415,7 @@ class OrganizerLogin extends Component{
                               onClick={() => this.setState({ goToSignUp : true })}
                             >Register</Button>
                           </form>
+                          <Home className="HomeIcon" onClick={() => this.props.updateHomeState(0, null)} />
                         </Paper>
                   }  
               </Grid>

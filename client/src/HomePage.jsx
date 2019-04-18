@@ -6,6 +6,7 @@ import ElectionList from './Elections/ElectionList';
 import ResultCard from './Elections/ResultCard';
 import Pre_Analysis from './Anaylsis Report/Pre-Anaylsis';
 import Post_Anaylsis from './Anaylsis Report/Post-Analysis';
+import Slide from './utils/slider'
 
 export default class Home extends Component{
 
@@ -57,9 +58,15 @@ export default class Home extends Component{
                                     isLogin={this.props.isLogin} 
                                     loginUpdate={this.props.loginUpdate} 
                                     userObject={this.state.userObject} 
+                                    updateHomeState={this.updateHomeState}
                                 />
             break;
-            case 2 : Option = <CandidateHome isLogin={this.props.isLogin} loginUpdate={this.props.loginUpdate} userObject={this.state.userObject}/>
+            case 2 : Option = <CandidateHome 
+                                    isLogin={this.props.isLogin} 
+                                    loginUpdate={this.props.loginUpdate} 
+                                    userObject={this.state.userObject}
+                                    updateHomeState={this.updateHomeState}
+                                />
             break;
             case 3 : Option = <VoterHome  
                                     userObject={this.state.userObject}
@@ -73,16 +80,19 @@ export default class Home extends Component{
             case 4 : Option = <ResultCard 
                                     userObject={this.state.userObject}
                                     selectedElection={this.state.selectedElection}
+                                    updateHomeState={this.updateHomeState}
                                 />
             break;
             case 5 : Option = <Pre_Analysis 
                                     userObject={this.state.userObject}
                                     selectedElection={this.state.selectedElection}
+                                    updateHomeState={this.updateHomeState}
                                 />
             break;
             case 6 : Option = <Post_Anaylsis
                                     userObject={this.state.userObject}
                                     selectedElection={this.state.selectedElection}
+                                    updateHomeState={this.updateHomeState}
                                 />
             break;
             default : Option = <ElectionList 
@@ -93,11 +103,6 @@ export default class Home extends Component{
 
         return(
             <div>
-                {/* <h1>This is Home Page</h1> */}
-                <button onClick={() => { this.setState({val:0})}}>Home</button>
-                <button onClick={() => { this.setState({val:1})}}>Organize</button>
-                <button onClick={() => { this.setState({val:2})}}>Candidate</button>
-                {/* <button onClick={() => { this.setState({val:3})}}>Voter</button> */}
                 { Option }
             </div>
         )

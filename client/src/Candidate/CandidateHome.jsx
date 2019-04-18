@@ -38,6 +38,7 @@ export default class CandidateHome extends Component{
                         updateCandidateData = {this.updateCandidateData}
                         isLogin={this.props.isLogin}
                         loginUpdate={this.props.loginUpdate}
+                        updateHomeState={this.props.updateHomeState}
                         />
             }
 

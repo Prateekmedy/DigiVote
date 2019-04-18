@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+import Fade from '@material-ui/core/Fade';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import "../App.css"
 
 export default class OrganizeElection extends Component {
@@ -24,11 +26,14 @@ export default class OrganizeElection extends Component {
             ToE : "",
             constituency : "",
             organizer : "",
-            totalVotes : 0
+            totalVotes : 0,
+            loaderStart : false
         }
     }
 
     createElection = async(event) => {
+
+      this.setState({ loaderStart : true })
         console.log("Create it");
 
         event.preventDefault()
@@ -75,6 +80,8 @@ export default class OrganizeElection extends Component {
         .then(console.log)
         .catch(console.error)
 
+        this.setState({ loaderStart : false })
+
         alert("Thank you for Organize Election")
         back();
     }   
@@ -102,7 +109,22 @@ export default class OrganizeElection extends Component {
         console.log(this.state)
 
         return (
-              <Grid 
+            <div>
+              <Fade
+                    in={this.state.loaderStart === true}
+                    unmountOnExit
+                >
+                    <Grid 
+                        container 
+                        direction="row"
+                        justify="center"
+                        alignItems="center"
+                        className="loaderDiv1"
+                    >
+                        <CircularProgress className="loader"/>
+                    </Grid>
+                </Fade>
+                <Grid 
                 container 
                 direction="row"
                 justify="center"
@@ -294,6 +316,8 @@ export default class OrganizeElection extends Component {
                       </Grid>
                   </Paper>
               </Grid>
+            </div>
+              
         )
     }
 }

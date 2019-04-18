@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import CandidateRequest from './CandidateRequest';
 import Grid from '@material-ui/core/Grid';
+import Fade from '@material-ui/core/Fade';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export default class AllRequests extends Component{
     constructor(props){
         super(props)
         this.state = {
-            requests:null
+            requests:null,
+            loaderStart : false
         }
     }
 
     componentDidMount = async() => {
+
+        this.setState({ loaderStart : true })
         
         let requests = [];
         let length = 0;
@@ -32,7 +37,7 @@ export default class AllRequests extends Component{
         }
        
         this.setState({
-            requests
+            requests, loaderStart : false
         })
 
        
@@ -40,7 +45,22 @@ export default class AllRequests extends Component{
 
     render(){
         return(
-            <Grid className="RegisterCard" container>
+            <div>
+                <Fade
+                    in={this.state.loaderStart === true}
+                    unmountOnExit
+                >
+                    <Grid 
+                        container 
+                        direction="row"
+                        justify="center"
+                        alignItems="center"
+                        className="loaderDiv1"
+                    >
+                        <CircularProgress className="loader"/>
+                    </Grid>
+                </Fade>
+                <Grid className="RegisterCard" container>
                 {
                     this.state.requests &&
                     <Grid container >
@@ -58,7 +78,9 @@ export default class AllRequests extends Component{
                         )}
                     </Grid> 
                 }
-            </Grid>
+                </Grid>
+            </div>
+            
         )
     }
 }

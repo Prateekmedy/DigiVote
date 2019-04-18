@@ -30,6 +30,189 @@
   display: block;
 }
 
+.HomePageDiv{
+  height: 100vh;
+  width: 100%;
+}
+
+.sideBanner{
+  height: 100vh;
+  width: 100%; 
+  background: url('./Asset/1x/Asset_6.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 100% 50%;
+}
+
+.BrandLogo{
+  height: 70px;
+  width: 210px;
+  background: url('./Asset/1x/Asset_3.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin: 5px;
+}
+
+.rightImg{
+  height: 75vh;
+  width : 300px;
+  background: url('./Asset/1x/Asset_1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  top: 50%;
+  left: 60%;
+  transform:translateY(-50%);
+}
+
+.leftImg{
+  height: 45vh;
+  width : 500px;
+  background: url('./Asset/1x/Asset_4.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-40%);
+}
+
+.LandingText{
+  height: 30vh;
+  width: 400px;
+  background: url('./Asset/1x/Asset_2.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-70%, -40%);
+}
+
+.LandingBtnDiv{
+  position: relative;
+  left: 62%;
+  top: 13%;
+  width: 300px;
+}
+
+.LandingBtn{
+  padding : 10px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  background: transparent;
+  font-family: Roboto;
+  font-size: 15px;
+  margin:10px !important;                                  
+  color: #fff !important;
+}
+
+.LandingBtn:hover {
+  border: 0px;
+  background: #fff;                                
+  color: #4527a0 !important;
+  cursor: pointer;
+  box-shadow: 0px 0px 20px rgba(0,0,0,0.8);
+  transition: ease .5s;
+}
+
+.LadingPageDown{
+  height: 100vh;
+  width: 100%;
+}
+
+.loaderDiv{
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0,0,0,0.2);
+  transition: ease .5s;
+  z-index:1000;
+}
+
+.loaderDiv1{
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top:0;
+  left:0;
+  background: rgba(0,0,0,0.2);
+  transition: ease .5s;
+  z-index:1000;
+}
+
+.loader{
+  height: 100px !important;
+  width: 100px !important;
+  color : #fff !important;
+}
+
+.LiveElectionHeading{
+  height: 100px;
+  width: 100%;
+  background: url('./Asset/1x/Asset_9.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.LiveElection{
+  height: 500px;
+  width: 100%;
+  /* border:0.5px solid purple; */
+}
+
+.ElectionCard{
+  color : #ffffff !important;
+  background: #4527a0 !important;
+  height: 280px;
+  width: 230px;
+  padding:5px ;
+  box-shadow: 0px 0px 15px rgba(0,0,0,0.8) !important; 
+}
+
+.CRElectionHeading{
+  height: 100px;
+  width: 100%;
+  background: url('./Asset/1x/Asset_10.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  top: 250px;
+  background-position: 100% 100%;
+} 
+
+.OverElectionHeading{
+  height: 100px;
+  width: 100%;
+  background: url('./Asset/1x/Asset_11.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  top: 500px;
+  background-position: 0% 100%;
+}
+
+.AllElectionHeading{
+  height: 100px;
+  width: 100%;
+  background: url('./Asset/1x/Asset_15.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+  top: 750px;
+  background-position: 100% 100%;
+}
+
+.Footer{
+  height: 100px;
+  width: 100%;
+  background: url('./Asset/1x/Asset_14.png');
+  background-repeat: no-repeat;
+  position: relative;
+  top: 1000px;
+  background-size: 100% 100%;
+  background-position: 100% 100%;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -38,3 +221,4 @@
     transform: rotate(360deg);
   }
 }
+
