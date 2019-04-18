@@ -34,56 +34,63 @@ export default class OrganizeElection extends Component {
     createElection = async(event) => {
 
       this.setState({ loaderStart : true })
-        console.log("Create it");
-
-        event.preventDefault()
-
-        console.log(this.state)
-
-        const {contract, OrganizerData, back, accounts} = this.props;
-       // console.log(OrganizerData)
-        const ElectionData = {
-            typeOfElection : this.state.ToE,
-            constituency   : this.state.constituency,
-            organizer      : this.state.organizer,
-            electionStartDateNTime   : this.state.ESD.toString(), //"mm-dd-yyyy hh:ii"
-            electionEndDateNTime   : this.state.EED.toString(),
-            resultDate     : this.state.RD.toString(),
-            ICRD           : this.state.ICRD.toString(),
-            FCRD           : this.state.FCRD.toString(),
-            TotalVoters    : this.state.totalVotes
-        }
+      event.preventDefault()
+      //Checking the entry for the empty 
+      if(((this.state.ESD && this.state.EED && this.state.RD && this.state.ICRD && this.state.FCRD) == null) && ((this.state.ToE && this.state.organizer && this.state.constituency) == "") && (this.state.totalVotes == 0) ){
         
-        let ElectionHash = await ipfsSender(ElectionData);
-        console.log(ElectionHash);
-        console.log(ElectionData)
-
-        await contract.methods.addElection(OrganizerData.Address, ElectionHash).send({from: accounts[2],gas:6721975})
-        .then((result) => {
-          console.log(result)
-        })
-        .then(console.log)
-        .catch((error) => {
-          console.log(error)
-        });
-
-        //add an NOTA CAndidate into the new election
-        await contract.methods.addCandidate(ElectionHash, "NOTA", "anywhere").send({from: accounts[2],gas:6721975})
-        .then((receipt) => {
-          console.log(receipt)
-        })
-        .catch((error) => {
-          console.log(error)
-        });
-    
-        await contract.methods.getElection(OrganizerData.Address, 0).call()
-        .then(console.log)
-        .catch(console.error)
-
+        alert("Please Enter Something !!")
         this.setState({ loaderStart : false })
 
-        alert("Thank you for Organize Election")
-        back();
+      }else{
+
+          console.log(this.state)
+
+          const {contract, OrganizerData, back, accounts} = this.props;
+        // console.log(OrganizerData)
+          const ElectionData = {
+              typeOfElection : this.state.ToE,
+              constituency   : this.state.constituency,
+              organizer      : this.state.organizer,
+              electionStartDateNTime   : this.state.ESD.toString(), //"mm-dd-yyyy hh:ii"
+              electionEndDateNTime   : this.state.EED.toString(),
+              resultDate     : this.state.RD.toString(),
+              ICRD           : this.state.ICRD.toString(),
+              FCRD           : this.state.FCRD.toString(),
+              TotalVoters    : this.state.totalVotes
+          }
+          
+          let ElectionHash = await ipfsSender(ElectionData);
+          console.log(ElectionHash);
+          console.log(ElectionData)
+
+          await contract.methods.addElection(OrganizerData.Address, ElectionHash).send({from: accounts[2],gas:6721975})
+          .then((result) => {
+            console.log(result)
+          })
+          .then(console.log)
+          .catch((error) => {
+            console.log(error)
+          });
+
+          //add an NOTA CAndidate into the new election
+          await contract.methods.addCandidate(ElectionHash, "NOTA", "anywhere").send({from: accounts[2],gas:6721975})
+          .then((receipt) => {
+            console.log(receipt)
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      
+          await contract.methods.getElection(OrganizerData.Address, 0).call()
+          .then(console.log)
+          .catch(console.error)
+
+          this.setState({ loaderStart : false })
+
+          alert("Thank you for Organize Election")
+          back();
+
+      }  
     }   
 
     updateToE = (evt) => this.setState({ ToE : evt.target.value })
@@ -105,9 +112,6 @@ export default class OrganizeElection extends Component {
     updateFCRD = (val) => this.setState({ FCRD : val })
 
     render(){
-        console.log(this.props.OrganizerData)
-        console.log(this.state)
-
         return (
             <div>
               <Fade

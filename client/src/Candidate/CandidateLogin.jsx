@@ -50,6 +50,12 @@ class CandidateLogin extends Component{
 
     event.preventDefault()
 
+    //checking for the empty textfiled or entry
+    if((this.state.username && this.state.name && this.state.electionParty && this.state.citizenship && this.state.age && this.state.DOB && this.state.mobile && this.state.password && this.state.constituency) == ""){
+      alert("Enter all the Details First !!")
+      this.setState({ isSignUp : false })
+    }
+
     const {contract, accounts} = this.props.userObject
     // //calling function by providing the password and returns the Account Address
     // await this.props.userObject.accountCreator("test");
@@ -151,6 +157,12 @@ class CandidateLogin extends Component{
 
     this.setState({ loaderStart : true })
 
+    //checking if the entered value is empty
+    if((this.state.inputUsername && this.state.inputPassword) == ""){
+      alert("Please Enter something !!")
+      this.setState({ loaderStart : false})
+    }
+
     event.preventDefault();
 
     const {contract, web3} = this.props.userObject
@@ -198,12 +210,14 @@ class CandidateLogin extends Component{
       }else{
         this.setState({ loaderStart : false })
         console.log("Invalid Password")
+        alert("Invalid Password, Try Again !!")
       }
 
   
     }else{
       this.setState({ loaderStart : false })
       console.log("Try Again , Invalid Username")
+      alert("Invalid Username, Try Again !")
     } 
     
   }

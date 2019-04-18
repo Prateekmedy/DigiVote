@@ -119,6 +119,7 @@ export default class AadhaarVerify extends Component {
         }else{
             this.setState({ loaderStart : false })
             console.log("Enter the correct 12 digit Aadhar Card")
+            alert("Enter the correct 12 Digit Aadhaar Card !!")
         }
         
         
@@ -126,6 +127,7 @@ export default class AadhaarVerify extends Component {
         if(!found){
             this.setState({ loaderStart : false })
             console.log("Aadhaar Card not found")
+            alert("Aadhaar Card Not Found !!")
             return false
         }
 
