@@ -21,6 +21,7 @@ export default class VoterIDVerify extends Component {
         if(this.props.voterId === this.state.voterId){
             this.props.voterIdVerified()
         }else{
+            alert("Enter The Correct VoterID")
             console.log("Enter the correct VoterID")
         }
 

@@ -480,3 +480,67 @@ padding: 5px;
   color:#4527a0 !important;
   transition: ease 0.5s;
 }
+
+.ElectionHeader{
+  background:#fff !important;
+  color : #000 !important;
+  height: 50px;
+  width: 70%;
+  padding:3px;
+  position: relative;
+  left:50%;
+  transform:translateX(-50%);
+  margin-top: 30px;
+}
+
+.ResultBody{
+  background:transparent !important;
+  color : #000 !important;
+  height: inherit;
+  width: 90% !important;
+  padding:10px;
+  position: relative;
+  left:50%;
+  transform:translateX(-55%);
+  margin-top: 50px;
+}
+
+.ResultCard{
+  height: 150px;
+  width: 150px;
+  margin: 3px;
+}
+
+.ResultCardWin{
+  height: 150px;
+  width: 150px;
+  border: 5px solid #aeea00 !important;
+  margin : 3px;
+}
+
+.PartyName{
+  /* margin-top:5px !important; */
+}
+
+.PartyVote{
+  font-size: 4em !important;
+}
+
+.ConstituencyResult{
+  width: 50% !important;
+  position: relative;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.CRGrid{
+  margin-top: 100px !important;
+  margin-bottom: 100px !important;
+}
+
+.ResultBack{
+  background : #4527a0 !important;
+  color : #fff !important;
+  width: 100%;
+  min-height: 100vh;
+}

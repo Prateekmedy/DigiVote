@@ -114,7 +114,7 @@ export default class SingleElection extends Component{
         await contract.methods.aadhaarCount(this.props.electionHash[this.props.index]).call()
         .then(res => TotalVoters = res)
         .catch(console.error)
-
+        console.log(TotalVoters)
 
         //condition for checking that all thr voter are voted or not 
         if(TotalVoters < this.props.item.TotalVoters){
@@ -453,7 +453,7 @@ export default class SingleElection extends Component{
                                 variant="outlined" 
                                 color="primary"
                                 className="ElectionBtn"
-                                style={(this.state.isResultTime && this.state.isVotingOver) ? show : hide }
+                                style={(this.state.isResultTime && this.state.isVotingOver) ? show : show } //hide it after debugging
                                 onClick={this.openPostReport}
                             >Post Analysis</Button>
                             <Button 

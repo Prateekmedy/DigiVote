@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ipfsFetcher } from '../ipfsStore';
+import Home from '@material-ui/icons/Home';
 
 export default class Pre_Analysis extends Component{
 
@@ -85,13 +86,13 @@ export default class Pre_Analysis extends Component{
         console.log(this.state)
         return(
             <div>
-                <h2>Welcome to Pre Pre-Analysis Report</h2>
-                {
-                    this.state.totalVoter 
-                        &&  <div>
-                                Do this
-                            </div>
-                }
+                <h2>Welcome to Pre Result-Analysis Report</h2>
+                <h3>Total Voters : {this.state.totalVoter}</h3>
+                <h3>Total Voting : {this.state.totalVoting}</h3>
+                <h3>Number of Young Voters (18-30) : {this.state.Array18To30.length}</h3>
+                <h3>Number of Adult Voters (18-30) : {this.state.Array31To50.length}</h3>
+                <h3>Number of Old Age Voters (18-30) : {this.state.Array51To150.length}</h3>
+                <Home className="HomeIcon" onClick={() => this.props.updateHomeState(0, null)} />
             </div>
         )
     }

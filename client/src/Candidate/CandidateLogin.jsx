@@ -53,101 +53,103 @@ class CandidateLogin extends Component{
     //checking for the empty textfiled or entry
     if((this.state.username && this.state.name && this.state.electionParty && this.state.citizenship && this.state.age && this.state.DOB && this.state.mobile && this.state.password && this.state.constituency) == ""){
       alert("Enter all the Details First !!")
-      this.setState({ isSignUp : false })
-    }
-
-    const {contract, accounts} = this.props.userObject
-    // //calling function by providing the password and returns the Account Address
-    // await this.props.userObject.accountCreator("test");
-
-    // console.log(this.props.userObject.acc);
-
-    //-------------------Calling fucntion for the Candidate Credentials Data------------------
-
-    //checking of username is alerady present or not
-    let isUsernamePresent = false
-
-    await  contract.methods.findCandidate(this.state.username).call()
-    .then(res => isUsernamePresent = res)
-    .catch(console.error)
-
-    if(!isUsernamePresent){
-
-      let CredentialsData = {
-        Username : this.state.username,
-        Password : this.state.password,
-        Address : accounts[1] //this.state.accAddress
-      }  
-  
-      //calling the promise by providing the data to convert it to hash
-      let ipfsCredentialsHash = await ipfsSender(CredentialsData)
-      this.setState({ipfsCredentialsHash})
-      console.log(this.state.ipfsCredentialsHash)
-  
-      //function for sending hash to the blockchain
-      await contract.methods.setCandidateCredentials(CredentialsData.Username, this.state.ipfsCredentialsHash).send({from: accounts[2],gas:6721975})
-      .then((receipt) => {
-        console.log(receipt)
-      })
-      .catch((error) => {
-        console.log(error)
-      });
-  
-      //-------------------Calling fucntion for the Candidate Personal Data------------------
-      let PersonalData = {
-        Username                  : this.state.username,
-        Account                   : accounts[1], //this.state.accAddress
-        Name                      : this.state.name,
-        ElectionParty             : this.state.electionParty,
-        Mobile                    : this.state.mobile,
-        Age                       : this.state.age,
-        constituency              : this.state.constituency,
-        Father_Name               : this.state.fatherName,
-        Mother_Name               : this.state.motherName,
-        DOB                       : this.state.DOB.toString(),
-        Party_Symbol              : this.state.partySymbol,
-        Citizenship               : this.state.citizenship,
-        Education_Qualification   : this.state.education	
-      }  
-  
-      //calling the promise by providing the data to convert it to hash
-      let ipfsPersonalHash = await ipfsSender(PersonalData)
-      this.setState({ipfsPersonalHash})
-      console.log(this.state.ipfsPersonalHash)
-  
-      //function for sending hash to the blockchain
-      await contract.methods.setCandidatePersonal(PersonalData.Username,this.state.ipfsPersonalHash).send({from: accounts[2],gas:6721975})
-      .then((receipt) => {
-        console.log(receipt)
-      })
-      .catch((error) => {
-        console.log(error)
-      });
-  
-  
-      //-------------------------------------Functions for retireving the Data from the Blockchain-----------------
-      //calling for fetching the hash from the blockchain.
-      let result;
-      await contract.methods.getCandidatePersonal(PersonalData.Username).call()
-      .then((res) => result = res)
-      .catch(console.error)
-  
-      console.log(result);
-  
-      ////calling the promise by providing the hash to convert it to data
-      //let ipfsPersonalData = await ipfsFetcher(result)
-      this.setState({ //ipfsPersonalData,
-                        isSignUp : true, 
-                        goToSignUp : false, 
-                        loaderStart : false
-                    })
-      //console.log(this.state.ipfsPersonalData)
-  
+      this.setState({ isSignUp : false, loaderStart : false })
     }else{
-      this.setState({ loaderStart : false })
-      console.log("Username is Already Excist")
-      alert("Username is already excist")
+      const {contract, accounts} = this.props.userObject
+      // //calling function by providing the password and returns the Account Address
+      // await this.props.userObject.accountCreator("test");
+
+      // console.log(this.props.userObject.acc);
+
+      //-------------------Calling fucntion for the Candidate Credentials Data------------------
+
+      //checking of username is alerady present or not
+      let isUsernamePresent = false
+
+      await  contract.methods.findCandidate(this.state.username).call()
+      .then(res => isUsernamePresent = res)
+      .catch(console.error)
+
+      if(!isUsernamePresent){
+
+        let CredentialsData = {
+          Username : this.state.username,
+          Password : this.state.password,
+          Address : accounts[1] //this.state.accAddress
+        }  
+    
+        //calling the promise by providing the data to convert it to hash
+        let ipfsCredentialsHash = await ipfsSender(CredentialsData)
+        this.setState({ipfsCredentialsHash})
+        console.log(this.state.ipfsCredentialsHash)
+    
+        //function for sending hash to the blockchain
+        await contract.methods.setCandidateCredentials(CredentialsData.Username, this.state.ipfsCredentialsHash).send({from: accounts[2],gas:6721975})
+        .then((receipt) => {
+          console.log(receipt)
+        })
+        .catch((error) => {
+          console.log(error)
+        });
+    
+        //-------------------Calling fucntion for the Candidate Personal Data------------------
+        let PersonalData = {
+          Username                  : this.state.username,
+          Account                   : accounts[1], //this.state.accAddress
+          Name                      : this.state.name,
+          ElectionParty             : this.state.electionParty,
+          Mobile                    : this.state.mobile,
+          Age                       : this.state.age,
+          constituency              : this.state.constituency,
+          Father_Name               : this.state.fatherName,
+          Mother_Name               : this.state.motherName,
+          DOB                       : this.state.DOB.toString(),
+          Party_Symbol              : this.state.partySymbol,
+          Citizenship               : this.state.citizenship,
+          Education_Qualification   : this.state.education	
+        }  
+    
+        //calling the promise by providing the data to convert it to hash
+        let ipfsPersonalHash = await ipfsSender(PersonalData)
+        this.setState({ipfsPersonalHash})
+        console.log(this.state.ipfsPersonalHash)
+    
+        //function for sending hash to the blockchain
+        await contract.methods.setCandidatePersonal(PersonalData.Username,this.state.ipfsPersonalHash).send({from: accounts[2],gas:6721975})
+        .then((receipt) => {
+          console.log(receipt)
+        })
+        .catch((error) => {
+          console.log(error)
+        });
+    
+    
+        //-------------------------------------Functions for retireving the Data from the Blockchain-----------------
+        //calling for fetching the hash from the blockchain.
+        let result;
+        await contract.methods.getCandidatePersonal(PersonalData.Username).call()
+        .then((res) => result = res)
+        .catch(console.error)
+    
+        console.log(result);
+    
+        ////calling the promise by providing the hash to convert it to data
+        //let ipfsPersonalData = await ipfsFetcher(result)
+        this.setState({ //ipfsPersonalData,
+                          isSignUp : true, 
+                          goToSignUp : false, 
+                          loaderStart : false
+                      })
+        //console.log(this.state.ipfsPersonalData)
+    
+      }else{
+        this.setState({ loaderStart : false })
+        console.log("Username is Already Excist")
+        alert("Username is already excist")
+      }
+      
     }
+
     
 
 

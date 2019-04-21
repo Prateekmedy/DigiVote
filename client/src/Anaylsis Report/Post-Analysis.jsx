@@ -1,4 +1,17 @@
 import React, { Component } from 'react';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Home from '@material-ui/icons/Home';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Fade from '@material-ui/core/Fade';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { Chart } from "react-google-charts";
 import { ipfsFetcher } from '../ipfsStore';
 
 export default class Post_Anaylsis extends Component{
@@ -10,11 +23,16 @@ export default class Post_Anaylsis extends Component{
             votersData : [],
             maleVoter : [],
             femaleVoter : [],
-            candidatesData : []
+            candidatesData : [],
+            loaderStart : false,
+            winParty : null,
+            PartiesVote : []
         }
     }
 
     componentWillMount = async() => {
+
+        this.setState({ loaderStart : true })
         const {contract} = this.props.userObject
 
         //call for total number of Voter in the Election
@@ -87,7 +105,45 @@ export default class Post_Anaylsis extends Component{
         //calling that function with  total numbe of candidates of an election to be group by constituencies
         let candidateByConstituency = groupByConstituency(candidates) 
 
+        //Calculating PartiesVote
+        let candidateByPartiesLength = Object.keys(candidateByParties).length
+        let PartiesVote = []
 
+        for(let i=0;i<candidateByPartiesLength;i++){
+    
+            let innerArray = []
+            let votes =  0,
+                key = Object.keys(candidateByParties)[i]
+            
+            innerArray.push(Object.keys(candidateByParties)[i])
+            for(let j=0;j<candidateByParties[key].length;j++){
+
+                let candidate = candidateByParties[key][j]
+                
+                candidates.forEach(element => {
+                    if(element[0] == candidate.Username){
+                        votes = votes + parseInt(element[1])
+                    }
+                });
+            }
+            
+            innerArray.push(votes)
+
+            PartiesVote.push(innerArray)
+        }
+
+        let totalVotes = parseInt(this.props.selectedElection.election.TotalVoters)
+        let winningTotal = totalVotes/2
+
+        PartiesVote.sort(function(a,b){
+            return b[1] - a[1];
+        });
+
+        if((PartiesVote[0][1] >= winningTotal) || (PartiesVote[0][1] > 0)){
+            this.setState({ winParty : PartiesVote[0][0] })
+        }
+
+        console.log(candidatesData)
         console.log(candidateByParties)
 
 
@@ -96,18 +152,182 @@ export default class Post_Anaylsis extends Component{
             totalVoting,
             votersData,
             maleVoter,
-            femaleVoter
+            femaleVoter,
+            loaderStart : false,
+            PartiesVote
         })
     }
 
     render(){
+        console.log(this.state.PartiesVote)
         return(
             <div>
-                Bla Bla
-                {
-                   // this.state.femaleVoter
-                }
+                <Fade
+                in={this.state.loaderStart === true}
+                unmountOnExit
+            >
+                <Grid 
+                    container 
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
+                    className="loaderDiv1"
+                >
+                <CircularProgress className="loader"/>
+                </Grid>
+            </Fade>
+            <Grid 
+                  container 
+                  direction="row"
+                  justify="center"
+                  alignItems="center"
+                  className="ResultBack"
+              >
+                <Grid item xs={12}>
+                    <Paper 
+                          elevation={2}
+                          className="ElectionHeader"
+                    >
+                        <Typography variant="h4" gutterBottom>Post Election Report</Typography>
+                    </Paper>
+                </Grid>
+                <Grid container className="ResultBody">
+                <Grid container spacing={16}>
+                    <Grid item xs={12}>
+                    <Grid container  justify="center" spacing={32}>
+                        {
+                            this.state.totalVoter
+                            &&  
+                            <div>
+                                <Grid item>
+                                    <Chart
+                                    width={'300px'}
+                                    height={'300px'}
+                                    chartType="PieChart"
+                                    data={[
+                                        ['Election', 'Female Voters'],
+                                        ['Total Voters', this.state.totalVoter],
+                                        ['Female Voters', this.state.femaleVoter]
+                                    ]}
+                                    options={{
+                                        title: 'Female Voter Percentage',
+                                        // Just add this option
+                                        pieHole: 0.6,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item>
+                                    <Chart
+                                    width={'300px'}
+                                    height={'300px'}
+                                    chartType="PieChart"
+                                    data={[
+                                        ['Election', 'Votes'],
+                                        ['Total Voters', this.state.totalVoter],
+                                        ['Voting', this.state.totalVoting]
+                                    ]}
+                                    options={{
+                                        title: 'Total Voting Percentage',
+                                        // Just add this option
+                                        pieHole: 0.6,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item>
+                                    <Chart
+                                    width={'300px'}
+                                    height={'300px'}
+                                    chartType="PieChart"
+                                    data={[
+                                        ['Election', 'Male Voters'],
+                                        ['Total Voters', this.state.totalVoter],
+                                        ['Male Voting', this.state.maleVoter]
+                                    ]}
+                                    options={{
+                                        title: 'Male Voting Percentage',
+                                        // Just add this option
+                                        pieHole: 0.6,
+                                    }}
+                                />
+                            </Grid>
+                            </div>
+                        }
+                        
+                       
+                    </Grid>
+                    </Grid>
+                </Grid>
+                {/* <Grid container spacing={16}>
+                    <Grid item xs={12}>
+                    <Grid container  justify="center" spacing={32}>
+                        {this.state.PartiesVote.map((party, index)  => (
+                        <Grid key={index} item>
+                             <Card className={ party[0] === this.state.winParty ? "ResultCardWin" : "ResultCard" }>
+                                <CardContent>
+                                <Typography variant="h5" className="PartyName" color="textPrimary" gutterBottom>
+                                    {party[0]}
+                                </Typography>
+                                <Typography variant="h4" className="PartyVote" color="textPrimary" gutterBottom>
+                                    {party[1]}
+                                </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        ))}
+                    </Grid>
+                    </Grid>
+                </Grid> */}
+                <Grid container spacing={16}>
+                    <Grid item xs={12}>
+                    <Grid container  justify="center" spacing={16} className="CRGrid">
+                        {/* {
+                            this.state.candidateByConstituency &&
+                                this.state.candidateByConstituency.map((cons, index)  => (
+                                    <Grid key={index} item xs={12}>
+                                        <ExpansionPanel className="ConstituencyResult">
+                                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                            <Typography variant="h6">{cons[0] == "anywhere" ? "NOTA" : cons[0]} Result</Typography>
+                                            </ExpansionPanelSummary>
+                                            <ExpansionPanelDetails>
+                                            <Grid container  justify="center" spacing={12}> 
+                                                {
+                                                    cons[1].map((candidate, index)=>
+                                                        <Grid key={index} container item xs={12}>
+                                                            <Grid item xs={6}>
+                                                                <Typography variant="subtitle1" className="CandidateName" color="textPrimary" gutterBottom>
+                                                                    {candidate[0]}
+                                                                </Typography> 
+                                                            </Grid>
+                                                            <Grid item xs={6}>
+                                                                <Typography variant="subtitle1" className="CandidateVote" color="textPrimary" gutterBottom>
+                                                                    {candidate[1]}
+                                                                </Typography>
+                                                            </Grid>
+                                                            <hr />
+                                                        </Grid>
+                                                    )
+                                                }
+                                            </Grid>
+                                            </ExpansionPanelDetails>
+                                        </ExpansionPanel>
+                                    </Grid>
+                                    ))
+                        } */}
+                    </Grid>
+                    </Grid>
+                </Grid>
+                </Grid>
+                <Home className="HomeIcon" style={{ color: "#fff"}} onClick={() => this.props.updateHomeState(0, null)} />
+            </Grid>
             </div>
+            // <div>
+            //     <h2>Welcome to Post Result Analysis Report</h2>
+            //     <h3>Total Voters : {this.state.totalVoter}</h3>
+            //     <h3>Total Voting : {this.state.totalVoting}</h3>
+            //     <h3>Number of Female Voters : {this.state.femaleVoter.length}</h3>
+            //     <h3>Number of Male Voters : {this.state.maleVoter.length}</h3>
+            //     <Home className="HomeIcon" onClick={() => this.props.updateHomeState(0, null)} />
+            // </div>
         )
     }
 }

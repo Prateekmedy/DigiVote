@@ -18,7 +18,7 @@ class OrganizerLogin extends Component{
             inputUsername:"",
             inputPassword:"",
             username : "",
-            passwrod : "",
+            password : "",
             name : "",
             Organization : "",
             mobile : "",
@@ -42,93 +42,95 @@ class OrganizerLogin extends Component{
     event.preventDefault()
 
     //checking for the empty textfiled or entry
-    if((this.state.username && this.state.name && this.state.mobile && this.state.Organization && this.state.passwrod) == ""){
+    if((this.state.username && this.state.name && this.state.mobile && this.state.Organization && this.state.password) == ""){
       alert("Enter all the Details First !!")
       this.setState({ isSignUp : false, loaderStart : false })
       
-    }
-
-    const {contract, accounts} = this.props.userObject
-    // //calling function by providing the password and returns the Account Address
-    // await this.props.userObject.accountCreator("test");
-
-    // console.log(this.props.userObject.acc);
-
-    //prepering the image
-
-
-    //-------------------Calling fucntion for the Organizer Credentials Data------------------
-
-    let isUsernamePresent = false
-    await contract.methods.findOrganizer(this.state.username).call()
-    .then(res => isUsernamePresent = res)
-    .catch(console.error)
-
-    if(!isUsernamePresent){
-
-      let CredentialsData = {
-        Username : this.state.username,
-        Password : this.state.password,
-        Address  : accounts[0] //this.state.accAddress
-      }  
-  
-      //calling the promise by providing the data to convert it to hash
-      let ipfsCredentialsHash = await ipfsSender(CredentialsData)
-      this.setState({ipfsCredentialsHash})
-      console.log(this.state.ipfsCredentialsHash)
-  
-      //function for sending hash to the blockchain
-      await contract.methods.setOrganizerCredentials(this.state.username, this.state.ipfsCredentialsHash).send({from: accounts[2],gas:6721975})
-      .then((receipt) => {
-        console.log(receipt)
-      })
-      .catch((error) => {
-        console.log(error)
-      });
-  
-      //-------------------Calling fucntion for the Organizer Personal Data------------------
-      let PersonalData = {
-        Username      : this.state.username,
-        Address       : accounts[0], //this.state.accAddress
-        Name          : this.state.name,
-        Organization  : this.state.Organization,
-        Mobile        : this.state.mobile,
-        DP            : this.state.DP
-      }  
-  
-      //calling the promise by providing the data to convert it to hash
-      let ipfsPersonalHash = await ipfsSender(PersonalData)
-      this.setState({ipfsPersonalHash})
-      console.log(this.state.ipfsPersonalHash)
-  
-      //function for sending hash to the blockchain
-      await contract.methods.setOrganizerPersonal(this.state.username,this.state.ipfsPersonalHash).send({from: accounts[2],gas:6721975})
-      .then((receipt) => {
-        console.log(receipt)
-      })
-      .catch((error) => {
-        console.log(error)
-      });
-  
-  
-      //-------------------------------------Functions for retireving the Data from the Blockchain-----------------
-      //calling for fetching the hash from the blockchain.
-      let result;
-      await contract.methods.getOrganizerPersonal(this.state.username).call()
-      .then((res) => result = res)
-      .catch(console.error)
-  
-      //calling the promise by providing the hash to convert it to data
-      let ipfsPersonalData = await ipfsFetcher(result)
-      this.setState({ipfsPersonalData,isSignUp : true, goToSignUp : false, loaderStart : false})
-      console.log(this.state.ipfsPersonalData)
-  
-      
     }else{
-      this.setState({ loaderStart : false })
-      console.log("Username is Already Excist")
-      alert("Username is already excist")
+      const {contract, accounts} = this.props.userObject
+      // //calling function by providing the password and returns the Account Address
+      // await this.props.userObject.accountCreator("test");
+
+      // console.log(this.props.userObject.acc);
+
+      //prepering the image
+
+
+      //-------------------Calling fucntion for the Organizer Credentials Data------------------
+
+      let isUsernamePresent = false
+      await contract.methods.findOrganizer(this.state.username).call()
+      .then(res => isUsernamePresent = res)
+      .catch(console.error)
+
+      if(!isUsernamePresent){
+
+        let CredentialsData = {
+          Username : this.state.username,
+          Password : this.state.password,
+          Address  : accounts[0] //this.state.accAddress
+        }  
+    
+        //calling the promise by providing the data to convert it to hash
+        let ipfsCredentialsHash = await ipfsSender(CredentialsData)
+        this.setState({ipfsCredentialsHash})
+        console.log(this.state.ipfsCredentialsHash)
+    
+        //function for sending hash to the blockchain
+        await contract.methods.setOrganizerCredentials(this.state.username, this.state.ipfsCredentialsHash).send({from: accounts[2],gas:6721975})
+        .then((receipt) => {
+          console.log(receipt)
+        })
+        .catch((error) => {
+          console.log(error)
+        });
+    
+        //-------------------Calling fucntion for the Organizer Personal Data------------------
+        let PersonalData = {
+          Username      : this.state.username,
+          Address       : accounts[0], //this.state.accAddress
+          Name          : this.state.name,
+          Organization  : this.state.Organization,
+          Mobile        : this.state.mobile,
+          DP            : this.state.DP
+        }  
+    
+        //calling the promise by providing the data to convert it to hash
+        let ipfsPersonalHash = await ipfsSender(PersonalData)
+        this.setState({ipfsPersonalHash})
+        console.log(this.state.ipfsPersonalHash)
+    
+        //function for sending hash to the blockchain
+        await contract.methods.setOrganizerPersonal(this.state.username,this.state.ipfsPersonalHash).send({from: accounts[2],gas:6721975})
+        .then((receipt) => {
+          console.log(receipt)
+        })
+        .catch((error) => {
+          console.log(error)
+        });
+    
+    
+        //-------------------------------------Functions for retireving the Data from the Blockchain-----------------
+        // //calling for fetching the hash from the blockchain.
+        // let result;
+        // await contract.methods.getOrganizerPersonal(this.state.username).call()
+        // .then((res) => result = res)
+        // .catch(console.error)
+    
+        // //calling the promise by providing the hash to convert it to data
+        // let ipfsPersonalData = await ipfsFetcher(result)
+        // this.setState({ipfsPersonalData,isSignUp : true, goToSignUp : false, loaderStart : false})
+        // console.log(this.state.ipfsPersonalData)
+    
+        
+      }else{
+        this.setState({ loaderStart : false })
+        console.log("Username is Already Excist")
+        alert("Username is already excist")
+      }
+      
     }
+
     
 
   }
@@ -332,16 +334,16 @@ class OrganizerLogin extends Component{
                               />
                             </Grid>
                             <Grid item xs={12}>
-                              <TextField
-                                required
-                                name="Password"
-                                id="Password"
-                                label="Password"
-                                value={this.state.password}
-                                onChange={evt => this.updatePassword(evt)}
-                                type="password"
-                                margin="normal"
-                              />
+                                <TextField
+                                  required
+                                  name="Password"
+                                  id="Password"
+                                  label="Password"
+                                  value={this.state.password}
+                                  onChange={evt => this.updatePassword(evt)}
+                                  margin="normal"
+                                  type="password"
+                                />
                             </Grid>
                             <input
                               accept="image/*"

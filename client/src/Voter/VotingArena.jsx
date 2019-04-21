@@ -197,7 +197,7 @@ export default class VoterArena extends Component{
                                     <Grid item xs={12}>
                                         <Typography variant="h6" style={{ color : "#fff" }}gutterBottom>Select The Candidate</Typography>
                                     </Grid>
-                                    <Grid conatiner item xs={12} style={{ padding:"15px"}}>
+                                    <Grid container item xs={12} style={{ padding:"15px" }}>
                                     {
                                         this.state.candidates.map((candidate, index) =>
                                                     <SingleCandidate 
