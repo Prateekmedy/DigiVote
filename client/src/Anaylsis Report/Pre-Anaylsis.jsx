@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
-import { ipfsFetcher } from '../ipfsStore';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import Home from '@material-ui/icons/Home';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Fade from '@material-ui/core/Fade';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { Chart } from "react-google-charts";
+import { ipfsFetcher } from '../ipfsStore';
 
 export default class Pre_Analysis extends Component{
 
@@ -12,7 +22,8 @@ export default class Pre_Analysis extends Component{
             Array18To30    : [],
             Array31To50    : [],
             Array51To150   : [],
-            candidatesData : []
+            candidatesData : [],
+            candidateByParties : []
         }
     }
 
@@ -67,10 +78,27 @@ export default class Pre_Analysis extends Component{
             candidatesData.push(candidateData)
 
         }
-       
 
-        //coding for updating the state of this component
-        console.log(`Total Voter ${totalVoter} & Total Voting ${totalVoting}`)
+        //functions for grouping the Candiates from there respective political parties
+        const groupBy = key => array =>
+            array.reduce((objectsByKeyValue, obj) => {
+                const value = obj[key];
+                objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
+                return objectsByKeyValue;
+        }, {});
+
+        //preparing a template function for groupby parties from any array object
+        const groupbyParties = groupBy('ElectionParty')
+        // //preparing the template function for group by constituency(places) of the candidates.
+        // const groupByConstituency = groupBy(2) 
+
+        //calling that function with candidates data object to group it by the parties
+        let candidateByParties = groupbyParties(candidatesData)
+
+        // //calling that function with  total numbe of candidates of an election to be group by constituencies
+        // let candidateByConstituency = groupByConstituency(candidates) 
+
+        let newArray = Object.entries(candidateByParties)
 
         this.setState({
             totalVoter,
@@ -78,21 +106,134 @@ export default class Pre_Analysis extends Component{
             Array18To30,
             Array31To50,
             Array51To150,
-            candidatesData
+            candidatesData,
+            candidateByParties : newArray
         })
     }
 
     render(){
-        console.log(this.state)
         return(
             <div>
-                <h2>Welcome to Pre Result-Analysis Report</h2>
-                <h3>Total Voters : {this.state.totalVoter}</h3>
-                <h3>Total Voting : {this.state.totalVoting}</h3>
-                <h3>Number of Young Voters (18-30) : {this.state.Array18To30.length}</h3>
-                <h3>Number of Adult Voters (18-30) : {this.state.Array31To50.length}</h3>
-                <h3>Number of Old Age Voters (18-30) : {this.state.Array51To150.length}</h3>
-                <Home className="HomeIcon" onClick={() => this.props.updateHomeState(0, null)} />
+                <Fade
+                in={this.state.loaderStart === true}
+                unmountOnExit
+            >
+                <Grid 
+                    container 
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
+                    className="loaderDiv1"
+                >
+                <CircularProgress className="loader"/>
+                </Grid>
+            </Fade>
+                <Grid 
+              container 
+              direction="row"
+              justify="center"
+              alignItems="center"
+              className="ResultBack"
+          >
+            <Grid item xs={12}>
+                <Paper 
+                      elevation={2}
+                      className="ElectionHeader"
+                >
+                    <Typography variant="h4" gutterBottom>Pre Election Report</Typography>
+                </Paper>
+            </Grid>
+            <Grid container className="ResultBody">
+            <Grid container spacing={16}>
+                <Grid item xs={12}>
+                {
+                    this.state.totalVoter
+                        && <Grid container  justify="center" spacing={32}>
+                                <Grid item>
+                                    <Chart
+                                        width={'300px'}
+                                        height={'300px'}
+                                        chartType="PieChart"
+                                        data={[
+                                            ['Election', "Voter's Age"],
+                                            ['Young Voters (18-30)', this.state.Array18To30.length],
+                                            ['Adult Voters (31-50)', this.state.Array31To50.length],
+                                            ['Old Age Voters (18-30)', this.state.Array51To150.length]
+                                        ]}
+                                        options={{
+                                            title: 'Age Group Voter Percentage',
+                                            // Just add this option
+                                            pieHole: 0.6,
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item>
+                                        <Chart
+                                            width={'300px'}
+                                            height={'300px'}
+                                            chartType="PieChart"
+                                            data={[
+                                                ['Election', 'Votes'],
+                                                ['Non Voters', (this.state.totalVoter-this.state.totalVoting)],
+                                                ['Voting', this.state.totalVoting]
+                                            ]}
+                                            options={{
+                                                title: 'Total Voting Percentage',
+                                                // Just add this option
+                                                pieHole: 0.6,
+                                            }}
+                                    />
+                                </Grid>  
+                        </Grid>
+                }
+                </Grid>
+            </Grid>
+            <Grid container spacing={16} style={{ marginTop : "50px", marginBottom : "50px"}}>
+                <Grid item xs={12}>
+                <Grid container  justify="center" spacing={32}>
+                    {this.state.candidateByParties.map((party, index)  => (
+                    <Grid key={index} item xs={4}>
+                         <ExpansionPanel className="PartyCategory">
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                            <Grid container  justify="center" > 
+                                <Grid item xs={12}>
+                                    <Typography variant="h6">{party[0]}</Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Typography variant="subtitle2">Nominated Candidates</Typography>
+                                </Grid>
+                            </Grid>                                               
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                            <Grid container  justify="center" > 
+                               {
+                                   party[1].map((candidate, index)=>
+                                    <Grid container key={index} item xs={12}>
+                                        <Grid item xs={6}>
+                                            <Typography variant="subtitle1" className="CandidateName" color="textPrimary" gutterBottom>
+                                                {candidate.Name}
+                                            </Typography> 
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <Typography variant="subtitle1" className="CandidateVote" color="textPrimary" gutterBottom>
+                                                {candidate.constituency}
+                                            </Typography>
+                                        </Grid>
+                                        <hr />
+                                    </Grid>
+                                   )
+                               }        
+                            </Grid>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                    </Grid>
+                    ))}
+                </Grid>
+                </Grid>
+            </Grid>
+            </Grid>
+            <Home className="HomeIcon" style={{ color: "#fff"}} onClick={() => this.props.updateHomeState(0, null)} />
+        </Grid>
             </div>
         )
     }

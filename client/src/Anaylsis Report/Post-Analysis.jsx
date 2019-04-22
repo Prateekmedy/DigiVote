@@ -143,8 +143,19 @@ export default class Post_Anaylsis extends Component{
             this.setState({ winParty : PartiesVote[0][0] })
         }
 
-        console.log(candidatesData)
-        console.log(candidateByParties)
+        let newArray = Object.entries(candidateByConstituency)
+
+        for(let i=0;i<newArray.length;i++){
+                newArray[i][1].sort(function(a,b){
+                    return b[1] - a[1];
+                })
+            
+        }
+
+        // console.log(candidatesData)
+        // console.log(candidateByParties)
+        // console.log(PartiesVote)
+        // console.log(newArray)
 
 
         this.setState({
@@ -154,7 +165,8 @@ export default class Post_Anaylsis extends Component{
             maleVoter,
             femaleVoter,
             loaderStart : false,
-            PartiesVote
+            PartiesVote,
+            candidateByConstituency : newArray
         })
     }
 
@@ -194,70 +206,65 @@ export default class Post_Anaylsis extends Component{
                 <Grid container className="ResultBody">
                 <Grid container spacing={16}>
                     <Grid item xs={12}>
-                    <Grid container  justify="center" spacing={32}>
-                        {
-                            this.state.totalVoter
-                            &&  
-                            <div>
-                                <Grid item>
-                                    <Chart
-                                    width={'300px'}
-                                    height={'300px'}
-                                    chartType="PieChart"
-                                    data={[
-                                        ['Election', 'Female Voters'],
-                                        ['Total Voters', this.state.totalVoter],
-                                        ['Female Voters', this.state.femaleVoter]
-                                    ]}
-                                    options={{
-                                        title: 'Female Voter Percentage',
-                                        // Just add this option
-                                        pieHole: 0.6,
-                                    }}
-                                />
+                    {
+                        this.state.totalVoter
+                            && <Grid container  justify="center" spacing={32}>
+                                    <Grid item>
+                                        <Chart
+                                            width={'300px'}
+                                            height={'300px'}
+                                            chartType="PieChart"
+                                            data={[
+                                                ['Election', 'Female Voters'],
+                                                ['Total Voters', this.state.totalVoter],
+                                                ['Female Voters', this.state.femaleVoter.length]
+                                            ]}
+                                            options={{
+                                                title: 'Female Voter Percentage',
+                                                // Just add this option
+                                                pieHole: 0.6,
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid item>
+                                            <Chart
+                                                width={'300px'}
+                                                height={'300px'}
+                                                chartType="PieChart"
+                                                data={[
+                                                    ['Election', 'Votes'],
+                                                    ['Total Voters', this.state.totalVoter],
+                                                    ['Voting', this.state.totalVoting]
+                                                ]}
+                                                options={{
+                                                    title: 'Total Voting Percentage',
+                                                    // Just add this option
+                                                    pieHole: 0.6,
+                                                }}
+                                        />
+                                    </Grid>
+                                    <Grid item>
+                                            <Chart
+                                                width={'300px'}
+                                                height={'300px'}
+                                                chartType="PieChart"
+                                                data={[
+                                                    ['Election', 'Male Voters'],
+                                                    ['Total Voters', this.state.totalVoter],
+                                                    ['Male Voting', this.state.maleVoter.length]
+                                                ]}
+                                                options={{
+                                                    title: 'Male Voting Percentage',
+                                                    // Just add this option
+                                                    pieHole: 0.6,
+                                                }}
+                                        />
+                                    </Grid>   
                             </Grid>
-                            <Grid item>
-                                    <Chart
-                                    width={'300px'}
-                                    height={'300px'}
-                                    chartType="PieChart"
-                                    data={[
-                                        ['Election', 'Votes'],
-                                        ['Total Voters', this.state.totalVoter],
-                                        ['Voting', this.state.totalVoting]
-                                    ]}
-                                    options={{
-                                        title: 'Total Voting Percentage',
-                                        // Just add this option
-                                        pieHole: 0.6,
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item>
-                                    <Chart
-                                    width={'300px'}
-                                    height={'300px'}
-                                    chartType="PieChart"
-                                    data={[
-                                        ['Election', 'Male Voters'],
-                                        ['Total Voters', this.state.totalVoter],
-                                        ['Male Voting', this.state.maleVoter]
-                                    ]}
-                                    options={{
-                                        title: 'Male Voting Percentage',
-                                        // Just add this option
-                                        pieHole: 0.6,
-                                    }}
-                                />
-                            </Grid>
-                            </div>
-                        }
-                        
-                       
-                    </Grid>
+                    }
                     </Grid>
                 </Grid>
-                {/* <Grid container spacing={16}>
+                <Grid container spacing={16} style={{ marginTop : "50px", marginBottom : "50px"}}>
                     <Grid item xs={12}>
                     <Grid container  justify="center" spacing={32}>
                         {this.state.PartiesVote.map((party, index)  => (
@@ -276,43 +283,45 @@ export default class Post_Anaylsis extends Component{
                         ))}
                     </Grid>
                     </Grid>
-                </Grid> */}
+                </Grid>
                 <Grid container spacing={16}>
                     <Grid item xs={12}>
                     <Grid container  justify="center" spacing={16} className="CRGrid">
-                        {/* {
+                        {
                             this.state.candidateByConstituency &&
                                 this.state.candidateByConstituency.map((cons, index)  => (
                                     <Grid key={index} item xs={12}>
-                                        <ExpansionPanel className="ConstituencyResult">
-                                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                            <Typography variant="h6">{cons[0] == "anywhere" ? "NOTA" : cons[0]} Result</Typography>
-                                            </ExpansionPanelSummary>
-                                            <ExpansionPanelDetails>
-                                            <Grid container  justify="center" spacing={12}> 
-                                                {
-                                                    cons[1].map((candidate, index)=>
-                                                        <Grid key={index} container item xs={12}>
-                                                            <Grid item xs={6}>
-                                                                <Typography variant="subtitle1" className="CandidateName" color="textPrimary" gutterBottom>
-                                                                    {candidate[0]}
-                                                                </Typography> 
+                                    {
+                                        cons[0] !== "anywhere" 
+                                            &&  <ExpansionPanel className="ConstituencyResult">
+                                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                                    <Typography variant="h6">{cons[0] == "anywhere" ? "NOTA" : cons[0]} Constituency Winner</Typography>                                           
+                                                </ExpansionPanelSummary>
+                                                <ExpansionPanelDetails>
+                                                <Grid container  justify="center" > 
+                                                   
+                                                            <Grid container item xs={12} style={{ "background" : "#64dd17", "color" : "#fff" }}>
+                                                                <Grid item xs={6}>
+                                                                    <Typography variant="subtitle1" className="CandidateName" color="textPrimary" gutterBottom>
+                                                                        {cons[1][0][0]}
+                                                                    </Typography> 
+                                                                </Grid>
+                                                                <Grid item xs={6}>
+                                                                    <Typography variant="subtitle1" className="CandidateVote" color="textPrimary" gutterBottom>
+                                                                        {cons[1][0][1]}
+                                                                    </Typography>
+                                                                </Grid>
+                                                                <hr />
                                                             </Grid>
-                                                            <Grid item xs={6}>
-                                                                <Typography variant="subtitle1" className="CandidateVote" color="textPrimary" gutterBottom>
-                                                                    {candidate[1]}
-                                                                </Typography>
-                                                            </Grid>
-                                                            <hr />
-                                                        </Grid>
-                                                    )
-                                                }
-                                            </Grid>
-                                            </ExpansionPanelDetails>
-                                        </ExpansionPanel>
+                                                        
+                                                </Grid>
+                                                </ExpansionPanelDetails>
+                                            </ExpansionPanel>
+                                    }
+                                        
                                     </Grid>
                                     ))
-                        } */}
+                        }
                     </Grid>
                     </Grid>
                 </Grid>
@@ -320,14 +329,5 @@ export default class Post_Anaylsis extends Component{
                 <Home className="HomeIcon" style={{ color: "#fff"}} onClick={() => this.props.updateHomeState(0, null)} />
             </Grid>
             </div>
-            // <div>
-            //     <h2>Welcome to Post Result Analysis Report</h2>
-            //     <h3>Total Voters : {this.state.totalVoter}</h3>
-            //     <h3>Total Voting : {this.state.totalVoting}</h3>
-            //     <h3>Number of Female Voters : {this.state.femaleVoter.length}</h3>
-            //     <h3>Number of Male Voters : {this.state.maleVoter.length}</h3>
-            //     <Home className="HomeIcon" onClick={() => this.props.updateHomeState(0, null)} />
-            // </div>
-        )
     }
 }
