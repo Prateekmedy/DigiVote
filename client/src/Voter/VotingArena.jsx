@@ -79,15 +79,15 @@ export default class VoterArena extends Component{
         this.setState({ loaderStart : true })
         event.preventDefault()
 
-        // await otpVerifier(this.props.AadhaarObject.Mobile, this.state.OTP)
-        // .then(data => {
-        //     console.log(data)
-        //     console.log("OTP Verified")
-        //     this.setState({
-        //     otpVerify : true
-        //     })
-        // })
-        // .catch(console.error)
+        await otpVerifier(this.props.AadhaarObject.Mobile, this.state.OTP)
+        .then(data => {
+            console.log(data)
+            console.log("OTP Verified")
+            this.setState({
+            otpVerify : true
+            })
+        })
+        .catch(console.error)
 
         if(this.state.otpVerify){
 
@@ -264,32 +264,6 @@ export default class VoterArena extends Component{
                         }
                     </Grid>
                 </Grid>
-
-                {/* <h2>Welcome to Elections Arena.</h2>
-                <h1>{this.props.selectedElection.election.typeOfElection}</h1>
-                <h3>Select the Candidate</h3>
-                {
-                    this.state.candidates.map((candidate, index) =>
-                                 <SingleCandidate 
-                                    key={index} 
-                                    index={index} 
-                                    candidate={candidate[0]} 
-                                    selectedCandidate={this.state.selectedCandidate}
-                                    updateSelectedCandidate={this.updateSelectedCandidate}
-                                />    
-                    )
-                }
-                
-                {
-                    this.state.OTPUnlock
-                        ? <form onSubmit={this.voteDone}>
-                            <input type="text" value={this.state.OTP} onChange={evt => this.updateOTP(evt)}/>
-                            <input type="submit" value="Verify OTP" />
-                        </form>
-                        : <button onClick={this.voteIt} >VOTE</button>
-                }
-                <button onClick={this.voteDone}>VoteDo</button> 
-                 */}
             </div>
         )
     }

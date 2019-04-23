@@ -9,7 +9,8 @@ export default class AllRequests extends Component{
         super(props)
         this.state = {
             requests:null,
-            loaderStart : false
+            loaderStart : false,
+            refresh : 0
         }
     }
 
@@ -35,12 +36,23 @@ export default class AllRequests extends Component{
             console.log(result)
             requests.push(result)
         }
+
+        
+        let newRequest = requests.filter((request) => {
+            return request[4] !== "Rejected"
+        })
+        console.log(requests)
+        console.log(newRequest)
        
         this.setState({
-            requests, loaderStart : false
+            requests : newRequest, loaderStart : false, refresh : 0
         })
 
        
+    }
+
+    refresh = () => {
+        this.setState({ refresh : 1 })
     }
 
     render(){
@@ -73,7 +85,8 @@ export default class AllRequests extends Component{
                                     electionHash={item[1]}
                                     time={item[2]}
                                     place={item[3]}
-                                    status={item[4]}    
+                                    status={item[4]} 
+                                    refresh={this.refresh}   
                                 />          
                         )}
                     </Grid> 

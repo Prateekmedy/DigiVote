@@ -7,6 +7,7 @@ import ResultCard from './Elections/ResultCard';
 import Pre_Analysis from './Anaylsis Report/Pre-Anaylsis';
 import Post_Anaylsis from './Anaylsis Report/Post-Analysis';
 import Slide from './utils/slider'
+import {otpSender, otpVerifier} from './utils/OtpGenrator'
 
 export default class Home extends Component{
 
@@ -46,7 +47,17 @@ export default class Home extends Component{
         })
     }
 
-    
+    send = async() => {
+        await otpSender("918871697651", "Digivote")
+          .then(data => {
+            console.log(data)
+            console.log("OTP Sended Successfully")
+            // this.setState({
+            //   isOtpSended : true
+            // })
+          })
+          .catch(console.error)
+    }
 
     render(){
         console.log("HomePage")

@@ -29,6 +29,7 @@ export default class SingleElection extends Component{
             isCardClicked : false
         }
     }
+    
 
     componentWillMount = () => {
 
@@ -39,18 +40,19 @@ export default class SingleElection extends Component{
 
         const UpdateCRInterval = setInterval(this.updateCRTime, 5000)
 
-        // if(this.state.isVotingTime){
-        //     const UpdateAlertInterval = setInterval(this.updateAlertMsg, 5000) //this interval should run only in voting time period
-        //     this.setState({
-        //         UpdateAlertInterval
-        //     })
-        // }
+        // const UpdateAlertInterval = setInterval(this.updateAlertMsg, 180000) //this interval should run only in voting time period
+            // this.setState({
+            //     UpdateAlertInterval
+            // })
+            // console.log("voting interval")
+        
 
         this.setState({
             UpdateVotingInterval,
             UpdateResultInterval,
             UpdateCRInterval,
-            loaderStart : false
+            loaderStart : false,
+            // UpdateAlertInterval
         })
     }
 
@@ -337,54 +339,63 @@ export default class SingleElection extends Component{
         clearInterval(this.state.UpdateVotingInterval)
         clearInterval(this.state.UpdateResultInterval)
         clearInterval(this.state.UpdateCRInterval)
+        clearInterval(this.state.UpdateAlertInterval)
     }
 
     //interval function for sending the alert msg at the time of voting period
     updateAlertMsg = async() => {
 
 
-        console.log(AadhaarData)  
-        const {contract} = this.props.userObject
-        let length = 0,
-            votedAadhaar = [], //array of aadhaar that voted already in this election
-            nonVotedAadhaar = [] //array of aadhaar that not voted in this election yet
+        if(this.state.isVotingTime){
+            console.log(AadhaarData)  
+            const {contract} = this.props.userObject
+            let length = 0,
+                votedAadhaar = [], //array of aadhaar that voted already in this election
+                nonVotedAadhaar = [] //array of aadhaar that not voted in this election yet
 
-        await contract.methods.aadhaarCount(this.props.electionHash[this.props.index]).call()
-        .then(res => length = res)
-        .catch(console.log)
-        
-        for(let i=0; i< length; i++){
-            let aadhaar;
-
-            await contract.methods.checkAadhaar(this.props.electionHash[this.props.index], i).call()
-            .then(res => aadhaar = res)
+            await contract.methods.aadhaarCount(this.props.electionHash[this.props.index]).call()
+            .then(res => length = res)
             .catch(console.log)
+            
+            for(let i=0; i< length; i++){
+                let aadhaar;
 
-            votedAadhaar.push(aadhaar)
-        }
+                await contract.methods.checkAadhaar(this.props.electionHash[this.props.index], i).call()
+                .then(res => aadhaar = res)
+                .catch(console.log)
 
-        
-        AadhaarData.AadhaarCards.forEach((aadhaar1) => {
-            let count = 0
+                votedAadhaar.push(aadhaar)
+            }
 
-            votedAadhaar.forEach((aadhaar2) => {
-                if(aadhaar1.Aadhaar_Id == aadhaar2){
-                    count++
+            
+            AadhaarData.AadhaarCards.forEach((aadhaar1) => {
+                let count = 0
+
+                votedAadhaar.forEach((aadhaar2) => {
+                    if(aadhaar1.Aadhaar_Id == aadhaar2){
+                        count++
+                    }
+                })
+
+                if(count == 0){
+                    nonVotedAadhaar.push(aadhaar1)
                 }
             })
 
-            if(count == 0){
-                nonVotedAadhaar.push(aadhaar1)
-            }
-        })
+            nonVotedAadhaar.forEach((aadhaar) => {
+                this.alertVoter(aadhaar.Aadhaar_Id.substring(6,12), aadhaar.e_Kyc.Poi.mobile)
+                .then(console.log)
+                .catch(console.error)
+            })
 
-        nonVotedAadhaar.forEach((aadhaar) => {
-            this.alertVoter(aadhaar.Aadhaar_Id.substring(6,12), aadhaar.e_Kyc.Poi.mobile)
-            .then(console.log)
-            .catch(console.error)
-        })
+            console.log(nonVotedAadhaar)
+            console.log(votedAadhaar)
+            console.log("Alert the voters")
+        }else{
+            console.log("VOting time is over")
+        }
 
-        console.log(nonVotedAadhaar)
+        
     }
 
     //alert function for send the alert msg to the voter
@@ -453,7 +464,7 @@ export default class SingleElection extends Component{
                                 variant="outlined" 
                                 color="primary"
                                 className="ElectionBtn"
-                                style={(this.state.isResultTime && this.state.isVotingOver) ? show : show } //hide it after debugging
+                                style={(this.state.isResultTime && this.state.isVotingOver) ? show : hide } //hide it after debugging
                                 onClick={this.openPostReport}
                             >Post Analysis</Button>
                             <Button 

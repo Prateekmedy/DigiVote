@@ -139,7 +139,8 @@ class CandidateLogin extends Component{
                           isSignUp : true, 
                           goToSignUp : false, 
                           loaderStart : false
-                      })
+        })
+        alert("Thank You for Register !")
         //console.log(this.state.ipfsPersonalData)
     
       }else{

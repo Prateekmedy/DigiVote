@@ -188,7 +188,7 @@ export default class Post_Anaylsis extends Component{
                 <CircularProgress className="loader"/>
                 </Grid>
             </Fade>
-            <Grid 
+                <Grid 
                   container 
                   direction="row"
                   justify="center"
@@ -215,12 +215,12 @@ export default class Post_Anaylsis extends Component{
                                             height={'300px'}
                                             chartType="PieChart"
                                             data={[
-                                                ['Election', 'Female Voters'],
-                                                ['Total Voters', this.state.totalVoter],
+                                                ['Election', 'Gender Voters'],
+                                                ['Male Voters', this.state.maleVoter.length],
                                                 ['Female Voters', this.state.femaleVoter.length]
                                             ]}
                                             options={{
-                                                title: 'Female Voter Percentage',
+                                                title: 'Gender Voter Percentage',
                                                 // Just add this option
                                                 pieHole: 0.6,
                                             }}
@@ -232,8 +232,8 @@ export default class Post_Anaylsis extends Component{
                                                 height={'300px'}
                                                 chartType="PieChart"
                                                 data={[
-                                                    ['Election', 'Votes'],
-                                                    ['Total Voters', this.state.totalVoter],
+                                                    ['Election', 'Total Voting Percentage'],
+                                                    ['Non Voters', (this.state.totalVoter - this.state.totalVoting)],
                                                     ['Voting', this.state.totalVoting]
                                                 ]}
                                                 options={{
@@ -242,24 +242,7 @@ export default class Post_Anaylsis extends Component{
                                                     pieHole: 0.6,
                                                 }}
                                         />
-                                    </Grid>
-                                    <Grid item>
-                                            <Chart
-                                                width={'300px'}
-                                                height={'300px'}
-                                                chartType="PieChart"
-                                                data={[
-                                                    ['Election', 'Male Voters'],
-                                                    ['Total Voters', this.state.totalVoter],
-                                                    ['Male Voting', this.state.maleVoter.length]
-                                                ]}
-                                                options={{
-                                                    title: 'Male Voting Percentage',
-                                                    // Just add this option
-                                                    pieHole: 0.6,
-                                                }}
-                                        />
-                                    </Grid>   
+                                    </Grid>  
                             </Grid>
                     }
                     </Grid>
@@ -316,7 +299,7 @@ export default class Post_Anaylsis extends Component{
                                                         
                                                 </Grid>
                                                 </ExpansionPanelDetails>
-                                            </ExpansionPanel>
+                                                </ExpansionPanel>
                                     }
                                         
                                     </Grid>
@@ -329,5 +312,6 @@ export default class Post_Anaylsis extends Component{
                 <Home className="HomeIcon" style={{ color: "#fff"}} onClick={() => this.props.updateHomeState(0, null)} />
             </Grid>
             </div>
+        )
     }
 }

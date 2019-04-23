@@ -119,7 +119,12 @@ class OrganizerLogin extends Component{
     
         // //calling the promise by providing the hash to convert it to data
         // let ipfsPersonalData = await ipfsFetcher(result)
-        // this.setState({ipfsPersonalData,isSignUp : true, goToSignUp : false, loaderStart : false})
+        this.setState({//ipfsPersonalData,
+          isSignUp : true, 
+          goToSignUp : false, 
+          loaderStart : false
+        })
+        alert("Thank You for Register !")
         // console.log(this.state.ipfsPersonalData)
     
         

@@ -94,12 +94,16 @@ export default class CandidateRequest extends Component{
                       console.log(error)
                     });
 
+                    
+                    
                     this.setState({
                       isRequested : false,
                       isApproved : false,
                       isRejected : true,
                       isNominated : false
                     })
+
+                   // this.props.refresh()
                 }
 
                 if(name === 'Nominate'){
