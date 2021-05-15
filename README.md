@@ -29,28 +29,28 @@ IPFS : for decentralize data storage.
 
 ##### For Complete Flow of the Application you can view the Youtube Video. 👍👍👍
 
-[![DigiVote Description Video](https://gateway.ipfs.io/ipfs/QmXCq5BM2HFDKyDjSFRSTbekWaHieBy2LD5Q1JTFzk6svy/)](https://www.youtube.com/watch?v=WLwfCgLHK5Y) 
+[![DigiVote Description Video](https://images2.imgbox.com/83/4c/aBBIIJ4y_o.jpg)](https://www.youtube.com/watch?v=WLwfCgLHK5Y) 
 
 
 #### Some of the ScreenShots:
 
 ##### DigiVote Home Page
-![DigiVote HomePage](https://gateway.ipfs.io/ipfs/QmPV4bDpWry8QNdZKRCo9vpYj7ipfX4mvE6xATApxnzmfz/)
+![DigiVote HomePage](https://images2.imgbox.com/38/f4/81i8egYE_o.jpg)
 
 ##### DigiVote Live Election
-![DigiVote HomePage](https://gateway.ipfs.io/ipfs/QmSU9jz1nzNuoYUL9TC14xXUbj1nLnTVat5oEk1daVX5KM/)
+![DigiVote HomePage](https://images2.imgbox.com/94/e6/5LcB3MwJ_o.jpg)
 
 ##### DigiVote Org. Login
-![DigiVote HomePage](https://gateway.ipfs.io/ipfs/QmeycH3hX3pDuM8ee6cN5ztqdG3FAzde7RfTeT9mQAZdLp/)
+![DigiVote HomePage](https://images2.imgbox.com/f1/65/cz7ix8H0_o.jpg)
 
 ##### DigiVote Voting Area
-![DigiVote HomePage](https://gateway.ipfs.io/ipfs/Qmdvo8qPpoXmEBoKFCAYVVoDnvHH71d2qyWkwWkuD2brdj/)
+![DigiVote HomePage](https://images2.imgbox.com/25/69/JJxYlNmZ_o.jpg)
 
 ##### DigiVote Election Result
-![DigiVote HomePage](https://gateway.ipfs.io/ipfs/QmUdVLrGK82JBvJhKWA4BaKFvEYdDAVrBth7JDjCuGrphU/)
+![DigiVote HomePage](https://images2.imgbox.com/72/16/NFEKa2BT_o.jpg)
 
 ##### DigiVote Footer
-![DigiVote HomePage](https://gateway.ipfs.io/ipfs/QmfSouweXKoLq1Jcs4cRcRdWYLBjnU85s3bmgCk7yY5U3K/)
+![DigiVote HomePage](https://images2.imgbox.com/16/c8/wA2VuMng_o.jpg)
 
 ---
 
